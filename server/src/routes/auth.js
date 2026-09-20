@@ -120,15 +120,15 @@ router.get('/users', (req, res) => {
   );
 });
 
-// Delete user account by ID (both ADMIN and TECHNICIAN)
+// Delete user account by ID or email (both ADMIN and TECHNICIAN)
 router.delete('/users/:id', (req, res) => {
   const { id } = req.params;
   if (!id) return res.status(400).json({ error: 'ID utente mancante.' });
 
-  db.run(`DELETE FROM users WHERE id = ?`, [id], function(err) {
+  db.run(`DELETE FROM users WHERE id = ? OR LOWER(email) = LOWER(?)`, [id, id], function(err) {
     if (err) return res.status(500).json({ error: err.message });
     if (this.changes === 0) return res.status(404).json({ error: 'Utente non trovato.' });
-    console.log(`[AUTH] Account ID ${id} eliminato.`);
+    console.log(`[AUTH] Account ID/Email ${id} eliminato.`);
     res.json({ success: true, message: 'Account eliminato con successo.' });
   });
 });

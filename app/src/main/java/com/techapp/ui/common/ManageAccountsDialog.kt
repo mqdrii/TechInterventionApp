@@ -102,7 +102,7 @@ object ManageAccountsDialog {
             } catch (_: Exception) {}
 
             // 2) Fallback dal DB locale se il server non risponde
-            val localUsers = AppDatabase.getInstance(context).userDao().getTechniciansList()
+            val localUsers = AppDatabase.getInstance(context).userDao().getAllUsersList()
             withContext(Dispatchers.Main) {
                 usersList.clear()
                 usersList.addAll(localUsers.map { u ->
@@ -133,12 +133,12 @@ object ManageAccountsDialog {
         currentUserId: Long,
         onSuccess: (wasSelf: Boolean) -> Unit
     ) {
-        val isSelf = (user.id == currentUserId)
+        val isSelf = (user.id == currentUserId || user.email.equals(SessionManager(context).getUserEmail(), true))
         val roleLabel = if (user.role.equals("admin", true)) "Amministratore" else "Tecnico"
         val message = if (isSelf) {
-            "Stai per eliminare il tuo stesso account (${user.fullName}). Verrai disconnesso immediatamente e l'account sarà rimosso dal server.\n\nVuoi procedere?"
+            "Stai per eliminare il tuo stesso account (${user.fullName ?: user.firstName}). Verrai disconnesso immediatamente e l'account sarà rimosso dal server.\n\nVuoi procedere?"
         } else {
-            "Sei sicuro di voler eliminare l'account di \"${user.fullName}\" ($roleLabel)?\n\nL'operazione eliminerà l'account sia dal server cloud che dal dispositivo."
+            "Sei sicuro di voler eliminare l'account di \"${user.fullName ?: user.firstName}\" ($roleLabel)?\n\nL'operazione eliminerà l'account sia dal server cloud che dal dispositivo."
         }
 
         MaterialAlertDialogBuilder(context)
@@ -154,9 +154,12 @@ object ManageAccountsDialog {
                         api.deleteUser(user.id)
                     } catch (_: Exception) {}
 
-                    // 2) Elimina dal DB locale
+                    // 2) Elimina dal DB locale sia per ID che per email
                     try {
-                        AppDatabase.getInstance(context).userDao().deleteById(user.id)
+                        val db = AppDatabase.getInstance(context)
+                        db.userDao().deleteById(user.id)
+                        val u = db.userDao().getUserByEmail(user.email)
+                        if (u != null) db.userDao().delete(u)
                     } catch (_: Exception) {}
 
                     withContext(Dispatchers.Main) {

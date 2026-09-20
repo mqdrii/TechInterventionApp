@@ -41,6 +41,9 @@ interface TechApiService {
         @Body body: StatusUpdateDto
     ): Response<GenericResponse>
 
+    @DELETE("api/appointments/{id}")
+    suspend fun deleteAppointment(@Path("id") id: Long): Response<GenericResponse>
+
     @POST("api/interventions")
     suspend fun createIntervention(@Body intv: InterventionDto): Response<InterventionDto>
 
@@ -49,4 +52,7 @@ interface TechApiService {
         @Path("id") id: Long,
         @Body body: StatusUpdateDto
     ): Response<GenericResponse>
+
+    @DELETE("api/interventions/{id}")
+    suspend fun deleteIntervention(@Path("id") id: Long): Response<GenericResponse>
 }

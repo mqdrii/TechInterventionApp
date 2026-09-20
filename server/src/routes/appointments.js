@@ -81,6 +81,14 @@ router.patch('/:id/status', (req, res) => {
       res.json({ success: true, id: appointmentId, status: status.trim() });
     }
   );
+// Delete appointment
+router.delete('/:id', (req, res) => {
+  const appointmentId = req.params.id;
+  db.run('DELETE FROM appointments WHERE id = ?', [appointmentId], function(err) {
+    if (err) return res.status(500).json({ error: err.message });
+    console.log(`[APPOINTMENTS] Appuntamento ID ${appointmentId} eliminato.`);
+    res.json({ success: true, id: appointmentId, message: 'Appuntamento eliminato con successo.' });
+  });
 });
 
 module.exports = router;

@@ -81,6 +81,14 @@ router.patch('/:id/status', (req, res) => {
       res.json({ success: true, id: interventionId, status: status.trim() });
     }
   );
+// Delete intervention
+router.delete('/:id', (req, res) => {
+  const interventionId = req.params.id;
+  db.run('DELETE FROM interventions WHERE id = ?', [interventionId], function(err) {
+    if (err) return res.status(500).json({ error: err.message });
+    console.log(`[INTERVENTIONS] Intervento ID ${interventionId} eliminato.`);
+    res.json({ success: true, id: interventionId, message: 'Intervento eliminato con successo.' });
+  });
 });
 
 module.exports = router;

@@ -14,7 +14,8 @@ import com.techapp.utils.DepartmentHelper
 
 class InterventionAdapter(
     private val onItemClick: (Intervention) -> Unit,
-    private val onStatusClick: (Intervention) -> Unit
+    private val onStatusClick: (Intervention) -> Unit,
+    private val onDeleteClick: (Intervention) -> Unit
 ) : ListAdapter<Intervention, InterventionAdapter.InterventionViewHolder>(DiffCallback) {
 
     inner class InterventionViewHolder(private val binding: ItemInterventionBinding) :
@@ -42,6 +43,8 @@ class InterventionAdapter(
             binding.tvStatus.text = label
             binding.tvStatus.setBackgroundResource(bgRes)
             binding.tvStatus.setTextColor(ContextCompat.getColor(binding.root.context, textColorRes))
+
+            binding.btnDelete.setOnClickListener { onDeleteClick(intervention) }
 
             binding.root.setOnClickListener { onItemClick(intervention) }
             binding.tvStatus.setOnClickListener {

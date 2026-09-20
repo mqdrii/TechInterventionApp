@@ -110,6 +110,12 @@ class AppointmentViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun deleteAppointment(appointment: Appointment) {
-        viewModelScope.launch { repository.deleteAppointment(appointment) }
+        viewModelScope.launch {
+            try {
+                val api = ApiClient.getService(getApplication())
+                api.deleteAppointment(appointment.id)
+            } catch (_: Exception) {}
+            repository.deleteAppointment(appointment)
+        }
     }
 }

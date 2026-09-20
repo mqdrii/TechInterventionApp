@@ -36,4 +36,10 @@ interface ClientDao {
 
     @Query("SELECT COUNT(*) FROM clients WHERE userId = :userId")
     fun getClientCount(userId: Long): LiveData<Int>
+
+    @Query("DELETE FROM clients WHERE id NOT IN (:serverIds)")
+    suspend fun deleteClientsNotIn(serverIds: List<Long>)
+
+    @Query("DELETE FROM clients")
+    suspend fun deleteAllClients()
 }

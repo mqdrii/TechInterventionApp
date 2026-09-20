@@ -14,7 +14,8 @@ import com.techapp.utils.DepartmentHelper
 
 class AppointmentAdapter(
     private val onItemClick: (Appointment) -> Unit,
-    private val onStatusClick: (Appointment) -> Unit
+    private val onStatusClick: (Appointment) -> Unit,
+    private val onDeleteClick: (Appointment) -> Unit
 ) : ListAdapter<Appointment, AppointmentAdapter.AppointmentViewHolder>(DiffCallback) {
 
     inner class AppointmentViewHolder(private val binding: ItemAppointmentBinding) :
@@ -42,6 +43,8 @@ class AppointmentAdapter(
             binding.tvStatus.text = label
             binding.tvStatus.setBackgroundResource(bgRes)
             binding.tvStatus.setTextColor(ContextCompat.getColor(binding.root.context, textColorRes))
+
+            binding.btnDelete.setOnClickListener { onDeleteClick(appointment) }
 
             binding.root.setOnClickListener { onItemClick(appointment) }
             binding.tvStatus.setOnClickListener {

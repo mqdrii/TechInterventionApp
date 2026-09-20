@@ -47,6 +47,10 @@ object SyncManager {
 
                 // 1) Sincronizza tutti gli Utenti (Admin e Tecnici)
                 val userDao = db.userDao()
+                val serverUserIds = data.technicians.map { it.id }
+                if (serverUserIds.isNotEmpty()) {
+                    userDao.deleteUsersNotIn(serverUserIds)
+                }
                 data.technicians.forEach { t ->
                     userDao.upsert(
                         User(id = t.id, email = t.email, passwordHash = "",
@@ -55,8 +59,14 @@ object SyncManager {
                     )
                 }
 
-                // 2) Sincronizza Clienti
+                // 2) Sincronizza Clienti e riconcilia eliminazioni dal server
                 val clientsDao = db.clientDao()
+                val serverClientIds = data.clients.map { it.id }
+                if (serverClientIds.isEmpty()) {
+                    clientsDao.deleteAllClients()
+                } else {
+                    clientsDao.deleteClientsNotIn(serverClientIds)
+                }
                 data.clients.forEach { c ->
                     clientsDao.insert(
                         Client(id = c.id, userId = currentUserId,
@@ -65,8 +75,14 @@ object SyncManager {
                     )
                 }
 
-                // 3) Sincronizza Appuntamenti
+                // 3) Sincronizza Appuntamenti e riconcilia eliminazioni dal server
                 val appointmentDao = db.appointmentDao()
+                val serverAptIds = data.appointments.map { it.id }
+                if (serverAptIds.isEmpty()) {
+                    appointmentDao.deleteAllAppointments()
+                } else {
+                    appointmentDao.deleteAppointmentsNotIn(serverAptIds)
+                }
                 data.appointments.forEach { a ->
                     appointmentDao.insert(
                         Appointment(
@@ -80,8 +96,14 @@ object SyncManager {
                     )
                 }
 
-                // 4) Sincronizza Interventi
+                // 4) Sincronizza Interventi e riconcilia eliminazioni dal server
                 val interventionDao = db.interventionDao()
+                val serverIntvIds = data.interventions.map { it.id }
+                if (serverIntvIds.isEmpty()) {
+                    interventionDao.deleteAllInterventions()
+                } else {
+                    interventionDao.deleteInterventionsNotIn(serverIntvIds)
+                }
                 data.interventions.forEach { i ->
                     interventionDao.insert(
                         Intervention(

@@ -34,24 +34,33 @@ interface AppointmentDao {
     @Query("SELECT * FROM appointments WHERE userId = :userId AND clientId = :clientId ORDER BY date DESC")
     fun getAppointmentsByClient(userId: Long, clientId: Long): LiveData<List<Appointment>>
 
-    @Query("SELECT * FROM appointments WHERE date = :today AND status = 'scheduled' ORDER BY time ASC")
+    @Query("SELECT * FROM appointments WHERE date = :today AND LOWER(TRIM(status)) NOT IN ('completato', 'completed', 'annullato', 'cancelled') ORDER BY time ASC")
     fun getAllTodayAppointments(today: String): LiveData<List<Appointment>>
 
-    @Query("SELECT COUNT(*) FROM appointments WHERE date = :today AND status = 'scheduled'")
+    @Query("SELECT COUNT(*) FROM appointments WHERE date = :today AND LOWER(TRIM(status)) NOT IN ('completato', 'completed', 'annullato', 'cancelled')")
     fun getAllTodayAppointmentCount(today: String): LiveData<Int>
 
-    @Query("SELECT * FROM appointments WHERE (LOWER(TRIM(:department)) = 'tutti' OR assignedUserId = :userId OR (assignedUserId = 0 AND (LOWER(TRIM(department)) = LOWER(TRIM(:department)) OR LOWER(TRIM(department)) = 'generale' OR LOWER(TRIM(:department)) = 'generale'))) AND date = :today AND status = 'scheduled' ORDER BY time ASC")
+    @Query("SELECT * FROM appointments WHERE (LOWER(TRIM(:department)) = 'tutti' OR assignedUserId = :userId OR (assignedUserId = 0 AND (LOWER(TRIM(department)) = LOWER(TRIM(:department)) OR LOWER(TRIM(department)) = 'generale' OR LOWER(TRIM(:department)) = 'generale'))) AND date = :today AND LOWER(TRIM(status)) NOT IN ('completato', 'completed', 'annullato', 'cancelled') ORDER BY time ASC")
     fun getTodayAppointmentsForTechnician(userId: Long, department: String, today: String): LiveData<List<Appointment>>
 
-    @Query("SELECT COUNT(*) FROM appointments WHERE (LOWER(TRIM(:department)) = 'tutti' OR assignedUserId = :userId OR (assignedUserId = 0 AND (LOWER(TRIM(department)) = LOWER(TRIM(:department)) OR LOWER(TRIM(department)) = 'generale' OR LOWER(TRIM(:department)) = 'generale'))) AND date = :today AND status = 'scheduled'")
+    @Query("SELECT COUNT(*) FROM appointments WHERE (LOWER(TRIM(:department)) = 'tutti' OR assignedUserId = :userId OR (assignedUserId = 0 AND (LOWER(TRIM(department)) = LOWER(TRIM(:department)) OR LOWER(TRIM(department)) = 'generale' OR LOWER(TRIM(:department)) = 'generale'))) AND date = :today AND LOWER(TRIM(status)) NOT IN ('completato', 'completed', 'annullato', 'cancelled')")
     fun getTodayAppointmentCountForTechnician(userId: Long, department: String, today: String): LiveData<Int>
 
-    @Query("SELECT * FROM appointments WHERE userId = :userId AND date = :today AND status = 'scheduled' ORDER BY time ASC")
+    @Query("SELECT * FROM appointments WHERE userId = :userId AND date = :today AND LOWER(TRIM(status)) NOT IN ('completato', 'completed', 'annullato', 'cancelled') ORDER BY time ASC")
     fun getTodayAppointments(userId: Long, today: String): LiveData<List<Appointment>>
 
-    @Query("SELECT COUNT(*) FROM appointments WHERE userId = :userId AND date = :today AND status = 'scheduled'")
+    @Query("SELECT COUNT(*) FROM appointments WHERE userId = :userId AND date = :today AND LOWER(TRIM(status)) NOT IN ('completato', 'completed', 'annullato', 'cancelled')")
     fun getTodayAppointmentCount(userId: Long, today: String): LiveData<Int>
 
     @Query("UPDATE appointments SET status = :status WHERE id = :id")
     suspend fun updateStatus(id: Long, status: String)
+
+    @Query("DELETE FROM appointments WHERE id = :id")
+    suspend fun deleteById(id: Long)
+
+    @Query("DELETE FROM appointments WHERE id NOT IN (:serverIds)")
+    suspend fun deleteAppointmentsNotIn(serverIds: List<Long>)
+
+    @Query("DELETE FROM appointments")
+    suspend fun deleteAllAppointments()
 }

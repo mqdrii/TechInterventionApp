@@ -43,6 +43,16 @@ class AppointmentsFragment : Fragment() {
                         viewModel.updateStatus(appointment.id, status)
                     }
                     .show()
+            },
+            onDeleteClick = { appointment ->
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Elimina Appuntamento")
+                    .setMessage("Sei sicuro di voler eliminare l'appuntamento di ${appointment.clientName}?")
+                    .setNegativeButton("Annulla", null)
+                    .setPositiveButton("Elimina") { _, _ ->
+                        viewModel.deleteAppointment(appointment)
+                    }
+                    .show()
             }
         )
 

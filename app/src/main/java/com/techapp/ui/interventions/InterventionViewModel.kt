@@ -119,6 +119,12 @@ class InterventionViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun deleteIntervention(intervention: Intervention) {
-        viewModelScope.launch { repository.deleteIntervention(intervention) }
+        viewModelScope.launch {
+            try {
+                val api = ApiClient.getService(getApplication())
+                api.deleteIntervention(intervention.id)
+            } catch (_: Exception) {}
+            repository.deleteIntervention(intervention)
+        }
     }
 }

@@ -45,6 +45,16 @@ class InterventionsFragment : Fragment() {
                         viewModel.updateStatus(intervention.id, status)
                     }
                     .show()
+            },
+            onDeleteClick = { intervention ->
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Elimina Intervento")
+                    .setMessage("Sei sicuro di voler eliminare il lavoro di ${intervention.clientName}?")
+                    .setNegativeButton("Annulla", null)
+                    .setPositiveButton("Elimina") { _, _ ->
+                        viewModel.deleteIntervention(intervention)
+                    }
+                    .show()
             }
         )
 

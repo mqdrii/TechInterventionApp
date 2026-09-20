@@ -4,10 +4,47 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+
+    <!--
+         Xelta logo: 3 dark blobs connected, forming an X/Y shape,
+         plus an orange circle top-right.
+         Coordinates scaled to fit in the 108x108 safe zone (inner 72x72).
+         Center of canvas = 54,54
+    -->
+
+    <!-- Connector arm: top-left blob to center -->
     <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M54,30 L74,70 L34,70 Z" />
+        android:fillColor="#2D2D2D"
+        android:pathData="M26,30 C30,26 36,26 40,30 L52,50 C54,53 52,57 49,57 L37,57 C34,57 32,55 30,52 Z" />
+
+    <!-- Connector arm: bottom-left blob to center -->
     <path
-        android:fillColor="#FF6F00"
-        android:pathData="M54,42 L66,66 L42,66 Z" />
+        android:fillColor="#2D2D2D"
+        android:pathData="M26,78 C30,82 36,82 40,78 L52,58 C54,55 52,51 49,51 L37,51 C34,51 32,53 30,56 Z" />
+
+    <!-- Connector arm: center to right blob -->
+    <path
+        android:fillColor="#2D2D2D"
+        android:pathData="M56,48 C58,44 62,43 66,45 L76,50 C79,52 79,56 76,58 L66,63 C62,65 58,64 56,60 Z" />
+
+    <!-- Top-left blob (rounded circle) -->
+    <path
+        android:fillColor="#2D2D2D"
+        android:pathData="M22,26 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0" />
+
+    <!-- Bottom-left blob (rounded circle) -->
+    <path
+        android:fillColor="#2D2D2D"
+        android:pathData="M22,82 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0" />
+
+    <!-- Right blob (rounded circle) -->
+    <path
+        android:fillColor="#2D2D2D"
+        android:pathData="M80,54 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0" />
+
+    <!-- Orange circle — top right (the distinctive Xelta dot) -->
+    <path
+        android:fillColor="#F97316"
+        android:pathData="M74,24 m-9,0 a9,9 0 1,0 18,0 a9,9 0 1,0 -18,0" />
+
 </vector>

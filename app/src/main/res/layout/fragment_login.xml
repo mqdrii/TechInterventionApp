@@ -17,11 +17,11 @@
         <!-- Logo / Icon -->
         <ImageView
             android:id="@+id/iv_logo"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/ic_shield_admin"
-            android:background="@drawable/bg_kpi_circle"
-            android:padding="16dp"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:src="@drawable/ic_launcher_foreground"
+            android:background="@drawable/ic_launcher_background"
+            android:padding="12dp"
             android:layout_marginTop="20dp" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textSize="26sp"
+            android:textSize="28sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             android:layout_marginTop="14dp" />
@@ -38,7 +38,7 @@
             android:id="@+id/tv_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Piattaforma Aziendale Interventi &amp; Appuntamenti"
+            android:text="Gestione Interventi e Appuntamenti"
             android:textSize="13sp"
             android:textColor="@color/text_secondary"
             android:layout_marginTop="4dp" />

@@ -120,11 +120,19 @@ class InterventionViewModel(application: Application) : AndroidViewModel(applica
 
     fun deleteIntervention(intervention: Intervention) {
         viewModelScope.launch {
+            var serverOk = false
             try {
                 val api = ApiClient.getService(getApplication())
-                api.deleteIntervention(intervention.id)
+                val response = api.deleteIntervention(intervention.id)
+                serverOk = response.isSuccessful
             } catch (_: Exception) {}
-            repository.deleteIntervention(intervention)
+
+            if (serverOk) {
+                repository.deleteIntervention(intervention)
+            } else {
+                repository.deleteIntervention(intervention)
+                errorMessage.postValue("Eliminato localmente. Potrebbe riapparire se il server non è aggiornato.")
+            }
         }
     }
 }

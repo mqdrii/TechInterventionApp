@@ -111,11 +111,21 @@ class AppointmentViewModel(application: Application) : AndroidViewModel(applicat
 
     fun deleteAppointment(appointment: Appointment) {
         viewModelScope.launch {
+            var serverOk = false
             try {
                 val api = ApiClient.getService(getApplication())
-                api.deleteAppointment(appointment.id)
+                val response = api.deleteAppointment(appointment.id)
+                serverOk = response.isSuccessful
             } catch (_: Exception) {}
-            repository.deleteAppointment(appointment)
+
+            if (serverOk) {
+                repository.deleteAppointment(appointment)
+            } else {
+                // Server non raggiungibile o Render non aggiornato: elimina comunque localmente
+                // ma l'elemento tornerà alla prossima sync dal server
+                repository.deleteAppointment(appointment)
+                errorMessage.postValue("Eliminato localmente. Potrebbe riapparire se il server non è aggiornato.")
+            }
         }
     }
 }

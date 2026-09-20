@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.techapp.R
 import com.techapp.databinding.FragmentNewAppointmentBinding
 import com.techapp.ui.clients.ClientViewModel
 import java.util.*

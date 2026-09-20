@@ -81,6 +81,8 @@ router.patch('/:id/status', (req, res) => {
       res.json({ success: true, id: interventionId, status: status.trim() });
     }
   );
+});
+
 // Delete intervention
 router.delete('/:id', (req, res) => {
   const interventionId = req.params.id;

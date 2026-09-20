@@ -6,6 +6,12 @@ import com.techapp.data.model.Client
 
 class ClientRepository(private val clientDao: ClientDao) {
 
+    fun getAllClients(): LiveData<List<Client>> = clientDao.getAllClients()
+
+    fun searchAllClients(query: String): LiveData<List<Client>> = clientDao.searchAllClients(query)
+
+    fun getAllClientCount(): LiveData<Int> = clientDao.getAllClientCount()
+
     fun getClientsByUser(userId: Long): LiveData<List<Client>> =
         clientDao.getClientsByUser(userId)
 

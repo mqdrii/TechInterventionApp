@@ -22,7 +22,7 @@ interface AppointmentDao {
     @Query("SELECT * FROM appointments ORDER BY date DESC, time DESC")
     fun getAllAppointments(): LiveData<List<Appointment>>
 
-    @Query("SELECT * FROM appointments WHERE assignedUserId = :userId OR (assignedUserId = 0 AND department = :department) ORDER BY date DESC, time DESC")
+    @Query("SELECT * FROM appointments WHERE assignedUserId = :userId OR (assignedUserId = 0 AND LOWER(TRIM(department)) = LOWER(TRIM(:department))) ORDER BY date DESC, time DESC")
     fun getAppointmentsForTechnician(userId: Long, department: String): LiveData<List<Appointment>>
 
     @Query("SELECT * FROM appointments WHERE userId = :userId ORDER BY date DESC, time DESC")
@@ -40,10 +40,10 @@ interface AppointmentDao {
     @Query("SELECT COUNT(*) FROM appointments WHERE date = :today AND status = 'scheduled'")
     fun getAllTodayAppointmentCount(today: String): LiveData<Int>
 
-    @Query("SELECT * FROM appointments WHERE (assignedUserId = :userId OR (assignedUserId = 0 AND department = :department)) AND date = :today AND status = 'scheduled' ORDER BY time ASC")
+    @Query("SELECT * FROM appointments WHERE (assignedUserId = :userId OR (assignedUserId = 0 AND LOWER(TRIM(department)) = LOWER(TRIM(:department)))) AND date = :today AND status = 'scheduled' ORDER BY time ASC")
     fun getTodayAppointmentsForTechnician(userId: Long, department: String, today: String): LiveData<List<Appointment>>
 
-    @Query("SELECT COUNT(*) FROM appointments WHERE (assignedUserId = :userId OR (assignedUserId = 0 AND department = :department)) AND date = :today AND status = 'scheduled'")
+    @Query("SELECT COUNT(*) FROM appointments WHERE (assignedUserId = :userId OR (assignedUserId = 0 AND LOWER(TRIM(department)) = LOWER(TRIM(:department)))) AND date = :today AND status = 'scheduled'")
     fun getTodayAppointmentCountForTechnician(userId: Long, department: String, today: String): LiveData<Int>
 
     @Query("SELECT * FROM appointments WHERE userId = :userId AND date = :today AND status = 'scheduled' ORDER BY time ASC")

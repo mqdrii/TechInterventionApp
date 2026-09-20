@@ -27,14 +27,13 @@ class RegisterFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // Popola spinner reparti
+        // Popola suggerimenti mansioni
         val deptAdapter = android.widget.ArrayAdapter(
             requireContext(),
-            R.layout.item_spinner,
-            com.techapp.data.model.User.DEPARTMENTS
+            android.R.layout.simple_dropdown_item_1line,
+            com.techapp.utils.DepartmentHelper.SUGGESTED_DEPARTMENTS
         )
-        deptAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
-        binding.spinnerDepartment.adapter = deptAdapter
+        binding.actvDepartment.setAdapter(deptAdapter)
 
         binding.rgRole.setOnCheckedChangeListener { _, checkedId ->
             binding.layoutDepartment.visibility = if (checkedId == R.id.rb_technician) View.VISIBLE else View.GONE
@@ -46,7 +45,8 @@ class RegisterFragment : Fragment() {
             val department = if (isAdmin) {
                 com.techapp.data.model.User.DEPARTMENT_ALL
             } else {
-                binding.spinnerDepartment.selectedItem?.toString() ?: com.techapp.data.model.User.DEPARTMENT_GENERAL
+                val input = binding.actvDepartment.text.toString().trim()
+                if (input.isNotBlank()) input else com.techapp.data.model.User.DEPARTMENT_GENERAL
             }
 
             viewModel.register(

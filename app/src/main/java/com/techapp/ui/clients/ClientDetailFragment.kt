@@ -1,9 +1,13 @@
 package com.techapp.ui.clients
 
+import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,6 +17,7 @@ import com.techapp.ui.appointments.AppointmentAdapter
 import com.techapp.ui.appointments.AppointmentViewModel
 import com.techapp.ui.interventions.InterventionAdapter
 import com.techapp.ui.interventions.InterventionViewModel
+import com.techapp.utils.AvatarHelper
 
 class ClientDetailFragment : Fragment() {
 
@@ -44,7 +49,32 @@ class ClientDetailFragment : Fragment() {
             binding.tvClientPhone.text = client.phone.ifBlank { "N/D" }
             binding.tvClientEmail.text = client.email.ifBlank { "N/D" }
             binding.tvClientAddress.text = client.address.ifBlank { "N/D" }
-            binding.tvClientNotes.text = client.notes.ifBlank { "—" }
+            binding.tvClientNotes.text = client.notes.ifBlank { "Nessuna nota presente per questo cliente." }
+
+            // Avatar con Iniziali e Colore Deterministico
+            binding.tvAvatar.text = AvatarHelper.getInitials(client.name)
+            binding.tvAvatar.setTextColor(Color.WHITE)
+            binding.tvAvatar.background?.mutate()?.setTint(AvatarHelper.getColorForName(client.name))
+
+            // Azione Chiama
+            binding.btnCallClient.setOnClickListener {
+                if (client.phone.isNotBlank()) {
+                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${client.phone}"))
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(requireContext(), "Nessun recapito telefonico disponibile", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            // Azione Navigazione Mappa
+            binding.btnMapClient.setOnClickListener {
+                if (client.address.isNotBlank()) {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=${Uri.encode(client.address)}"))
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(requireContext(), "Nessun indirizzo inserito", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         // Appuntamenti del cliente

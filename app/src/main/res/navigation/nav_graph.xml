@@ -39,6 +39,18 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/dashboardFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_dashboard_to_newAppointment"
+            app:destination="@id/newAppointmentFragment" />
+        <action
+            android:id="@+id/action_dashboard_to_appointments"
+            app:destination="@id/appointmentsFragment" />
+        <action
+            android:id="@+id/action_dashboard_to_interventions"
+            app:destination="@id/interventionsFragment" />
+        <action
+            android:id="@+id/action_dashboard_to_clients"
+            app:destination="@id/clientsFragment" />
     </fragment>
 
     <!-- CLIENTI -->

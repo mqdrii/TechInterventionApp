@@ -19,6 +19,15 @@ interface ClientDao {
     @Query("SELECT * FROM clients WHERE id = :clientId")
     suspend fun getClientById(clientId: Long): Client?
 
+    @Query("SELECT * FROM clients ORDER BY name ASC")
+    fun getAllClients(): LiveData<List<Client>>
+
+    @Query("SELECT * FROM clients WHERE name LIKE '%' || :query || '%' ORDER BY name ASC")
+    fun searchAllClients(query: String): LiveData<List<Client>>
+
+    @Query("SELECT COUNT(*) FROM clients")
+    fun getAllClientCount(): LiveData<Int>
+
     @Query("SELECT * FROM clients WHERE userId = :userId ORDER BY name ASC")
     fun getClientsByUser(userId: Long): LiveData<List<Client>>
 

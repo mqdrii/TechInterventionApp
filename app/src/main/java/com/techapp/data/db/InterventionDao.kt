@@ -28,13 +28,13 @@ interface InterventionDao {
     @Query("SELECT COUNT(*) FROM interventions WHERE status != 'closed'")
     fun getAllOpenInterventionCount(): LiveData<Int>
 
-    @Query("SELECT * FROM interventions WHERE assignedUserId = :userId OR (assignedUserId = 0 AND department = :department) ORDER BY createdAt DESC")
+    @Query("SELECT * FROM interventions WHERE assignedUserId = :userId OR (assignedUserId = 0 AND LOWER(TRIM(department)) = LOWER(TRIM(:department))) ORDER BY createdAt DESC")
     fun getInterventionsForTechnician(userId: Long, department: String): LiveData<List<Intervention>>
 
-    @Query("SELECT * FROM interventions WHERE (assignedUserId = :userId OR (assignedUserId = 0 AND department = :department)) AND status != 'closed' ORDER BY createdAt DESC")
+    @Query("SELECT * FROM interventions WHERE (assignedUserId = :userId OR (assignedUserId = 0 AND LOWER(TRIM(department)) = LOWER(TRIM(:department)))) AND status != 'closed' ORDER BY createdAt DESC")
     fun getOpenInterventionsForTechnician(userId: Long, department: String): LiveData<List<Intervention>>
 
-    @Query("SELECT COUNT(*) FROM interventions WHERE (assignedUserId = :userId OR (assignedUserId = 0 AND department = :department)) AND status != 'closed'")
+    @Query("SELECT COUNT(*) FROM interventions WHERE (assignedUserId = :userId OR (assignedUserId = 0 AND LOWER(TRIM(department)) = LOWER(TRIM(:department)))) AND status != 'closed'")
     fun getOpenInterventionCountForTechnician(userId: Long, department: String): LiveData<Int>
 
     @Query("SELECT * FROM interventions WHERE userId = :userId ORDER BY date DESC")

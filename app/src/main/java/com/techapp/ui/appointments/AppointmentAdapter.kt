@@ -23,13 +23,8 @@ class AppointmentAdapter(
             binding.tvDate.text = "${appointment.date} ${appointment.time}"
             binding.tvDescription.text = appointment.description
 
-            // Reparto con icona
-            val deptIcon = when (appointment.department) {
-                "Computer" -> "💻"
-                "Telefoni" -> "📱"
-                "Montaggio Lavagne" -> "🛠️"
-                else -> "⚙️"
-            }
+            // Reparto con icona intelligente
+            val deptIcon = com.techapp.utils.DepartmentHelper.getIcon(appointment.department)
             binding.tvDepartment.text = "$deptIcon ${appointment.department}"
 
             // Tecnico assegnato

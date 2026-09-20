@@ -22,8 +22,10 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     private val db = AppDatabase.getInstance(application)
     private val appointmentRepo = AppointmentRepository(db.appointmentDao())
     private val interventionRepo = InterventionRepository(db.interventionDao())
+    private val clientRepo = ClientRepository(db.clientDao())
 
     val todayDate: String = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+    val totalClientsCount: LiveData<Int> = clientRepo.getAllClientCount()
 
     val todayAppointmentCount: LiveData<Int> = if (isAdmin) {
         appointmentRepo.getAllTodayAppointmentCount(todayDate)

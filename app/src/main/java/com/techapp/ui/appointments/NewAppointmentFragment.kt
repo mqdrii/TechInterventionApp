@@ -55,10 +55,13 @@ class NewAppointmentFragment : Fragment() {
             }
         }
 
-        // Popola spinner reparto
-        val deptAdapter = ArrayAdapter(requireContext(), R.layout.item_spinner, com.techapp.data.model.User.DEPARTMENTS)
-        deptAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
-        binding.spinnerDepartment.adapter = deptAdapter
+        // Popola suggerimenti reparto / mansione
+        val deptAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            com.techapp.utils.DepartmentHelper.SUGGESTED_DEPARTMENTS
+        )
+        binding.actvDepartment.setAdapter(deptAdapter)
 
         // Popola spinner tecnici
         var techniciansList: List<com.techapp.data.model.User> = emptyList()
@@ -69,6 +72,18 @@ class NewAppointmentFragment : Fragment() {
             val techAdapter = ArrayAdapter(requireContext(), R.layout.item_spinner, techNames)
             techAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
             binding.spinnerTechnician.adapter = techAdapter
+        }
+
+        binding.spinnerTechnician.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p: android.widget.AdapterView<*>?, v: View?, pos: Int, id: Long) {
+                if (pos > 0 && pos - 1 < techniciansList.size) {
+                    val techDept = techniciansList[pos - 1].department
+                    if (binding.actvDepartment.text.isNullOrBlank()) {
+                        binding.actvDepartment.setText(techDept, false)
+                    }
+                }
+            }
+            override fun onNothingSelected(p: android.widget.AdapterView<*>?) {}
         }
 
         // Date picker
@@ -93,7 +108,12 @@ class NewAppointmentFragment : Fragment() {
             val techPos = binding.spinnerTechnician.selectedItemPosition
             val assignedUserId = if (techPos > 0 && techPos - 1 < techniciansList.size) techniciansList[techPos - 1].id else 0L
             val assignedUserName = if (techPos > 0 && techPos - 1 < techniciansList.size) techniciansList[techPos - 1].fullName else ""
-            val department = binding.spinnerDepartment.selectedItem?.toString() ?: "Generale"
+            val inputDept = binding.actvDepartment.text.toString().trim()
+            val department = when {
+                inputDept.isNotBlank() -> inputDept
+                techPos > 0 && techPos - 1 < techniciansList.size -> techniciansList[techPos - 1].department
+                else -> "Generale"
+            }
 
             appointmentViewModel.insertAppointment(
                 clientId = selectedClientId,

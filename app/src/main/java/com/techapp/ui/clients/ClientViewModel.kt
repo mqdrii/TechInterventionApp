@@ -22,9 +22,9 @@ class ClientViewModel(application: Application) : AndroidViewModel(application) 
 
     val clients: LiveData<List<Client>> = searchQuery.switchMap { query ->
         if (query.isBlank()) {
-            repository.getClientsByUser(userId)
+            repository.getAllClients()
         } else {
-            repository.searchClients(userId, query)
+            repository.searchAllClients(query)
         }
     }
 

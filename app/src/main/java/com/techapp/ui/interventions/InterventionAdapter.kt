@@ -21,13 +21,8 @@ class InterventionAdapter(
         fun bind(intervention: Intervention) {
             binding.tvClientName.text = intervention.clientName
 
-            // Reparto con icona
-            val deptIcon = when (intervention.department) {
-                "Computer" -> "💻"
-                "Telefoni" -> "📱"
-                "Montaggio Lavagne" -> "🛠️"
-                else -> "⚙️"
-            }
+            // Reparto con icona intelligente
+            val deptIcon = com.techapp.utils.DepartmentHelper.getIcon(intervention.department)
             binding.tvDepartment.text = "$deptIcon ${intervention.department}"
 
             // Tecnico assegnato

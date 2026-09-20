@@ -23,13 +23,14 @@ class InterventionAdapter(
             binding.tvDate.text = intervention.date
             binding.tvDescription.text = intervention.description
 
-            val (colorRes, label) = when (intervention.status) {
-                Intervention.STATUS_CLOSED -> Pair(R.color.status_completed, "Chiuso")
-                Intervention.STATUS_IN_PROGRESS -> Pair(R.color.status_scheduled, "In corso")
-                else -> Pair(R.color.status_cancelled, "Aperto")
+            val (bgRes, textColorRes, label) = when (intervention.status) {
+                Intervention.STATUS_CLOSED -> Triple(R.drawable.badge_status_completed, R.color.badge_completed_text, "Chiuso")
+                Intervention.STATUS_IN_PROGRESS -> Triple(R.drawable.badge_status_in_progress, R.color.badge_in_progress_text, "In corso")
+                else -> Triple(R.drawable.badge_status_open, R.color.badge_open_text, "Aperto")
             }
             binding.tvStatus.text = label
-            binding.tvStatus.setTextColor(ContextCompat.getColor(binding.root.context, colorRes))
+            binding.tvStatus.setBackgroundResource(bgRes)
+            binding.tvStatus.setTextColor(ContextCompat.getColor(binding.root.context, textColorRes))
 
             binding.root.setOnClickListener { onItemClick(intervention) }
             binding.tvStatus.setOnClickListener {

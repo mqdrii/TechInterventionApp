@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.TechInterventionApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.TechInterventionApp" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Brand colors -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_variant</item>
@@ -11,16 +11,39 @@
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorError">@color/error</item>
 
-        <!-- Background -->
+        <!-- Background & Surface -->
         <item name="android:colorBackground">@color/background</item>
         <item name="colorSurface">@color/surface</item>
-        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
 
-        <!-- Status bar -->
-        <item name="android:statusBarColor">@color/primary_variant</item>
+        <!-- Global Text Colors - ALWAYS Dark and High Contrast -->
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/text_muted</item>
+
+        <!-- Status & Navigation bars -->
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/surface</item>
+        <item name="android:windowLightNavigationBar">true</item>
+
+        <!-- Text input styling -->
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
     </style>
 
-    <!-- Splash theme (opzionale) -->
+    <style name="Widget.App.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/primary</item>
+        <item name="boxStrokeWidth">1.5dp</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="hintTextColor">@color/primary</item>
+        <item name="android:textColorHint">@color/text_muted</item>
+    </style>
+
+    <!-- Splash theme -->
     <style name="Theme.TechInterventionApp.Splash" parent="Theme.TechInterventionApp">
         <item name="android:windowBackground">@color/primary</item>
     </style>

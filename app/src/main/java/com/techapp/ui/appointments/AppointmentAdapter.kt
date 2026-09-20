@@ -23,13 +23,14 @@ class AppointmentAdapter(
             binding.tvDate.text = "${appointment.date} ${appointment.time}"
             binding.tvDescription.text = appointment.description
 
-            val (colorRes, label) = when (appointment.status) {
-                Appointment.STATUS_COMPLETED -> Pair(R.color.status_completed, "Completato")
-                Appointment.STATUS_CANCELLED -> Pair(R.color.status_cancelled, "Annullato")
-                else -> Pair(R.color.status_scheduled, "Programmato")
+            val (bgRes, textColorRes, label) = when (appointment.status) {
+                Appointment.STATUS_COMPLETED -> Triple(R.drawable.badge_status_completed, R.color.badge_completed_text, "Completato")
+                Appointment.STATUS_CANCELLED -> Triple(R.drawable.badge_status_cancelled, R.color.badge_cancelled_text, "Annullato")
+                else -> Triple(R.drawable.badge_status_scheduled, R.color.badge_scheduled_text, "Programmato")
             }
             binding.tvStatus.text = label
-            binding.tvStatus.setTextColor(ContextCompat.getColor(binding.root.context, colorRes))
+            binding.tvStatus.setBackgroundResource(bgRes)
+            binding.tvStatus.setTextColor(ContextCompat.getColor(binding.root.context, textColorRes))
 
             binding.root.setOnClickListener { onItemClick(appointment) }
             binding.tvStatus.setOnClickListener {

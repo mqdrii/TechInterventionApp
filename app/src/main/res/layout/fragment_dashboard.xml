@@ -4,67 +4,111 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="16dp">
 
-        <!-- Header -->
-        <LinearLayout
+        <!-- Hero Card with Gradient -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp"
+            app:strokeWidth="0dp">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:background="@drawable/bg_header_card"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_welcome"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ciao!"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:id="@+id/tv_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="#E0E7FF"
+                            android:layout_marginTop="2dp" />
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_logout"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Esci"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        app:strokeColor="#FFFFFF"
+                        app:strokeWidth="1dp"
+                        app:cornerRadius="10dp" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tv_welcome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ciao!"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/on_surface" />
-
-                <TextView
-                    android:id="@+id/tv_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:text="⚡ Pannello Interventi e Manutenzioni"
                     android:textSize="13sp"
-                    android:textColor="@color/text_secondary" />
+                    android:textColor="#BFDBFE"
+                    android:layout_marginTop="16dp" />
+
             </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_logout"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Esci"
-                android:textSize="13sp" />
-        </LinearLayout>
+        <!-- Titolo Sezione Statistiche -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Panoramica Giornaliera"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp" />
 
-        <!-- Statistiche -->
+        <!-- Stat Cards -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp">
+            android:orientation="horizontal">
 
+            <!-- Card Appuntamenti -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_appointments"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
+                app:strokeColor="@color/border_subtle"
+                app:strokeWidth="1dp"
                 android:layout_marginEnd="8dp">
 
                 <LinearLayout
@@ -72,34 +116,46 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp"
-                    android:gravity="center">
+                    android:background="@color/surface">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📅 Oggi"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary" />
 
                     <TextView
                         android:id="@+id/tv_appointment_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:textSize="36sp"
+                        android:textSize="38sp"
                         android:textStyle="bold"
-                        android:textColor="@color/primary" />
+                        android:textColor="@color/text_primary"
+                        android:layout_marginTop="4dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Appuntamenti oggi"
-                        android:textSize="12sp"
+                        android:text="Appuntamenti"
+                        android:textSize="13sp"
                         android:textColor="@color/text_secondary"
-                        android:gravity="center" />
+                        android:layout_marginTop="2dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Card Interventi -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_interventions"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
+                app:strokeColor="@color/border_subtle"
+                app:strokeWidth="1dp"
                 android:layout_marginStart="8dp">
 
                 <LinearLayout
@@ -107,57 +163,104 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp"
-                    android:gravity="center">
+                    android:background="@color/surface">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🔧 In corso"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/secondary" />
 
                     <TextView
                         android:id="@+id/tv_intervention_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:textSize="36sp"
+                        android:textSize="38sp"
                         android:textStyle="bold"
-                        android:textColor="@color/secondary" />
+                        android:textColor="@color/text_primary"
+                        android:layout_marginTop="4dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Interventi aperti"
-                        android:textSize="12sp"
+                        android:textSize="13sp"
                         android:textColor="@color/text_secondary"
-                        android:gravity="center" />
+                        android:layout_marginTop="2dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-        <!-- Accesso rapido clienti -->
+        <!-- Titolo Accesso Rapido -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Azioni Rapide"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginTop="22dp"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Card Clienti -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_clients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
+            app:cardCornerRadius="16dp"
             app:cardElevation="2dp"
-            android:layout_marginTop="12dp">
+            app:strokeColor="@color/border_subtle"
+            app:strokeWidth="1dp"
+            android:layout_marginBottom="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@color/surface">
 
                 <TextView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:text="👥"
+                    android:textSize="22sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_client_avatar" />
+
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="📋 Gestisci Clienti"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical"
+                    android:layout_marginStart="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rubrica Clienti"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gestisci anagrafiche, indirizzi e note"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_secondary"
+                        android:layout_marginTop="2dp" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="›"
-                    android:textSize="22sp"
+                    android:text="➔"
+                    android:textSize="18sp"
                     android:textColor="@color/primary" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

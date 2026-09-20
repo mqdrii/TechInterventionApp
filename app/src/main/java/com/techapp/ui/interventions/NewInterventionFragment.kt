@@ -35,13 +35,15 @@ class NewInterventionFragment : Fragment() {
 
         // Popola spinner clienti
         clientViewModel.clients.observe(viewLifecycleOwner) { clients ->
-            val names = clients.map { it.name }
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, names)
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            val names = if (clients.isEmpty()) listOf("Nessun cliente registrato") else clients.map { it.name }
+            val adapter = ArrayAdapter(requireContext(), R.layout.item_spinner, names)
+            adapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
             binding.spinnerClient.adapter = adapter
             binding.spinnerClient.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p: android.widget.AdapterView<*>?, v: View?, pos: Int, id: Long) {
-                    selectedClientId = clients[pos].id
+                    if (clients.isNotEmpty() && pos < clients.size) {
+                        selectedClientId = clients[pos].id
+                    }
                 }
                 override fun onNothingSelected(p: android.widget.AdapterView<*>?) {}
             }

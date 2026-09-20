@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:background="@color/background">
 
     <LinearLayout
@@ -12,73 +13,172 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Info cliente -->
+        <!-- Info cliente Hero Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="2dp"
+            app:strokeColor="@color/border_subtle"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/surface"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="20dp">
 
-                <TextView
-                    android:id="@+id/tv_client_name"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/primary" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-                <TextView
-                    android:id="@+id/tv_client_phone"
+                    <TextView
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:background="@drawable/bg_client_avatar"
+                        android:gravity="center"
+                        android:text="👤"
+                        android:textSize="24sp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="14dp">
+
+                        <TextView
+                            android:id="@+id/tv_client_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Scheda Cliente"
+                            android:textSize="12sp"
+                            android:textColor="@color/text_muted"
+                            android:layout_marginTop="2dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/border_subtle"
+                    android:layout_marginVertical="16dp" />
+
+                <!-- Telefono -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="14sp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-                <TextView
-                    android:id="@+id/tv_client_email"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📞 Telefono:"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
+
+                    <TextView
+                        android:id="@+id/tv_client_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary" />
+                </LinearLayout>
+
+                <!-- Email -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textSize="14sp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="8dp">
 
-                <TextView
-                    android:id="@+id/tv_client_address"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="✉️ Email:"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
+
+                    <TextView
+                        android:id="@+id/tv_client_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary" />
+                </LinearLayout>
+
+                <!-- Indirizzo -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textSize="14sp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="8dp">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📍 Indirizzo:"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
+
+                    <TextView
+                        android:id="@+id/tv_client_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary" />
+                </LinearLayout>
+
+                <!-- Note -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Note"
+                    android:layout_marginTop="14dp"
+                    android:text="📝 Note"
                     android:textStyle="bold"
                     android:textSize="13sp"
-                    android:textColor="@color/text_secondary" />
+                    android:textColor="@color/text_primary" />
 
                 <TextView
                     android:id="@+id/tv_client_notes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
+                    android:padding="10dp"
+                    android:background="@drawable/spinner_background"
+                    android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Appuntamenti cliente -->
+        <!-- Sezione Appuntamenti -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Appuntamenti"
-            android:textSize="17sp"
+            android:text="📅 Appuntamenti del Cliente"
+            android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="@color/text_primary"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="8dp" />
 
@@ -89,13 +189,14 @@
             android:nestedScrollingEnabled="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <!-- Interventi cliente -->
+        <!-- Sezione Interventi -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Interventi"
-            android:textSize="17sp"
+            android:text="🔧 Storico Interventi"
+            android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="@color/text_primary"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="8dp" />
 
@@ -109,11 +210,15 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_back"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Indietro"
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center" />
+            android:text="← Torna ai Clienti"
+            android:textColor="@color/primary"
+            android:textSize="15sp"
+            app:strokeColor="@color/primary"
+            app:cornerRadius="12dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="24dp" />
 
     </LinearLayout>
 </ScrollView>

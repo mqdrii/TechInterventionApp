@@ -1,20 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="20dp"
+    android:background="@color/surface">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Inserisci i dettagli del cliente"
+        android:textSize="13sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginBottom="12dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nome *">
+        android:hint="Nome / Ragione Sociale *"
+        android:textColorHint="@color/text_muted"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusBottomEnd="10dp">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
             android:inputType="textPersonName" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -22,12 +38,18 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Telefono"
-        android:layout_marginTop="8dp">
+        android:hint="Numero di Telefono"
+        android:textColorHint="@color/text_muted"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        android:layout_marginTop="10dp">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
             android:inputType="phone" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -35,25 +57,18 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
-        android:layout_marginTop="8dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Indirizzo"
-        android:layout_marginTop="8dp">
+        android:hint="Indirizzo (Via, Città)"
+        android:textColorHint="@color/text_muted"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        android:layout_marginTop="10dp">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
             android:inputType="textPostalAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,12 +76,37 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Note"
-        android:layout_marginTop="8dp">
+        android:hint="Email"
+        android:textColorHint="@color/text_muted"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        android:layout_marginTop="10dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Note (codice citofono, orari, ecc.)"
+        android:textColorHint="@color/text_muted"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        android:layout_marginTop="10dp">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_notes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
             android:inputType="textMultiLine"
             android:minLines="2" />
     </com.google.android.material.textfield.TextInputLayout>

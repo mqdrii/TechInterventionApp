@@ -4,92 +4,144 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="16dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nuovo Intervento"
+            android:text="Nuovo Intervento Tecnico"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@color/primary"
-            android:layout_marginBottom="16dp" />
+            android:textColor="@color/text_primary" />
 
-        <!-- Seleziona cliente -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cliente"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:layout_marginBottom="4dp" />
+            android:text="Registra guasti, riparazioni o interventi sul posto"
+            android:textSize="13sp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="16dp" />
 
-        <Spinner
-            android:id="@+id/spinner_client"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/spinner_background" />
-
-        <!-- Descrizione problema -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_description"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <!-- Form Card -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Descrizione del problema"
-            android:layout_marginTop="16dp">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_description"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="2dp"
+            app:strokeColor="@color/border_subtle"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:minLines="3" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:background="@color/surface"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-        <!-- Note tecniche -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_technical_notes"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Note tecniche (opzionale)"
-            android:layout_marginTop="12dp">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_technical_notes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:minLines="2" />
-        </com.google.android.material.textfield.TextInputLayout>
+                <!-- Seleziona cliente -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cliente destinatario *"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="6dp" />
 
-        <!-- Bottoni -->
+                <Spinner
+                    android:id="@+id/spinner_client"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@drawable/spinner_background"
+                    android:spinnerMode="dropdown" />
+
+                <!-- Descrizione problema -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_description"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Descrizione del problema o lavoro *"
+                    android:textColorHint="@color/text_muted"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    android:layout_marginTop="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:inputType="textMultiLine"
+                        android:minLines="3" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Note tecniche -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_technical_notes"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Note tecniche, componenti o ricambi (opzionale)"
+                    android:textColorHint="@color/text_muted"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    android:layout_marginTop="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_technical_notes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:inputType="textMultiLine"
+                        android:minLines="2" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Bottoni Salva / Annulla -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="24dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_cancel"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_weight="1"
                 android:text="Annulla"
+                android:textColor="@color/text_secondary"
+                app:strokeColor="@color/border_strong"
+                app:cornerRadius="12dp"
                 android:layout_marginEnd="8dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_save"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_weight="1"
-                android:text="Salva"
+                android:text="Salva Intervento"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:backgroundTint="@color/secondary"
+                app:cornerRadius="12dp"
                 android:layout_marginStart="8dp" />
         </LinearLayout>
 

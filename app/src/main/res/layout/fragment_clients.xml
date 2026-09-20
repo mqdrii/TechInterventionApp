@@ -11,23 +11,86 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/search_view"
+        <!-- Header -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp"
-            app:queryHint="Cerca cliente..."
-            app:iconifiedByDefault="false" />
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:orientation="vertical">
 
-        <TextView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rubrica Clienti"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cerca o seleziona un cliente per vedere la scheda"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+
+        <!-- Search Bar Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginVertical="6dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="1dp"
+            app:strokeColor="@color/border_subtle"
+            app:strokeWidth="1dp">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:queryHint="Cerca cliente per nome..."
+                app:iconifiedByDefault="false"
+                android:background="@color/surface" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Empty State -->
+        <LinearLayout
             android:id="@+id/tv_empty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nessun cliente trovato.\nPremi + per aggiungerne uno."
             android:gravity="center"
-            android:padding="32dp"
-            android:textColor="@color/text_secondary"
-            android:visibility="gone" />
+            android:orientation="vertical"
+            android:padding="40dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📋"
+                android:textSize="48sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nessun cliente registrato"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginTop="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Premi il tasto + in basso a destra per aggiungere il tuo primo cliente."
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary"
+                android:gravity="center"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_clients"
@@ -35,17 +98,21 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:clipToPadding="false"
-            android:paddingBottom="80dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="84dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_add_client"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:contentDescription="Aggiungi cliente"
-        android:src="@android:drawable/ic_input_add" />
+        android:text="Nuovo Cliente"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/primary"
+        app:icon="@android:drawable/ic_input_add"
+        app:iconTint="@color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

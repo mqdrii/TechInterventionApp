@@ -11,15 +11,66 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I Miei Appuntamenti"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tocca un appuntamento per aggiornarne lo stato"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+
+        <!-- Empty State -->
+        <LinearLayout
             android:id="@+id/tv_empty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nessun appuntamento.\nPremi + per aggiungerne uno."
             android:gravity="center"
-            android:padding="32dp"
-            android:textColor="@color/text_secondary"
-            android:visibility="gone" />
+            android:orientation="vertical"
+            android:padding="40dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📅"
+                android:textSize="48sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nessun appuntamento in agenda"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginTop="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Premi il tasto in basso per fissare un nuovo appuntamento."
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary"
+                android:gravity="center"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_appointments"
@@ -27,17 +78,21 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:clipToPadding="false"
-            android:paddingBottom="80dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="84dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_add_appointment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:contentDescription="Nuovo appuntamento"
-        android:src="@android:drawable/ic_input_add" />
+        android:text="Nuovo Appuntamento"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/primary"
+        app:icon="@android:drawable/ic_input_add"
+        app:iconTint="@color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -10,7 +10,9 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.launch
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.techapp.R
@@ -80,7 +82,7 @@ class ClientsFragment : Fragment() {
 
         binding.swipeRefresh.setColorSchemeResources(R.color.primary, R.color.secondary)
         binding.swipeRefresh.setOnRefreshListener {
-            androidx.lifecycle.lifecycleScope.launchWhenStarted {
+            viewLifecycleOwner.lifecycleScope.launch {
                 com.techapp.data.api.SyncManager.sync(requireContext())
                 binding.swipeRefresh.isRefreshing = false
             }

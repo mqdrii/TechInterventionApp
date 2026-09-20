@@ -28,7 +28,7 @@ class InterventionAdapter(
             binding.tvDepartment.text = intervention.department
 
             // Tecnico assegnato
-            val tech = if (intervention.technicianName.isNotBlank()) intervention.technicianName else "Non assegnato"
+            val tech = if (intervention.assignedUserName.isNotBlank()) intervention.assignedUserName else "Non assegnato"
             binding.tvAssignedTo.text = tech
 
             binding.tvDate.text = intervention.date

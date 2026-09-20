@@ -58,7 +58,7 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     val lastSyncTime = com.techapp.data.api.SyncManager.lastSyncTime
 
     fun syncData() {
-        androidx.lifecycle.viewModelScope.launch {
+        viewModelScope.launch {
             com.techapp.data.api.SyncManager.sync(getApplication())
         }
     }

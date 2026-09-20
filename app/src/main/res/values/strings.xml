@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TechIntervention</string>
+
+    <!-- Bottom Nav -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_clients">Clienti</string>
+    <string name="nav_appointments">Appuntamenti</string>
+    <string name="nav_interventions">Interventi</string>
+
+    <!-- Common -->
+    <string name="btn_save">Salva</string>
+    <string name="btn_cancel">Annulla</string>
+    <string name="btn_delete">Elimina</string>
+    <string name="btn_back">Indietro</string>
+    <string name="btn_logout">Esci</string>
+
+    <!-- Status labels -->
+    <string name="status_scheduled">Programmato</string>
+    <string name="status_completed">Completato</string>
+    <string name="status_cancelled">Annullato</string>
+    <string name="status_open">Aperto</string>
+    <string name="status_in_progress">In corso</string>
+    <string name="status_closed">Chiuso</string>
+</resources>

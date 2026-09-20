@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <!-- AUTH -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.techapp.ui.auth.LoginFragment"
+        android:label="Accedi"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_login_to_dashboard"
+            app:destination="@id/dashboardFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.techapp.ui.auth.RegisterFragment"
+        android:label="Registrati"
+        tools:layout="@layout/fragment_register" />
+
+    <!-- MAIN -->
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.techapp.ui.dashboard.DashboardFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_dashboard_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/dashboardFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- CLIENTI -->
+    <fragment
+        android:id="@+id/clientsFragment"
+        android:name="com.techapp.ui.clients.ClientsFragment"
+        android:label="Clienti"
+        tools:layout="@layout/fragment_clients">
+        <action
+            android:id="@+id/action_clients_to_client_detail"
+            app:destination="@id/clientDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/clientDetailFragment"
+        android:name="com.techapp.ui.clients.ClientDetailFragment"
+        android:label="Dettaglio Cliente"
+        tools:layout="@layout/fragment_client_detail">
+        <argument
+            android:name="clientId"
+            app:argType="long" />
+    </fragment>
+
+    <!-- APPUNTAMENTI -->
+    <fragment
+        android:id="@+id/appointmentsFragment"
+        android:name="com.techapp.ui.appointments.AppointmentsFragment"
+        android:label="Appuntamenti"
+        tools:layout="@layout/fragment_appointments">
+        <action
+            android:id="@+id/action_appointments_to_newAppointment"
+            app:destination="@id/newAppointmentFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/newAppointmentFragment"
+        android:name="com.techapp.ui.appointments.NewAppointmentFragment"
+        android:label="Nuovo Appuntamento"
+        tools:layout="@layout/fragment_new_appointment" />
+
+    <!-- INTERVENTI -->
+    <fragment
+        android:id="@+id/interventionsFragment"
+        android:name="com.techapp.ui.interventions.InterventionsFragment"
+        android:label="Interventi"
+        tools:layout="@layout/fragment_interventions">
+        <action
+            android:id="@+id/action_interventions_to_newIntervention"
+            app:destination="@id/newInterventionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/newInterventionFragment"
+        android:name="com.techapp.ui.interventions.NewInterventionFragment"
+        android:label="Nuovo Intervento"
+        tools:layout="@layout/fragment_new_intervention" />
+
+</navigation>

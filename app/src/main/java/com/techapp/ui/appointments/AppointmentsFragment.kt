@@ -51,6 +51,9 @@ class AppointmentsFragment : Fragment() {
             binding.tvEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
         }
 
+        val sessionManager = com.techapp.utils.SessionManager(requireContext())
+        binding.fabAddAppointment.visibility = if (sessionManager.isAdmin()) View.VISIBLE else View.GONE
+
         binding.fabAddAppointment.setOnClickListener {
             findNavController().navigate(R.id.action_appointments_to_newAppointment)
         }

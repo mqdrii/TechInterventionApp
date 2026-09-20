@@ -6,45 +6,54 @@
     android:viewportHeight="108">
 
     <!--
-         Xelta logo: 3 dark blobs connected, forming an X/Y shape,
-         plus an orange circle top-right.
-         Coordinates scaled to fit in the 108x108 safe zone (inner 72x72).
-         Center of canvas = 54,54
+        XELTA LOGO — fedele all'originale:
+        3 blob scuri connessi (2 a sinistra, 1 a destra)
+        + pallino arancione in alto a destra separato.
+
+        Blob centers:
+          Top-left:    (25, 30), r=13
+          Bottom-left: (25, 78), r=13
+          Right:       (74, 54), r=17
+
+        Orange dot:    (86, 20), r=11
     -->
 
-    <!-- Connector arm: top-left blob to center -->
+    <!-- Braccio verticale: connette i due blob di sinistra -->
     <path
-        android:fillColor="#2D2D2D"
-        android:pathData="M26,30 C30,26 36,26 40,30 L52,50 C54,53 52,57 49,57 L37,57 C34,57 32,55 30,52 Z" />
+        android:fillColor="#2E2E2E"
+        android:pathData="M12,30 L38,30 L38,78 L12,78 Z"/>
 
-    <!-- Connector arm: bottom-left blob to center -->
+    <!-- Braccio superiore diagonale: blob top-left → blob right
+         Quadrilatero: perpendicolare alla retta (25,30)→(74,54),
+         semilarghezza 12 -->
     <path
-        android:fillColor="#2D2D2D"
-        android:pathData="M26,78 C30,82 36,82 40,78 L52,58 C54,55 52,51 49,51 L37,51 C34,51 32,53 30,56 Z" />
+        android:fillColor="#2E2E2E"
+        android:pathData="M18,43 L32,18 L81,44 L67,69 Z"/>
 
-    <!-- Connector arm: center to right blob -->
+    <!-- Braccio inferiore diagonale: blob bottom-left → blob right
+         Simmetrico rispetto al precedente -->
     <path
-        android:fillColor="#2D2D2D"
-        android:pathData="M56,48 C58,44 62,43 66,45 L76,50 C79,52 79,56 76,58 L66,63 C62,65 58,64 56,60 Z" />
+        android:fillColor="#2E2E2E"
+        android:pathData="M18,65 L32,90 L81,64 L67,39 Z"/>
 
-    <!-- Top-left blob (rounded circle) -->
+    <!-- Blob top-left: cx=25, cy=30, r=13 -->
     <path
-        android:fillColor="#2D2D2D"
-        android:pathData="M22,26 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0" />
+        android:fillColor="#2E2E2E"
+        android:pathData="M12,30 a13,13 0 1,0 26,0 a13,13 0 1,0 -26,0"/>
 
-    <!-- Bottom-left blob (rounded circle) -->
+    <!-- Blob bottom-left: cx=25, cy=78, r=13 -->
     <path
-        android:fillColor="#2D2D2D"
-        android:pathData="M22,82 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0" />
+        android:fillColor="#2E2E2E"
+        android:pathData="M12,78 a13,13 0 1,0 26,0 a13,13 0 1,0 -26,0"/>
 
-    <!-- Right blob (rounded circle) -->
+    <!-- Blob right (più grande): cx=74, cy=54, r=17 -->
     <path
-        android:fillColor="#2D2D2D"
-        android:pathData="M80,54 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0" />
+        android:fillColor="#2E2E2E"
+        android:pathData="M57,54 a17,17 0 1,0 34,0 a17,17 0 1,0 -34,0"/>
 
-    <!-- Orange circle — top right (the distinctive Xelta dot) -->
+    <!-- Pallino arancione Xelta: cx=86, cy=20, r=11 -->
     <path
-        android:fillColor="#F97316"
-        android:pathData="M74,24 m-9,0 a9,9 0 1,0 18,0 a9,9 0 1,0 -18,0" />
+        android:fillColor="#F07820"
+        android:pathData="M75,20 a11,11 0 1,0 22,0 a11,11 0 1,0 -22,0"/>
 
 </vector>

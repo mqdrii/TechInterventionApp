@@ -22,7 +22,7 @@ class SessionManager(context: Context) {
         private const val KEY_SERVER_URL = "server_url"
         private const val KEY_AUTH_TOKEN = "auth_token"
         private const val KEY_LAST_SYNC = "last_sync"
-        const val DEFAULT_SERVER_URL = "https://techintervention-api.onrender.com"
+        const val DEFAULT_SERVER_URL = "https://techinterventionapp.onrender.com"
         const val NO_USER = -1L
     }
 

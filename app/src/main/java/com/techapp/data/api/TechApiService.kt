@@ -17,6 +17,12 @@ interface TechApiService {
     @GET("api/auth/technicians")
     suspend fun getTechnicians(): Response<List<UserDto>>
 
+    @GET("api/auth/users")
+    suspend fun getAllUsers(): Response<List<UserDto>>
+
+    @DELETE("api/auth/users/{id}")
+    suspend fun deleteUser(@Path("id") id: Long): Response<GenericResponse>
+
     @GET("api/sync")
     suspend fun syncAll(): Response<SyncResponse>
 

@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
     });
 
     const technicians = await new Promise((resolve, reject) => {
-      db.all(`SELECT id, email, first_name, last_name, role, department FROM users WHERE role = 'TECHNICIAN'`, [], (err, rows) => {
+      db.all(`SELECT id, email, first_name, last_name, role, department FROM users ORDER BY role ASC, first_name ASC`, [], (err, rows) => {
         if (err) reject(err); else resolve(rows);
       });
     });

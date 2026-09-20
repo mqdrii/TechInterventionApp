@@ -99,4 +99,38 @@ router.get('/technicians', (req, res) => {
   );
 });
 
+// All users list (both ADMIN and TECHNICIAN)
+router.get('/users', (req, res) => {
+  db.all(
+    `SELECT id, email, first_name, last_name, role, department FROM users ORDER BY role ASC, first_name ASC`,
+    [],
+    (err, rows) => {
+      if (err) return res.status(500).json({ error: err.message });
+      const users = rows.map(r => ({
+        id: r.id,
+        email: r.email,
+        firstName: r.first_name,
+        lastName: r.last_name,
+        fullName: `${r.first_name} ${r.last_name}`,
+        role: r.role,
+        department: r.department
+      }));
+      res.json(users);
+    }
+  );
+});
+
+// Delete user account by ID (both ADMIN and TECHNICIAN)
+router.delete('/users/:id', (req, res) => {
+  const { id } = req.params;
+  if (!id) return res.status(400).json({ error: 'ID utente mancante.' });
+
+  db.run(`DELETE FROM users WHERE id = ?`, [id], function(err) {
+    if (err) return res.status(500).json({ error: err.message });
+    if (this.changes === 0) return res.status(404).json({ error: 'Utente non trovato.' });
+    console.log(`[AUTH] Account ID ${id} eliminato.`);
+    res.json({ success: true, message: 'Account eliminato con successo.' });
+  });
+});
+
 module.exports = router;

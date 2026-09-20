@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.techapp.R
 import com.techapp.data.api.SyncManager
@@ -15,6 +16,7 @@ import com.techapp.data.api.SyncStatus
 import com.techapp.data.model.Appointment
 import com.techapp.data.model.Intervention
 import com.techapp.databinding.FragmentDashboardBinding
+import com.techapp.ui.common.ManageAccountsDialog
 import com.techapp.ui.common.ServerConfigDialog
 import com.techapp.utils.DepartmentHelper
 import com.techapp.utils.SessionManager
@@ -52,6 +54,23 @@ class DashboardFragment : Fragment() {
                 viewModel.syncData()
             }
         }
+
+        // Gestione Account Aziendali (Eliminazione Admin e Tecnici)
+        val openManageAccounts = {
+            ManageAccountsDialog.show(
+                context = requireContext(),
+                scope = viewLifecycleOwner.lifecycleScope,
+                onAccountsChanged = {
+                    viewModel.syncData()
+                },
+                onSelfDeleted = {
+                    findNavController().navigate(R.id.action_dashboard_to_login)
+                }
+            )
+        }
+
+        binding.btnManageAccounts.setOnClickListener { openManageAccounts() }
+        binding.cardManageTeam.setOnClickListener { openManageAccounts() }
 
         viewModel.syncStatus.observe(viewLifecycleOwner) { status ->
             when (status) {

@@ -99,10 +99,12 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_test_connection"
-        style="@style/Widget.MaterialComponents.Button.TonalButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:text="Test Connessione"
+        android:textColor="@color/primary"
+        app:strokeColor="@color/primary"
         android:layout_marginTop="16dp"
         app:cornerRadius="10dp" />
 

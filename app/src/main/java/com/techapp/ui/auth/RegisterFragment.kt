@@ -27,15 +27,36 @@ class RegisterFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        // Popola spinner reparti
+        val deptAdapter = android.widget.ArrayAdapter(
+            requireContext(),
+            R.layout.item_spinner,
+            com.techapp.data.model.User.DEPARTMENTS
+        )
+        deptAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
+        binding.spinnerDepartment.adapter = deptAdapter
+
+        binding.rgRole.setOnCheckedChangeListener { _, checkedId ->
+            binding.layoutDepartment.visibility = if (checkedId == R.id.rb_technician) View.VISIBLE else View.GONE
+        }
 
         binding.btnRegister.setOnClickListener {
+            val isAdmin = binding.rbAdmin.isChecked
+            val role = if (isAdmin) com.techapp.data.model.User.ROLE_ADMIN else com.techapp.data.model.User.ROLE_TECHNICIAN
+            val department = if (isAdmin) {
+                com.techapp.data.model.User.DEPARTMENT_ALL
+            } else {
+                binding.spinnerDepartment.selectedItem?.toString() ?: com.techapp.data.model.User.DEPARTMENT_GENERAL
+            }
+
             viewModel.register(
                 firstName = binding.etFirstName.text.toString(),
                 lastName = binding.etLastName.text.toString(),
                 email = binding.etEmail.text.toString(),
                 password = binding.etPassword.text.toString(),
-                confirmPassword = binding.etConfirmPassword.text.toString()
+                confirmPassword = binding.etConfirmPassword.text.toString(),
+                role = role,
+                department = department
             )
         }
 

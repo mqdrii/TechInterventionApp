@@ -13,7 +13,9 @@ class UserRepository(private val userDao: UserDao) {
         firstName: String,
         lastName: String,
         email: String,
-        password: String
+        password: String,
+        role: String = User.ROLE_TECHNICIAN,
+        department: String = User.DEPARTMENT_GENERAL
     ): Long {
         if (userDao.emailExists(email)) return -1L
         val hash = HashUtils.hashPassword(password)
@@ -21,10 +23,16 @@ class UserRepository(private val userDao: UserDao) {
             firstName = firstName,
             lastName = lastName,
             email = email,
-            passwordHash = hash
+            passwordHash = hash,
+            role = role,
+            department = department
         )
         return userDao.insert(user)
     }
+
+    fun getTechnicians() = userDao.getTechnicians()
+
+    suspend fun getTechniciansList() = userDao.getTechniciansList()
 
     /**
      * Autentica un utente. Restituisce l'oggetto User se le credenziali sono valide, null altrimenti.

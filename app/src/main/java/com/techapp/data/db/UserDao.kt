@@ -25,6 +25,12 @@ interface UserDao {
     @Query("SELECT * FROM users ORDER BY firstName ASC")
     fun getAllUsers(): LiveData<List<User>>
 
+    @Query("SELECT * FROM users WHERE role = 'technician' ORDER BY firstName ASC")
+    fun getTechnicians(): LiveData<List<User>>
+
+    @Query("SELECT * FROM users WHERE role = 'technician' ORDER BY firstName ASC")
+    suspend fun getTechniciansList(): List<User>
+
     @Query("SELECT EXISTS(SELECT 1 FROM users WHERE email = :email)")
     suspend fun emailExists(email: String): Boolean
 }

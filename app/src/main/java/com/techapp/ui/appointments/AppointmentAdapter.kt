@@ -23,6 +23,24 @@ class AppointmentAdapter(
             binding.tvDate.text = "${appointment.date} ${appointment.time}"
             binding.tvDescription.text = appointment.description
 
+            // Reparto con icona
+            val deptIcon = when (appointment.department) {
+                "Computer" -> "💻"
+                "Telefoni" -> "📱"
+                "Montaggio Lavagne" -> "🛠️"
+                else -> "⚙️"
+            }
+            binding.tvDepartment.text = "$deptIcon ${appointment.department}"
+
+            // Tecnico assegnato
+            if (appointment.assignedUserName.isNotBlank()) {
+                binding.tvAssignedTo.text = "👤 ${appointment.assignedUserName}"
+                binding.tvAssignedTo.visibility = android.view.View.VISIBLE
+            } else {
+                binding.tvAssignedTo.text = "👤 Non assegnato"
+                binding.tvAssignedTo.visibility = android.view.View.VISIBLE
+            }
+
             val (bgRes, textColorRes, label) = when (appointment.status) {
                 Appointment.STATUS_COMPLETED -> Triple(R.drawable.badge_status_completed, R.color.badge_completed_text, "Completato")
                 Appointment.STATUS_CANCELLED -> Triple(R.drawable.badge_status_cancelled, R.color.badge_cancelled_text, "Annullato")

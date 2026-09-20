@@ -20,6 +20,25 @@ class InterventionAdapter(
 
         fun bind(intervention: Intervention) {
             binding.tvClientName.text = intervention.clientName
+
+            // Reparto con icona
+            val deptIcon = when (intervention.department) {
+                "Computer" -> "💻"
+                "Telefoni" -> "📱"
+                "Montaggio Lavagne" -> "🛠️"
+                else -> "⚙️"
+            }
+            binding.tvDepartment.text = "$deptIcon ${intervention.department}"
+
+            // Tecnico assegnato
+            if (intervention.assignedUserName.isNotBlank()) {
+                binding.tvAssignedTo.text = "👤 ${intervention.assignedUserName}"
+                binding.tvAssignedTo.visibility = android.view.View.VISIBLE
+            } else {
+                binding.tvAssignedTo.text = "👤 Non assegnato"
+                binding.tvAssignedTo.visibility = android.view.View.VISIBLE
+            }
+
             binding.tvDate.text = intervention.date
             binding.tvDescription.text = intervention.description
 

@@ -16,17 +16,40 @@ import java.util.*
 class InterventionViewModel(application: Application) : AndroidViewModel(application) {
 
     private val db = AppDatabase.getInstance(application)
-    private val userId = SessionManager(application).getUserId()
+    private val session = SessionManager(application)
+    private val userId = session.getUserId()
+    private val department = session.getUserDepartment()
+    private val isAdmin = session.isAdmin()
     private val repository = InterventionRepository(db.interventionDao())
 
-    val allInterventions: LiveData<List<Intervention>> = repository.getInterventionsByUser(userId)
-    val openInterventions: LiveData<List<Intervention>> = repository.getOpenInterventions(userId)
+    val allInterventions: LiveData<List<Intervention>> = if (isAdmin) {
+        repository.getAllInterventions()
+    } else {
+        repository.getInterventionsForTechnician(userId, department)
+    }
+
+    val openInterventions: LiveData<List<Intervention>> = if (isAdmin) {
+        repository.getAllOpenInterventions()
+    } else {
+        repository.getOpenInterventionsForTechnician(userId, department)
+    }
+
+    val technicians: LiveData<List<com.techapp.data.model.User>> = db.userDao().getTechnicians()
+
     val insertResult = MutableLiveData<Boolean>()
 
     fun getInterventionsByClient(clientId: Long): LiveData<List<Intervention>> =
-        repository.getInterventionsByClient(userId, clientId)
+        repository.getInterventionsByClient(clientId)
 
-    fun insertIntervention(clientId: Long, clientName: String, description: String, technicalNotes: String) {
+    fun insertIntervention(
+        clientId: Long,
+        clientName: String,
+        description: String,
+        technicalNotes: String,
+        department: String = "Generale",
+        assignedUserId: Long = 0,
+        assignedUserName: String = ""
+    ) {
         if (clientName.isBlank() || description.isBlank()) {
             insertResult.value = false
             return
@@ -39,7 +62,10 @@ class InterventionViewModel(application: Application) : AndroidViewModel(applica
                 clientName = clientName,
                 date = today,
                 description = description,
-                technicalNotes = technicalNotes
+                technicalNotes = technicalNotes,
+                department = department,
+                assignedUserId = assignedUserId,
+                assignedUserName = assignedUserName
             )
             repository.insertIntervention(intervention)
             insertResult.value = true

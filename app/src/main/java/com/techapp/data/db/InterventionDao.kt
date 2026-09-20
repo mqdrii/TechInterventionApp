@@ -19,8 +19,29 @@ interface InterventionDao {
     @Query("SELECT * FROM interventions WHERE id = :interventionId")
     suspend fun getInterventionById(interventionId: Long): Intervention?
 
+    @Query("SELECT * FROM interventions ORDER BY createdAt DESC")
+    fun getAllInterventions(): LiveData<List<Intervention>>
+
+    @Query("SELECT * FROM interventions WHERE status != 'closed' ORDER BY createdAt DESC")
+    fun getAllOpenInterventions(): LiveData<List<Intervention>>
+
+    @Query("SELECT COUNT(*) FROM interventions WHERE status != 'closed'")
+    fun getAllOpenInterventionCount(): LiveData<Int>
+
+    @Query("SELECT * FROM interventions WHERE assignedUserId = :userId OR (assignedUserId = 0 AND department = :department) ORDER BY createdAt DESC")
+    fun getInterventionsForTechnician(userId: Long, department: String): LiveData<List<Intervention>>
+
+    @Query("SELECT * FROM interventions WHERE (assignedUserId = :userId OR (assignedUserId = 0 AND department = :department)) AND status != 'closed' ORDER BY createdAt DESC")
+    fun getOpenInterventionsForTechnician(userId: Long, department: String): LiveData<List<Intervention>>
+
+    @Query("SELECT COUNT(*) FROM interventions WHERE (assignedUserId = :userId OR (assignedUserId = 0 AND department = :department)) AND status != 'closed'")
+    fun getOpenInterventionCountForTechnician(userId: Long, department: String): LiveData<Int>
+
     @Query("SELECT * FROM interventions WHERE userId = :userId ORDER BY date DESC")
     fun getInterventionsByUser(userId: Long): LiveData<List<Intervention>>
+
+    @Query("SELECT * FROM interventions WHERE clientId = :clientId ORDER BY date DESC")
+    fun getInterventionsByClient(clientId: Long): LiveData<List<Intervention>>
 
     @Query("SELECT * FROM interventions WHERE userId = :userId AND clientId = :clientId ORDER BY date DESC")
     fun getInterventionsByClient(userId: Long, clientId: Long): LiveData<List<Intervention>>

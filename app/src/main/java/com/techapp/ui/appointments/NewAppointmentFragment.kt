@@ -55,6 +55,22 @@ class NewAppointmentFragment : Fragment() {
             }
         }
 
+        // Popola spinner reparto
+        val deptAdapter = ArrayAdapter(requireContext(), R.layout.item_spinner, com.techapp.data.model.User.DEPARTMENTS)
+        deptAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
+        binding.spinnerDepartment.adapter = deptAdapter
+
+        // Popola spinner tecnici
+        var techniciansList: List<com.techapp.data.model.User> = emptyList()
+        appointmentViewModel.technicians.observe(viewLifecycleOwner) { techs ->
+            techniciansList = techs
+            val techNames = mutableListOf("Nessun tecnico specifico")
+            techNames.addAll(techs.map { "${it.fullName} (${it.department})" })
+            val techAdapter = ArrayAdapter(requireContext(), R.layout.item_spinner, techNames)
+            techAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
+            binding.spinnerTechnician.adapter = techAdapter
+        }
+
         // Date picker
         binding.btnPickDate.setOnClickListener {
             val cal = Calendar.getInstance()
@@ -74,12 +90,20 @@ class NewAppointmentFragment : Fragment() {
         }
 
         binding.btnSave.setOnClickListener {
+            val techPos = binding.spinnerTechnician.selectedItemPosition
+            val assignedUserId = if (techPos > 0 && techPos - 1 < techniciansList.size) techniciansList[techPos - 1].id else 0L
+            val assignedUserName = if (techPos > 0 && techPos - 1 < techniciansList.size) techniciansList[techPos - 1].fullName else ""
+            val department = binding.spinnerDepartment.selectedItem?.toString() ?: "Generale"
+
             appointmentViewModel.insertAppointment(
                 clientId = selectedClientId,
                 clientName = binding.spinnerClient.selectedItem?.toString() ?: "",
                 date = selectedDate,
                 time = selectedTime,
-                description = binding.etDescription.text.toString()
+                description = binding.etDescription.text.toString(),
+                department = department,
+                assignedUserId = assignedUserId,
+                assignedUserName = assignedUserName
             )
         }
 

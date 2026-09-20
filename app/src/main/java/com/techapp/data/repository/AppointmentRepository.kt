@@ -6,14 +6,32 @@ import com.techapp.data.model.Appointment
 
 class AppointmentRepository(private val appointmentDao: AppointmentDao) {
 
+    fun getAllAppointments(): LiveData<List<Appointment>> =
+        appointmentDao.getAllAppointments()
+
+    fun getAppointmentsForTechnician(userId: Long, department: String): LiveData<List<Appointment>> =
+        appointmentDao.getAppointmentsForTechnician(userId, department)
+
     fun getAppointmentsByUser(userId: Long): LiveData<List<Appointment>> =
         appointmentDao.getAppointmentsByUser(userId)
 
-    fun getAppointmentsByDate(userId: Long, date: String): LiveData<List<Appointment>> =
-        appointmentDao.getAppointmentsByDate(userId, date)
+    fun getAppointmentsByClient(clientId: Long): LiveData<List<Appointment>> =
+        appointmentDao.getAppointmentsByClient(clientId)
 
     fun getAppointmentsByClient(userId: Long, clientId: Long): LiveData<List<Appointment>> =
         appointmentDao.getAppointmentsByClient(userId, clientId)
+
+    fun getAllTodayAppointments(today: String): LiveData<List<Appointment>> =
+        appointmentDao.getAllTodayAppointments(today)
+
+    fun getAllTodayAppointmentCount(today: String): LiveData<Int> =
+        appointmentDao.getAllTodayAppointmentCount(today)
+
+    fun getTodayAppointmentsForTechnician(userId: Long, department: String, today: String): LiveData<List<Appointment>> =
+        appointmentDao.getTodayAppointmentsForTechnician(userId, department, today)
+
+    fun getTodayAppointmentCountForTechnician(userId: Long, department: String, today: String): LiveData<Int> =
+        appointmentDao.getTodayAppointmentCountForTechnician(userId, department, today)
 
     fun getTodayAppointments(userId: Long, today: String): LiveData<List<Appointment>> =
         appointmentDao.getTodayAppointments(userId, today)

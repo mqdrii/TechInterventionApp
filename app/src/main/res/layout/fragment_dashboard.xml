@@ -56,6 +56,20 @@
                             android:textSize="13sp"
                             android:textColor="#E0E7FF"
                             android:layout_marginTop="2dp" />
+
+                        <TextView
+                            android:id="@+id/tv_role_badge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_hero_pill"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingTop="3dp"
+                            android:paddingBottom="3dp"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="8dp" />
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
@@ -72,18 +86,20 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tv_subtitle_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="⚡ Pannello Interventi e Manutenzioni"
                     android:textSize="13sp"
                     android:textColor="#BFDBFE"
-                    android:layout_marginTop="16dp" />
+                    android:layout_marginTop="14dp" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <!-- Titolo Sezione Statistiche -->
         <TextView
+            android:id="@+id/tv_overview_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Panoramica Giornaliera"

@@ -32,7 +32,13 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val user = repository.loginUser(email.trim(), password)
             if (user != null) {
-                sessionManager.saveSession(user.id, "${user.firstName} ${user.lastName}", user.email)
+                sessionManager.saveSession(
+                    userId = user.id,
+                    fullName = "${user.firstName} ${user.lastName}",
+                    email = user.email,
+                    role = user.role,
+                    department = user.department
+                )
                 loginResult.value = LoginResult.Success(user)
             } else {
                 loginResult.value = LoginResult.Error("Email o password errati")
@@ -40,7 +46,15 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun register(firstName: String, lastName: String, email: String, password: String, confirmPassword: String) {
+    fun register(
+        firstName: String,
+        lastName: String,
+        email: String,
+        password: String,
+        confirmPassword: String,
+        role: String = User.ROLE_TECHNICIAN,
+        department: String = User.DEPARTMENT_GENERAL
+    ) {
         when {
             firstName.isBlank() || lastName.isBlank() || email.isBlank() || password.isBlank() ->
                 registerResult.value = RegisterResult.Error("Compila tutti i campi")
@@ -52,7 +66,14 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 registerResult.value = RegisterResult.Error("Le password non coincidono")
             else -> {
                 viewModelScope.launch {
-                    val userId = repository.registerUser(firstName.trim(), lastName.trim(), email.trim(), password)
+                    val userId = repository.registerUser(
+                        firstName = firstName.trim(),
+                        lastName = lastName.trim(),
+                        email = email.trim(),
+                        password = password,
+                        role = role,
+                        department = department
+                    )
                     if (userId > 0) {
                         registerResult.value = RegisterResult.Success
                     } else {

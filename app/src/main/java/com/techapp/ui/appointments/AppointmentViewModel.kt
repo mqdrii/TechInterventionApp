@@ -16,17 +16,37 @@ import java.util.*
 class AppointmentViewModel(application: Application) : AndroidViewModel(application) {
 
     private val db = AppDatabase.getInstance(application)
-    private val userId = SessionManager(application).getUserId()
+    private val session = SessionManager(application)
+    private val userId = session.getUserId()
+    private val department = session.getUserDepartment()
+    private val isAdmin = session.isAdmin()
     private val repository = AppointmentRepository(db.appointmentDao())
 
     val todayDate: String = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-    val allAppointments: LiveData<List<Appointment>> = repository.getAppointmentsByUser(userId)
+
+    val allAppointments: LiveData<List<Appointment>> = if (isAdmin) {
+        repository.getAllAppointments()
+    } else {
+        repository.getAppointmentsForTechnician(userId, department)
+    }
+
+    val technicians: LiveData<List<com.techapp.data.model.User>> = db.userDao().getTechnicians()
+
     val insertResult = MutableLiveData<Boolean>()
 
     fun getAppointmentsByClient(clientId: Long): LiveData<List<Appointment>> =
-        repository.getAppointmentsByClient(userId, clientId)
+        repository.getAppointmentsByClient(clientId)
 
-    fun insertAppointment(clientId: Long, clientName: String, date: String, time: String, description: String) {
+    fun insertAppointment(
+        clientId: Long,
+        clientName: String,
+        date: String,
+        time: String,
+        description: String,
+        department: String = "Generale",
+        assignedUserId: Long = 0,
+        assignedUserName: String = ""
+    ) {
         if (clientName.isBlank() || date.isBlank() || description.isBlank()) {
             insertResult.value = false
             return
@@ -38,7 +58,10 @@ class AppointmentViewModel(application: Application) : AndroidViewModel(applicat
                 clientName = clientName,
                 date = date,
                 time = time,
-                description = description
+                description = description,
+                department = department,
+                assignedUserId = assignedUserId,
+                assignedUserName = assignedUserName
             )
             repository.insertAppointment(appointment)
             insertResult.value = true

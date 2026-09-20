@@ -33,6 +33,9 @@ data class Appointment(
     val time: String,        // formato: HH:mm
     val description: String,
     val status: String = STATUS_SCHEDULED,  // scheduled | completed | cancelled
+    val department: String = "Generale",
+    val assignedUserId: Long = 0,
+    val assignedUserName: String = "",
     val createdAt: Long = System.currentTimeMillis()
 ) {
     companion object {

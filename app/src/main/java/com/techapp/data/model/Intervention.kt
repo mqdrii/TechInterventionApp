@@ -33,6 +33,9 @@ data class Intervention(
     val description: String,
     val status: String = STATUS_OPEN,   // open | in_progress | closed
     val technicalNotes: String = "",
+    val department: String = "Generale",
+    val assignedUserId: Long = 0,
+    val assignedUserName: String = "",
     val createdAt: Long = System.currentTimeMillis()
 ) {
     companion object {

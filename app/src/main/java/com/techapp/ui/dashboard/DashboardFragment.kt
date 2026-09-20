@@ -32,6 +32,23 @@ class DashboardFragment : Fragment() {
         binding.tvWelcome.text = "Ciao, ${viewModel.getUserName()}!"
         binding.tvDate.text = viewModel.todayDate
 
+        if (viewModel.isAdmin()) {
+            binding.tvRoleBadge.text = "👑 Amministratore"
+            binding.tvSubtitleHeader.text = "⚡ Gestione e Assegnazione Lavori"
+            binding.tvOverviewTitle.text = "Panoramica Aziendale"
+        } else {
+            val dept = viewModel.getUserDepartment()
+            val icon = when (dept) {
+                "Computer" -> "💻"
+                "Telefoni" -> "📱"
+                "Montaggio Lavagne" -> "🛠️"
+                else -> "🔧"
+            }
+            binding.tvRoleBadge.text = "$icon Tecnico • $dept"
+            binding.tvSubtitleHeader.text = "⚡ I tuoi lavori assegnati nel reparto $dept"
+            binding.tvOverviewTitle.text = "Il Mio Carico di Lavoro"
+        }
+
         viewModel.todayAppointmentCount.observe(viewLifecycleOwner) { count ->
             binding.tvAppointmentCount.text = count.toString()
         }

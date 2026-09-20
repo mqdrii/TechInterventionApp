@@ -45,7 +45,17 @@ object SyncManager {
                 val session = SessionManager(context)
                 val currentUserId = session.getUserId().takeIf { it > 0 } ?: 1L
 
-                // Clients — sostituisci tutto con i dati del server
+                // 1) Sincronizza tutti gli Utenti (Admin e Tecnici)
+                val userDao = db.userDao()
+                data.technicians.forEach { t ->
+                    userDao.upsert(
+                        User(id = t.id, email = t.email, passwordHash = "",
+                            firstName = t.firstName, lastName = t.lastName,
+                            role = t.role.lowercase(), department = t.department)
+                    )
+                }
+
+                // 2) Sincronizza Clienti
                 val clientsDao = db.clientDao()
                 data.clients.forEach { c ->
                     clientsDao.insert(
@@ -55,7 +65,7 @@ object SyncManager {
                     )
                 }
 
-                // Appointments — sostituisci tutto con i dati del server
+                // 3) Sincronizza Appuntamenti
                 val appointmentDao = db.appointmentDao()
                 data.appointments.forEach { a ->
                     appointmentDao.insert(
@@ -70,7 +80,7 @@ object SyncManager {
                     )
                 }
 
-                // Interventions — sostituisci tutto con i dati del server
+                // 4) Sincronizza Interventi
                 val interventionDao = db.interventionDao()
                 data.interventions.forEach { i ->
                     interventionDao.insert(
@@ -81,16 +91,6 @@ object SyncManager {
                             technicalNotes = i.notes, department = i.department,
                             assignedUserId = i.technicianId, assignedUserName = i.technicianName
                         )
-                    )
-                }
-
-                // Tecnici — upsert nel DB locale per poter assegnarli offline
-                val userDao = db.userDao()
-                data.technicians.forEach { t ->
-                    userDao.upsert(
-                        User(id = t.id, email = t.email, passwordHash = "",
-                            firstName = t.firstName, lastName = t.lastName,
-                            role = t.role.lowercase(), department = t.department)
                     )
                 }
 

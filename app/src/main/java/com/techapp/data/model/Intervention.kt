@@ -1,33 +1,14 @@
 package com.techapp.data.model
 
 import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(
-    tableName = "interventions",
-    foreignKeys = [
-        ForeignKey(
-            entity = Client::class,
-            parentColumns = ["id"],
-            childColumns = ["clientId"],
-            onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = User::class,
-            parentColumns = ["id"],
-            childColumns = ["userId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ],
-    indices = [Index("clientId"), Index("userId")]
-)
+@Entity(tableName = "interventions")
 data class Intervention(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val userId: Long,
-    val clientId: Long,
+    val userId: Long = 0,
+    val clientId: Long = 0,
     val clientName: String,
     val date: String,           // formato: yyyy-MM-dd
     val description: String,

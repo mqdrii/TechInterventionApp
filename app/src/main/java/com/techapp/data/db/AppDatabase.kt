@@ -11,7 +11,7 @@ import com.techapp.data.model.User
 
 @Database(
     entities = [User::class, Client::class, Appointment::class, Intervention::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

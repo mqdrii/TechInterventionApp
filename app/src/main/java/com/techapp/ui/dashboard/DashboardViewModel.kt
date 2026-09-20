@@ -8,6 +8,7 @@ import com.techapp.data.db.AppDatabase
 import com.techapp.data.model.Appointment
 import com.techapp.data.model.Intervention
 import com.techapp.data.repository.AppointmentRepository
+import com.techapp.data.repository.ClientRepository
 import com.techapp.data.repository.InterventionRepository
 import com.techapp.utils.SessionManager
 import java.text.SimpleDateFormat

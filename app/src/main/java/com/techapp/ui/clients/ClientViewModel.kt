@@ -14,8 +14,9 @@ import kotlinx.coroutines.launch
 
 class ClientViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository: ClientRepository
-    private val userId: Long
+    private val db = AppDatabase.getInstance(application)
+    private val repository = ClientRepository(db.clientDao())
+    private val userId = SessionManager(application).getUserId()
 
     private val searchQuery = MutableLiveData<String>("")
 
@@ -29,12 +30,6 @@ class ClientViewModel(application: Application) : AndroidViewModel(application) 
 
     val insertResult = MutableLiveData<Boolean>()
     val updateResult = MutableLiveData<Boolean>()
-
-    init {
-        val db = AppDatabase.getInstance(application)
-        repository = ClientRepository(db.clientDao())
-        userId = SessionManager(application).getUserId()
-    }
 
     fun search(query: String) {
         searchQuery.value = query

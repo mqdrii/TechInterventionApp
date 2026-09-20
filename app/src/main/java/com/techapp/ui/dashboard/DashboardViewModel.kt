@@ -15,29 +15,17 @@ import java.util.*
 
 class DashboardViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val appointmentRepo: AppointmentRepository
-    private val interventionRepo: InterventionRepository
-    private val session: SessionManager
-    private val userId: Long
+    private val session = SessionManager(application)
+    private val userId = session.getUserId()
+    private val db = AppDatabase.getInstance(application)
+    private val appointmentRepo = AppointmentRepository(db.appointmentDao())
+    private val interventionRepo = InterventionRepository(db.interventionDao())
 
     val todayDate: String = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-    val todayAppointmentCount: LiveData<Int>
-    val todayAppointments: LiveData<List<Appointment>>
-    val openInterventionCount: LiveData<Int>
-    val openInterventions: LiveData<List<Intervention>>
-
-    init {
-        val db = AppDatabase.getInstance(application)
-        session = SessionManager(application)
-        userId = session.getUserId()
-        appointmentRepo = AppointmentRepository(db.appointmentDao())
-        interventionRepo = InterventionRepository(db.interventionDao())
-
-        todayAppointmentCount = appointmentRepo.getTodayAppointmentCount(userId, todayDate)
-        todayAppointments = appointmentRepo.getTodayAppointments(userId, todayDate)
-        openInterventionCount = interventionRepo.getOpenInterventionCount(userId)
-        openInterventions = interventionRepo.getOpenInterventions(userId)
-    }
+    val todayAppointmentCount: LiveData<Int> = appointmentRepo.getTodayAppointmentCount(userId, todayDate)
+    val todayAppointments: LiveData<List<Appointment>> = appointmentRepo.getTodayAppointments(userId, todayDate)
+    val openInterventionCount: LiveData<Int> = interventionRepo.getOpenInterventionCount(userId)
+    val openInterventions: LiveData<List<Intervention>> = interventionRepo.getOpenInterventions(userId)
 
     fun getUserName(): String = session.getUserName()
 }

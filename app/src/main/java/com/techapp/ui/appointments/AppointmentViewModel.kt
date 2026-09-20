@@ -15,19 +15,13 @@ import java.util.*
 
 class AppointmentViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository: AppointmentRepository
-    private val userId: Long
+    private val db = AppDatabase.getInstance(application)
+    private val userId = SessionManager(application).getUserId()
+    private val repository = AppointmentRepository(db.appointmentDao())
 
     val todayDate: String = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-    val allAppointments: LiveData<List<Appointment>>
+    val allAppointments: LiveData<List<Appointment>> = repository.getAppointmentsByUser(userId)
     val insertResult = MutableLiveData<Boolean>()
-
-    init {
-        val db = AppDatabase.getInstance(application)
-        userId = SessionManager(application).getUserId()
-        repository = AppointmentRepository(db.appointmentDao())
-        allAppointments = repository.getAppointmentsByUser(userId)
-    }
 
     fun getAppointmentsByClient(clientId: Long): LiveData<List<Appointment>> =
         repository.getAppointmentsByClient(userId, clientId)

@@ -15,20 +15,13 @@ import java.util.*
 
 class InterventionViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository: InterventionRepository
-    private val userId: Long
+    private val db = AppDatabase.getInstance(application)
+    private val userId = SessionManager(application).getUserId()
+    private val repository = InterventionRepository(db.interventionDao())
 
-    val allInterventions: LiveData<List<Intervention>>
-    val openInterventions: LiveData<List<Intervention>>
+    val allInterventions: LiveData<List<Intervention>> = repository.getInterventionsByUser(userId)
+    val openInterventions: LiveData<List<Intervention>> = repository.getOpenInterventions(userId)
     val insertResult = MutableLiveData<Boolean>()
-
-    init {
-        val db = AppDatabase.getInstance(application)
-        userId = SessionManager(application).getUserId()
-        repository = InterventionRepository(db.interventionDao())
-        allInterventions = repository.getInterventionsByUser(userId)
-        openInterventions = repository.getOpenInterventions(userId)
-    }
 
     fun getInterventionsByClient(clientId: Long): LiveData<List<Intervention>> =
         repository.getInterventionsByClient(userId, clientId)

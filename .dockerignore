@@ -1,0 +1,7 @@
+.git
+.gradle
+.idea
+app/
+gradle/
+*.apk
+*.png

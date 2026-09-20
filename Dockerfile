@@ -2,10 +2,10 @@ FROM node:20-slim
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY server/package*.json ./
 RUN npm install --production
 
-COPY . .
+COPY server/ ./
 
 EXPOSE 3000
 ENV NODE_ENV=production

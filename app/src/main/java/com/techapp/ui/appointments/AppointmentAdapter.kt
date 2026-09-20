@@ -1,6 +1,7 @@
 package com.techapp.ui.appointments
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.techapp.R
 import com.techapp.data.model.Appointment
 import com.techapp.databinding.ItemAppointmentBinding
+import com.techapp.utils.DepartmentHelper
 
 class AppointmentAdapter(
     private val onItemClick: (Appointment) -> Unit,
@@ -23,19 +25,15 @@ class AppointmentAdapter(
             binding.tvDate.text = "${appointment.date} ${appointment.time}"
             binding.tvDescription.text = appointment.description
 
-            // Reparto con icona intelligente
-            val deptIcon = com.techapp.utils.DepartmentHelper.getIcon(appointment.department)
-            binding.tvDepartment.text = "$deptIcon ${appointment.department}"
+            // Reparto con Icona Vettoriale nativa
+            binding.ivDeptIcon.setImageResource(DepartmentHelper.getIconRes(appointment.department))
+            binding.tvDepartment.text = appointment.department
 
             // Tecnico assegnato
-            if (appointment.assignedUserName.isNotBlank()) {
-                binding.tvAssignedTo.text = "👤 ${appointment.assignedUserName}"
-                binding.tvAssignedTo.visibility = android.view.View.VISIBLE
-            } else {
-                binding.tvAssignedTo.text = "👤 Non assegnato"
-                binding.tvAssignedTo.visibility = android.view.View.VISIBLE
-            }
+            val techName = appointment.assignedUserName.ifBlank { "Non assegnato" }
+            binding.tvAssignedTo.text = techName
 
+            // Badge di Stato
             val (bgRes, textColorRes, label) = when (appointment.status) {
                 Appointment.STATUS_COMPLETED -> Triple(R.drawable.badge_status_completed, R.color.badge_completed_text, "Completato")
                 Appointment.STATUS_CANCELLED -> Triple(R.drawable.badge_status_cancelled, R.color.badge_cancelled_text, "Annullato")

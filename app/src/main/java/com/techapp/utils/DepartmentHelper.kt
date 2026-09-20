@@ -1,52 +1,49 @@
 package com.techapp.utils
 
+import com.techapp.R
+
 object DepartmentHelper {
 
     val SUGGESTED_DEPARTMENTS = listOf(
-        "Tecnico PC & Sistemi IT",
-        "Telefonia & Centralini VoIP",
-        "Montaggio Lavagne LIM & Monitor",
-        "Elettricista & Impianti",
-        "Reti Dati, Fibra & Wi-Fi",
-        "Sistemi di Sicurezza & Allarmi",
-        "Audio, Video & Conferenze",
-        "Climatizzazione & Pompe di Calore",
+        "Specialista Reti, Fibra & Wi-Fi",
+        "Sistemi IT, Computer & Server",
+        "Telefonia, Smartphone & VoIP",
+        "Installazione Monitor & LIM",
+        "Impianti Elettrici & Cablaggio",
         "Assistenza Hardware & Periferiche",
-        "Manutenzione Generale"
+        "Sistemi di Sicurezza & Videosorveglianza",
+        "Manutenzione Impianti Generale"
     )
 
-    fun getIcon(dept: String?): String {
-        if (dept.isNullOrBlank()) return "💼"
+    fun getIconRes(dept: String?): Int {
+        if (dept.isNullOrBlank()) return R.drawable.ic_dept_tools
         val lower = dept.lowercase()
         return when {
+            lower.contains("ret") || lower.contains("fibr") || lower.contains("wifi") || 
+            lower.contains("router") || lower.contains("switch") || lower.contains("lan") -> 
+                R.drawable.ic_dept_network
+
             lower.contains("comp") || lower.contains("pc") || lower.contains("it") || 
-            lower.contains("hardw") || lower.contains("softw") || lower.contains("inform") -> "💻"
+            lower.contains("hardw") || lower.contains("softw") || lower.contains("inform") ||
+            lower.contains("server") -> 
+                R.drawable.ic_dept_computer
 
             lower.contains("tel") || lower.contains("voip") || lower.contains("smart") || 
-            lower.contains("cell") || lower.contains("centralin") -> "📱"
+            lower.contains("cell") || lower.contains("centralin") -> 
+                R.drawable.ic_dept_phone
 
-            lower.contains("lavagn") || lower.contains("lim") || lower.contains("montag") || 
-            lower.contains("fissag") || lower.contains("arred") || lower.contains("staff") -> "🛠️"
+            lower.contains("lavagn") || lower.contains("lim") || lower.contains("monitor") || 
+            lower.contains("display") || lower.contains("proiet") || lower.contains("scherm") -> 
+                R.drawable.ic_dept_display
 
             lower.contains("elettr") || lower.contains("quadr") || lower.contains("cabl") || 
-            lower.contains("luce") || lower.contains("corrent") -> "⚡"
+            lower.contains("luce") || lower.contains("corrent") || lower.contains("energi") -> 
+                R.drawable.ic_dept_electrical
 
-            lower.contains("ret") || lower.contains("fibr") || lower.contains("wifi") || 
-            lower.contains("router") || lower.contains("switch") || lower.contains("lan") -> "🌐"
-
-            lower.contains("condiz") || lower.contains("clima") || lower.contains("aria") || 
-            lower.contains("pompa") || lower.contains("fredd") -> "❄️"
-
-            lower.contains("sicur") || lower.contains("allarm") || lower.contains("telecam") || 
-            lower.contains("video") || lower.contains("antifurt") || lower.contains("cctv") -> "📹"
-
-            lower.contains("audio") || lower.contains("cassa") || lower.contains("microf") || 
-            lower.contains("proiett") || lower.contains("multimed") -> "🔊"
-
-            lower.contains("idraul") || lower.contains("tub") || lower.contains("calda") || 
-            lower.contains("perdit") -> "🔧"
-
-            else -> "💼"
+            else -> R.drawable.ic_dept_tools
         }
     }
+
+    // Deprecated string helper maintained for backward-compatibility without emojis
+    fun getIcon(dept: String?): String = ""
 }

@@ -63,13 +63,39 @@ class AppointmentViewModel(application: Application) : AndroidViewModel(applicat
                 assignedUserId = assignedUserId,
                 assignedUserName = assignedUserName
             )
-            repository.insertAppointment(appointment)
+            val localId = repository.insertAppointment(appointment)
             insertResult.value = true
+            try {
+                val api = com.techapp.data.api.ApiClient.getService(getApplication())
+                val dto = com.techapp.data.api.AppointmentDto(
+                    id = localId,
+                    clientId = appointment.clientId,
+                    clientName = appointment.clientName,
+                    date = appointment.date,
+                    time = appointment.time,
+                    description = appointment.description,
+                    department = appointment.department,
+                    assignedUserId = appointment.assignedUserId,
+                    assignedUserName = appointment.assignedUserName,
+                    status = appointment.status
+                )
+                api.createAppointment(dto)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
     fun updateStatus(id: Long, status: String) {
-        viewModelScope.launch { repository.updateStatus(id, status) }
+        viewModelScope.launch {
+            repository.updateStatus(id, status)
+            try {
+                val api = com.techapp.data.api.ApiClient.getService(getApplication())
+                api.updateAppointmentStatus(id, com.techapp.data.api.StatusUpdateDto(status))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     fun deleteAppointment(appointment: Appointment) {

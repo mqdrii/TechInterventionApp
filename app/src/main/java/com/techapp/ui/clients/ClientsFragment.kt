@@ -78,6 +78,14 @@ class ClientsFragment : Fragment() {
 
         binding.rvClients.adapter = adapter
 
+        binding.swipeRefresh.setColorSchemeResources(R.color.primary, R.color.secondary)
+        binding.swipeRefresh.setOnRefreshListener {
+            androidx.lifecycle.lifecycleScope.launchWhenStarted {
+                com.techapp.data.api.SyncManager.sync(requireContext())
+                binding.swipeRefresh.isRefreshing = false
+            }
+        }
+
         viewModel.clients.observe(viewLifecycleOwner) { clients ->
             adapter.submitList(clients)
             binding.tvEmpty.visibility = if (clients.isEmpty()) View.VISIBLE else View.GONE

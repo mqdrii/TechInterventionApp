@@ -49,8 +49,22 @@ class ClientViewModel(application: Application) : AndroidViewModel(application) 
                 email = email.trim(),
                 notes = notes.trim()
             )
-            repository.insertClient(client)
+            val localId = repository.insertClient(client)
             insertResult.value = true
+            try {
+                val api = com.techapp.data.api.ApiClient.getService(getApplication())
+                val dto = com.techapp.data.api.ClientDto(
+                    id = localId,
+                    name = client.name,
+                    phone = client.phone,
+                    address = client.address,
+                    email = client.email,
+                    notes = client.notes
+                )
+                api.createClient(dto)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -64,6 +78,12 @@ class ClientViewModel(application: Application) : AndroidViewModel(application) 
     fun deleteClient(client: Client) {
         viewModelScope.launch {
             repository.deleteClient(client)
+            try {
+                val api = com.techapp.data.api.ApiClient.getService(getApplication())
+                api.deleteClient(client.id)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }

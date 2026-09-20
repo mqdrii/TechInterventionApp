@@ -1,6 +1,7 @@
 package com.techapp.ui.interventions
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.techapp.R
 import com.techapp.data.model.Intervention
 import com.techapp.databinding.ItemInterventionBinding
+import com.techapp.utils.DepartmentHelper
 
 class InterventionAdapter(
     private val onItemClick: (Intervention) -> Unit,
@@ -21,18 +23,13 @@ class InterventionAdapter(
         fun bind(intervention: Intervention) {
             binding.tvClientName.text = intervention.clientName
 
-            // Reparto con icona intelligente
-            val deptIcon = com.techapp.utils.DepartmentHelper.getIcon(intervention.department)
-            binding.tvDepartment.text = "$deptIcon ${intervention.department}"
+            // Reparto con icona vettoriale
+            binding.ivDeptIcon.setImageResource(DepartmentHelper.getIconRes(intervention.department))
+            binding.tvDepartment.text = intervention.department
 
             // Tecnico assegnato
-            if (intervention.assignedUserName.isNotBlank()) {
-                binding.tvAssignedTo.text = "👤 ${intervention.assignedUserName}"
-                binding.tvAssignedTo.visibility = android.view.View.VISIBLE
-            } else {
-                binding.tvAssignedTo.text = "👤 Non assegnato"
-                binding.tvAssignedTo.visibility = android.view.View.VISIBLE
-            }
+            val tech = if (intervention.technicianName.isNotBlank()) intervention.technicianName else "Non assegnato"
+            binding.tvAssignedTo.text = tech
 
             binding.tvDate.text = intervention.date
             binding.tvDescription.text = intervention.description

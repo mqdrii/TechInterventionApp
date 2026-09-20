@@ -73,6 +73,14 @@ class InterventionsFragment : Fragment() {
             viewModel.openInterventions.value?.let { adapter.submitList(it) }
         }
 
+        binding.swipeRefresh.setColorSchemeResources(R.color.primary, R.color.secondary)
+        binding.swipeRefresh.setOnRefreshListener {
+            androidx.lifecycle.lifecycleScope.launchWhenStarted {
+                com.techapp.data.api.SyncManager.sync(requireContext())
+                binding.swipeRefresh.isRefreshing = false
+            }
+        }
+
         binding.fabAddIntervention.setOnClickListener {
             findNavController().navigate(R.id.action_interventions_to_newIntervention)
         }

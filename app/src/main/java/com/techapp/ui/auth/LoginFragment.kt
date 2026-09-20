@@ -47,6 +47,10 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_login_to_register)
         }
 
+        binding.btnServerConfig.setOnClickListener {
+            com.techapp.ui.common.ServerConfigDialog.show(requireContext())
+        }
+
         viewModel.loginResult.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is AuthViewModel.LoginResult.Success -> {

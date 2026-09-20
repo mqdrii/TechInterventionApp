@@ -176,7 +176,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="🔧 Tecnico"
+                        android:text="Tecnico"
                         android:checked="true"
                         android:textColor="@color/text_primary" />
                     <RadioButton
@@ -184,7 +184,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="👑 Admin"
+                        android:text="Amministratore"
                         android:textColor="@color/text_primary" />
                 </RadioGroup>
 

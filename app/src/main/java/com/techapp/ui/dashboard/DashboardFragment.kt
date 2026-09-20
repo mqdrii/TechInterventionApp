@@ -1,5 +1,6 @@
 package com.techapp.ui.dashboard
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.techapp.R
+import com.techapp.data.api.SyncManager
+import com.techapp.data.api.SyncStatus
 import com.techapp.data.model.Appointment
 import com.techapp.data.model.Intervention
 import com.techapp.databinding.FragmentDashboardBinding
+import com.techapp.ui.common.ServerConfigDialog
 import com.techapp.utils.DepartmentHelper
 import com.techapp.utils.SessionManager
 
@@ -36,10 +40,52 @@ class DashboardFragment : Fragment() {
         binding.tvWelcome.text = "Ciao, ${viewModel.getUserName()}!"
         binding.tvDate.text = viewModel.todayDate
 
+        // Cloud Server Configuration & Status
+        binding.btnServerConfig.setOnClickListener {
+            ServerConfigDialog.show(requireContext()) {
+                viewModel.syncData()
+            }
+        }
+
+        binding.btnServerStatus.setOnClickListener {
+            ServerConfigDialog.show(requireContext()) {
+                viewModel.syncData()
+            }
+        }
+
+        viewModel.syncStatus.observe(viewLifecycleOwner) { status ->
+            when (status) {
+                SyncStatus.ONLINE -> {
+                    binding.ivSyncDot.setColorFilter(Color.parseColor("#10B981"))
+                    binding.tvSyncLabel.text = "Cloud Connesso"
+                    binding.swipeRefresh.isRefreshing = false
+                }
+                SyncStatus.SYNCING -> {
+                    binding.ivSyncDot.setColorFilter(Color.parseColor("#F59E0B"))
+                    binding.tvSyncLabel.text = "Sincronizzazione..."
+                }
+                SyncStatus.OFFLINE, null -> {
+                    binding.ivSyncDot.setColorFilter(Color.parseColor("#94A3B8"))
+                    binding.tvSyncLabel.text = "Modalità Locale"
+                    binding.swipeRefresh.isRefreshing = false
+                }
+            }
+        }
+
+        // Pull to refresh
+        binding.swipeRefresh.setColorSchemeResources(R.color.primary, R.color.secondary)
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.syncData()
+        }
+
+        // Trigger initial background sync
+        viewModel.syncData()
+
         val isAdmin = viewModel.isAdmin()
         if (isAdmin) {
-            binding.tvRoleBadge.text = "👑 Amministratore"
-            binding.tvSubtitleHeader.text = "⚡ Gestione e Assegnazione Lavori Aziendali"
+            binding.ivRoleIcon.setImageResource(R.drawable.ic_shield_admin)
+            binding.tvRoleBadge.text = "Amministratore"
+            binding.tvSubtitleHeader.text = "Gestione e Assegnazione Lavori Aziendali"
             binding.tvOverviewTitle.text = "Panoramica Aziendale"
             binding.tvActionTitle.text = "+"
             binding.tvActionSubtitle.text = "Nuovo Lavoro"
@@ -48,12 +94,12 @@ class DashboardFragment : Fragment() {
             }
         } else {
             val dept = viewModel.getUserDepartment()
-            val icon = DepartmentHelper.getIcon(dept)
-            binding.tvRoleBadge.text = "$icon Tecnico • $dept"
-            binding.tvSubtitleHeader.text = "⚡ I tuoi lavori assegnati per $dept"
+            binding.ivRoleIcon.setImageResource(R.drawable.ic_precision_tech)
+            binding.tvRoleBadge.text = "Tecnico • $dept"
+            binding.tvSubtitleHeader.text = "I tuoi lavori assegnati per $dept"
             binding.tvOverviewTitle.text = "Il Mio Carico di Lavoro"
-            binding.tvActionTitle.text = "📅"
-            binding.tvActionSubtitle.text = "Agenda Completa"
+            binding.tvActionTitle.text = "Agenda"
+            binding.tvActionSubtitle.text = "Lavori Assegnati"
             binding.cardQuickAction.setOnClickListener {
                 findNavController().navigate(R.id.action_dashboard_to_appointments)
             }
@@ -95,8 +141,8 @@ class DashboardFragment : Fragment() {
                 val appt = latestAppointments.first()
                 binding.previewSlot1.visibility = View.VISIBLE
                 binding.tvP1Client.text = appt.clientName
-                val icon = DepartmentHelper.getIcon(appt.department)
-                binding.tvP1Dept.text = "$icon ${appt.department}"
+                binding.ivP1DeptIcon.setImageResource(DepartmentHelper.getIconRes(appt.department))
+                binding.tvP1Dept.text = appt.department
                 binding.tvP1Time.text = "${appt.date} ${appt.time}"
                 binding.tvP1Desc.text = appt.description.ifBlank { "Nessuna descrizione" }
                 binding.tvP1Status.text = if (appt.status == Appointment.STATUS_COMPLETED) "Completato" else "Programmato"
@@ -107,8 +153,8 @@ class DashboardFragment : Fragment() {
                 val interv = latestInterventions.first()
                 binding.previewSlot1.visibility = View.VISIBLE
                 binding.tvP1Client.text = interv.clientName
-                val icon = DepartmentHelper.getIcon(interv.department)
-                binding.tvP1Dept.text = "$icon ${interv.department}"
+                binding.ivP1DeptIcon.setImageResource(DepartmentHelper.getIconRes(interv.department))
+                binding.tvP1Dept.text = interv.department
                 binding.tvP1Time.text = interv.date
                 binding.tvP1Desc.text = interv.description.ifBlank { "Nessuna descrizione" }
                 binding.tvP1Status.text = "In corso"
@@ -131,8 +177,8 @@ class DashboardFragment : Fragment() {
                 if (secondItem.first == "appt") {
                     val appt = secondItem.second as Appointment
                     binding.tvP2Client.text = appt.clientName
-                    val icon = DepartmentHelper.getIcon(appt.department)
-                    binding.tvP2Dept.text = "$icon ${appt.department}"
+                    binding.ivP2DeptIcon.setImageResource(DepartmentHelper.getIconRes(appt.department))
+                    binding.tvP2Dept.text = appt.department
                     binding.tvP2Time.text = "${appt.date} ${appt.time}"
                     binding.tvP2Desc.text = appt.description.ifBlank { "Nessuna descrizione" }
                     binding.tvP2Status.text = "Programmato"
@@ -142,8 +188,8 @@ class DashboardFragment : Fragment() {
                 } else {
                     val interv = secondItem.second as Intervention
                     binding.tvP2Client.text = interv.clientName
-                    val icon = DepartmentHelper.getIcon(interv.department)
-                    binding.tvP2Dept.text = "$icon ${interv.department}"
+                    binding.ivP2DeptIcon.setImageResource(DepartmentHelper.getIconRes(interv.department))
+                    binding.tvP2Dept.text = interv.department
                     binding.tvP2Time.text = interv.date
                     binding.tvP2Desc.text = interv.description.ifBlank { "Nessuna descrizione" }
                     binding.tvP2Status.text = "In corso"

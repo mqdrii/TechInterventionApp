@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import com.techapp.data.db.AppDatabase
 import com.techapp.data.model.Appointment
 import com.techapp.data.model.Intervention
@@ -50,6 +52,15 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
         interventionRepo.getAllOpenInterventions()
     } else {
         interventionRepo.getOpenInterventionsForTechnician(userId, department)
+    }
+
+    val syncStatus = com.techapp.data.api.SyncManager.syncStatus
+    val lastSyncTime = com.techapp.data.api.SyncManager.lastSyncTime
+
+    fun syncData() {
+        androidx.lifecycle.viewModelScope.launch {
+            com.techapp.data.api.SyncManager.sync(getApplication())
+        }
     }
 
     fun getUserName(): String = session.getUserName()

@@ -51,6 +51,14 @@ class AppointmentsFragment : Fragment() {
             binding.tvEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
         }
 
+        binding.swipeRefresh.setColorSchemeResources(R.color.primary, R.color.secondary)
+        binding.swipeRefresh.setOnRefreshListener {
+            androidx.lifecycle.lifecycleScope.launchWhenStarted {
+                com.techapp.data.api.SyncManager.sync(requireContext())
+                binding.swipeRefresh.isRefreshing = false
+            }
+        }
+
         val sessionManager = com.techapp.utils.SessionManager(requireContext())
         binding.fabAddAppointment.visibility = if (sessionManager.isAdmin()) View.VISIBLE else View.GONE
 

@@ -17,11 +17,11 @@
         <!-- Logo / Icon -->
         <ImageView
             android:id="@+id/iv_logo"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
-            android:src="@drawable/ic_launcher_foreground"
-            android:background="@drawable/bg_client_avatar"
-            android:padding="8dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_shield_admin"
+            android:background="@drawable/bg_kpi_circle"
+            android:padding="16dp"
             android:layout_marginTop="20dp" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textSize="28sp"
+            android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             android:layout_marginTop="14dp" />
@@ -38,8 +38,8 @@
             android:id="@+id/tv_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gestione Interventi &amp; Appuntamenti"
-            android:textSize="14sp"
+            android:text="Piattaforma Aziendale Interventi &amp; Appuntamenti"
+            android:textSize="13sp"
             android:textColor="@color/text_secondary"
             android:layout_marginTop="4dp" />
 
@@ -48,10 +48,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="20dp"
-            app:cardElevation="3dp"
+            app:cardElevation="2dp"
             app:strokeColor="@color/border_subtle"
             app:strokeWidth="1dp"
-            android:layout_marginTop="28dp">
+            android:layout_marginTop="24dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -123,7 +123,7 @@
                     android:textColor="@color/white"
                     app:backgroundTint="@color/primary"
                     app:cornerRadius="12dp"
-                    android:layout_marginTop="22dp" />
+                    android:layout_marginTop="20dp" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -137,8 +137,22 @@
             android:textColor="@color/primary"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:padding="12dp"
-            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:layout_marginTop="16dp" />
+
+        <!-- Server Config Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_server_config"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Configura Connessione Server"
+            android:textColor="@color/text_muted"
+            android:textSize="12sp"
+            app:icon="@drawable/ic_settings_gear"
+            app:iconTint="@color/text_muted"
+            app:iconSize="14dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="24dp" />
 
     </LinearLayout>

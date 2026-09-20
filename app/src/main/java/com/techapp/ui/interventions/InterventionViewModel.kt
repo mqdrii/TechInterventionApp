@@ -67,13 +67,39 @@ class InterventionViewModel(application: Application) : AndroidViewModel(applica
                 assignedUserId = assignedUserId,
                 assignedUserName = assignedUserName
             )
-            repository.insertIntervention(intervention)
+            val localId = repository.insertIntervention(intervention)
             insertResult.value = true
+            try {
+                val api = com.techapp.data.api.ApiClient.getService(getApplication())
+                val dto = com.techapp.data.api.InterventionDto(
+                    id = localId,
+                    clientId = intervention.clientId,
+                    clientName = intervention.clientName,
+                    date = intervention.date,
+                    description = intervention.description,
+                    department = intervention.department,
+                    technicianId = intervention.assignedUserId,
+                    technicianName = intervention.assignedUserName,
+                    notes = intervention.technicalNotes,
+                    status = intervention.status
+                )
+                api.createIntervention(dto)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
     fun updateStatus(id: Long, status: String) {
-        viewModelScope.launch { repository.updateStatus(id, status) }
+        viewModelScope.launch {
+            repository.updateStatus(id, status)
+            try {
+                val api = com.techapp.data.api.ApiClient.getService(getApplication())
+                api.updateInterventionStatus(id, com.techapp.data.api.StatusUpdateDto(status))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     fun updateNotes(id: Long, notes: String) {

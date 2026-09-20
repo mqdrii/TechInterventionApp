@@ -5,6 +5,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.techapp.data.api.ApiClient
+import com.techapp.data.api.AppointmentDto
+import com.techapp.data.api.StatusUpdateDto
 import com.techapp.data.db.AppDatabase
 import com.techapp.data.model.Appointment
 import com.techapp.data.repository.AppointmentRepository
@@ -33,6 +36,7 @@ class AppointmentViewModel(application: Application) : AndroidViewModel(applicat
     val technicians: LiveData<List<com.techapp.data.model.User>> = db.userDao().getTechnicians()
 
     val insertResult = MutableLiveData<Boolean>()
+    val errorMessage = MutableLiveData<String?>()
 
     fun getAppointmentsByClient(clientId: Long): LiveData<List<Appointment>> =
         repository.getAppointmentsByClient(clientId)
@@ -52,36 +56,45 @@ class AppointmentViewModel(application: Application) : AndroidViewModel(applicat
             return
         }
         viewModelScope.launch {
-            val appointment = Appointment(
-                userId = userId,
-                clientId = clientId,
-                clientName = clientName,
-                date = date,
-                time = time,
-                description = description,
-                department = department,
-                assignedUserId = assignedUserId,
-                assignedUserName = assignedUserName
-            )
-            val localId = repository.insertAppointment(appointment)
-            insertResult.value = true
             try {
-                val api = com.techapp.data.api.ApiClient.getService(getApplication())
-                val dto = com.techapp.data.api.AppointmentDto(
-                    id = localId,
-                    clientId = appointment.clientId,
-                    clientName = appointment.clientName,
-                    date = appointment.date,
-                    time = appointment.time,
-                    description = appointment.description,
-                    department = appointment.department,
-                    assignedUserId = appointment.assignedUserId,
-                    assignedUserName = appointment.assignedUserName,
-                    status = appointment.status
+                // 1) Prima crea sul server
+                val api = ApiClient.getService(getApplication())
+                val response = api.createAppointment(
+                    AppointmentDto(
+                        clientId = clientId, clientName = clientName.trim(),
+                        date = date, time = time, description = description.trim(),
+                        department = department, assignedUserId = assignedUserId,
+                        assignedUserName = assignedUserName
+                    )
                 )
-                api.createAppointment(dto)
+                if (response.isSuccessful) {
+                    val srv = response.body()!!
+                    repository.insertAppointment(
+                        Appointment(
+                            id = srv.id, userId = userId, clientId = srv.clientId,
+                            clientName = srv.clientName, date = srv.date, time = srv.time,
+                            description = srv.description, department = srv.department,
+                            assignedUserId = srv.assignedUserId,
+                            assignedUserName = srv.assignedUserName, status = srv.status
+                        )
+                    )
+                    insertResult.value = true
+                } else {
+                    errorMessage.value = "Errore server: ${response.code()}"
+                    insertResult.value = false
+                }
             } catch (e: Exception) {
-                e.printStackTrace()
+                // Fallback offline
+                repository.insertAppointment(
+                    Appointment(
+                        userId = userId, clientId = clientId, clientName = clientName.trim(),
+                        date = date, time = time, description = description.trim(),
+                        department = department, assignedUserId = assignedUserId,
+                        assignedUserName = assignedUserName
+                    )
+                )
+                insertResult.value = true
+                errorMessage.value = "Salvato offline. Sincronizzazione al prossimo avvio."
             }
         }
     }
@@ -90,11 +103,9 @@ class AppointmentViewModel(application: Application) : AndroidViewModel(applicat
         viewModelScope.launch {
             repository.updateStatus(id, status)
             try {
-                val api = com.techapp.data.api.ApiClient.getService(getApplication())
-                api.updateAppointmentStatus(id, com.techapp.data.api.StatusUpdateDto(status))
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+                val api = ApiClient.getService(getApplication())
+                api.updateAppointmentStatus(id, StatusUpdateDto(status))
+            } catch (_: Exception) {}
         }
     }
 

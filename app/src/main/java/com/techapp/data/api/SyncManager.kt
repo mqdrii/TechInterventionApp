@@ -29,6 +29,10 @@ object SyncManager {
     private val _lastSyncTime = MutableLiveData<String>("")
     val lastSyncTime: LiveData<String> = _lastSyncTime
 
+    /**
+     * Scarica tutti i dati dal server cloud e sovrascrive la cache locale.
+     * Comportamento WhatsApp-style: il server è la fonte di verità.
+     */
     suspend fun sync(context: Context): Boolean = withContext(Dispatchers.IO) {
         _syncStatus.postValue(SyncStatus.SYNCING)
         try {
@@ -38,82 +42,60 @@ object SyncManager {
             if (response.isSuccessful && response.body()?.success == true) {
                 val data = response.body()!!
                 val db = AppDatabase.getInstance(context)
+                val session = SessionManager(context)
+                val currentUserId = session.getUserId().takeIf { it > 0 } ?: 1L
 
-                val currentUserId = SessionManager(context).getUserId().takeIf { it > 0 } ?: 1L
-
-                // Sync Clients
+                // Clients — sostituisci tutto con i dati del server
                 val clientsDao = db.clientDao()
                 data.clients.forEach { c ->
-                    val clientEntity = Client(
-                        id = c.id,
-                        userId = currentUserId,
-                        name = c.name,
-                        phone = c.phone,
-                        address = c.address,
-                        email = c.email,
-                        notes = c.notes
+                    clientsDao.insert(
+                        Client(id = c.id, userId = currentUserId,
+                            name = c.name, phone = c.phone,
+                            address = c.address, email = c.email, notes = c.notes)
                     )
-                    clientsDao.insert(clientEntity)
                 }
 
-                // Sync Appointments
+                // Appointments — sostituisci tutto con i dati del server
                 val appointmentDao = db.appointmentDao()
                 data.appointments.forEach { a ->
-                    val aptEntity = Appointment(
-                        id = a.id,
-                        userId = if (a.assignedUserId > 0) a.assignedUserId else currentUserId,
-                        clientId = a.clientId,
-                        clientName = a.clientName,
-                        date = a.date,
-                        time = a.time,
-                        description = a.description,
-                        department = a.department,
-                        assignedUserId = a.assignedUserId,
-                        assignedUserName = a.assignedUserName,
-                        status = a.status
+                    appointmentDao.insert(
+                        Appointment(
+                            id = a.id,
+                            userId = if (a.assignedUserId > 0) a.assignedUserId else currentUserId,
+                            clientId = a.clientId, clientName = a.clientName,
+                            date = a.date, time = a.time, description = a.description,
+                            department = a.department, assignedUserId = a.assignedUserId,
+                            assignedUserName = a.assignedUserName, status = a.status
+                        )
                     )
-                    appointmentDao.insert(aptEntity)
                 }
 
-                // Sync Interventions
+                // Interventions — sostituisci tutto con i dati del server
                 val interventionDao = db.interventionDao()
                 data.interventions.forEach { i ->
-                    val intvEntity = Intervention(
-                        id = i.id,
-                        userId = i.technicianId,
-                        clientId = i.clientId,
-                        clientName = i.clientName,
-                        date = i.date,
-                        description = i.description,
-                        status = i.status,
-                        technicalNotes = i.notes,
-                        department = i.department,
-                        assignedUserId = i.technicianId,
-                        assignedUserName = i.technicianName
+                    interventionDao.insert(
+                        Intervention(
+                            id = i.id, userId = i.technicianId,
+                            clientId = i.clientId, clientName = i.clientName,
+                            date = i.date, description = i.description, status = i.status,
+                            technicalNotes = i.notes, department = i.department,
+                            assignedUserId = i.technicianId, assignedUserName = i.technicianName
+                        )
                     )
-                    interventionDao.insert(intvEntity)
                 }
 
-                // Sync Technicians
+                // Tecnici — upsert nel DB locale per poter assegnarli offline
                 val userDao = db.userDao()
                 data.technicians.forEach { t ->
-                    val existing = userDao.getUserByEmail(t.email)
-                    if (existing == null) {
-                        val userEntity = User(
-                            id = t.id,
-                            email = t.email,
-                            passwordHash = "",
-                            firstName = t.firstName,
-                            lastName = t.lastName,
-                            role = t.role.lowercase(),
-                            department = t.department
-                        )
-                        userDao.insert(userEntity)
-                    }
+                    userDao.upsert(
+                        User(id = t.id, email = t.email, passwordHash = "",
+                            firstName = t.firstName, lastName = t.lastName,
+                            role = t.role.lowercase(), department = t.department)
+                    )
                 }
 
                 val nowStr = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())
-                SessionManager(context).saveLastSync(nowStr)
+                session.saveLastSync(nowStr)
                 _lastSyncTime.postValue(nowStr)
                 _syncStatus.postValue(SyncStatus.ONLINE)
                 true

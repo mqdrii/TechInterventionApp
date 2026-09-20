@@ -45,4 +45,22 @@ class UserRepository(private val userDao: UserDao) {
     suspend fun getUserById(id: Long): User? = userDao.getUserById(id)
 
     suspend fun updateUser(user: User) = userDao.update(user)
+
+    /** Salva (o aggiorna) un utente ricevuto dal server nel DB locale. */
+    suspend fun upsertUserFromServer(
+        id: Long, email: String, firstName: String,
+        lastName: String, role: String, department: String
+    ) {
+        userDao.upsert(
+            User(
+                id = id,
+                email = email,
+                firstName = firstName,
+                lastName = lastName,
+                passwordHash = "",   // non gestiamo password lato client
+                role = role,
+                department = department
+            )
+        )
+    }
 }

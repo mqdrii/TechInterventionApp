@@ -13,7 +13,8 @@ object ApiClient {
     private var currentBaseUrl: String = ""
     private var cachedService: TechApiService? = null
 
-    const val DEFAULT_SERVER_URL = "http://10.0.2.2:3000/"
+    /** URL del server cloud — gli utenti non devono configurare nulla */
+    const val DEFAULT_SERVER_URL = "https://techintervention-api.onrender.com/"
 
     fun getService(context: Context): TechApiService {
         val sessionManager = SessionManager(context)

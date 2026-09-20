@@ -5,6 +5,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.techapp.data.api.ApiClient
+import com.techapp.data.api.InterventionDto
+import com.techapp.data.api.StatusUpdateDto
 import com.techapp.data.db.AppDatabase
 import com.techapp.data.model.Intervention
 import com.techapp.data.repository.InterventionRepository
@@ -37,6 +40,7 @@ class InterventionViewModel(application: Application) : AndroidViewModel(applica
     val technicians: LiveData<List<com.techapp.data.model.User>> = db.userDao().getTechnicians()
 
     val insertResult = MutableLiveData<Boolean>()
+    val errorMessage = MutableLiveData<String?>()
 
     fun getInterventionsByClient(clientId: Long): LiveData<List<Intervention>> =
         repository.getInterventionsByClient(clientId)
@@ -56,36 +60,46 @@ class InterventionViewModel(application: Application) : AndroidViewModel(applica
         }
         viewModelScope.launch {
             val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-            val intervention = Intervention(
-                userId = userId,
-                clientId = clientId,
-                clientName = clientName,
-                date = today,
-                description = description,
-                technicalNotes = technicalNotes,
-                department = department,
-                assignedUserId = assignedUserId,
-                assignedUserName = assignedUserName
-            )
-            val localId = repository.insertIntervention(intervention)
-            insertResult.value = true
             try {
-                val api = com.techapp.data.api.ApiClient.getService(getApplication())
-                val dto = com.techapp.data.api.InterventionDto(
-                    id = localId,
-                    clientId = intervention.clientId,
-                    clientName = intervention.clientName,
-                    date = intervention.date,
-                    description = intervention.description,
-                    department = intervention.department,
-                    technicianId = intervention.assignedUserId,
-                    technicianName = intervention.assignedUserName,
-                    notes = intervention.technicalNotes,
-                    status = intervention.status
+                // 1) Prima crea sul server
+                val api = ApiClient.getService(getApplication())
+                val response = api.createIntervention(
+                    InterventionDto(
+                        clientId = clientId, clientName = clientName.trim(),
+                        date = today, description = description.trim(),
+                        department = department, technicianId = assignedUserId,
+                        technicianName = assignedUserName, notes = technicalNotes.trim()
+                    )
                 )
-                api.createIntervention(dto)
+                if (response.isSuccessful) {
+                    val srv = response.body()!!
+                    repository.insertIntervention(
+                        Intervention(
+                            id = srv.id, userId = userId, clientId = srv.clientId,
+                            clientName = srv.clientName, date = srv.date,
+                            description = srv.description, department = srv.department,
+                            assignedUserId = srv.technicianId,
+                            assignedUserName = srv.technicianName,
+                            technicalNotes = srv.notes, status = srv.status
+                        )
+                    )
+                    insertResult.value = true
+                } else {
+                    errorMessage.value = "Errore server: ${response.code()}"
+                    insertResult.value = false
+                }
             } catch (e: Exception) {
-                e.printStackTrace()
+                // Fallback offline
+                repository.insertIntervention(
+                    Intervention(
+                        userId = userId, clientId = clientId, clientName = clientName.trim(),
+                        date = today, description = description.trim(), department = department,
+                        assignedUserId = assignedUserId, assignedUserName = assignedUserName,
+                        technicalNotes = technicalNotes.trim()
+                    )
+                )
+                insertResult.value = true
+                errorMessage.value = "Salvato offline. Sincronizzazione al prossimo avvio."
             }
         }
     }
@@ -94,11 +108,9 @@ class InterventionViewModel(application: Application) : AndroidViewModel(applica
         viewModelScope.launch {
             repository.updateStatus(id, status)
             try {
-                val api = com.techapp.data.api.ApiClient.getService(getApplication())
-                api.updateInterventionStatus(id, com.techapp.data.api.StatusUpdateDto(status))
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+                val api = ApiClient.getService(getApplication())
+                api.updateInterventionStatus(id, StatusUpdateDto(status))
+            } catch (_: Exception) {}
         }
     }
 

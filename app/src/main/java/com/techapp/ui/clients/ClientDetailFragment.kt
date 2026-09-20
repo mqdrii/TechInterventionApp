@@ -82,7 +82,8 @@ class ClientDetailFragment : Fragment() {
             onItemClick = { /* dettaglio appuntamento */ },
             onStatusClick = { appointment ->
                 appointmentViewModel.updateStatus(appointment.id, com.techapp.data.model.Appointment.STATUS_COMPLETED)
-            }
+            },
+            onDeleteClick = { /* elimina non disponibile nella vista cliente */ }
         )
         binding.rvClientAppointments.adapter = appointmentAdapter
         appointmentViewModel.getAppointmentsByClient(clientId).observe(viewLifecycleOwner) {
@@ -94,7 +95,8 @@ class ClientDetailFragment : Fragment() {
             onItemClick = { /* dettaglio intervento */ },
             onStatusClick = { intervention ->
                 interventionViewModel.updateStatus(intervention.id, com.techapp.data.model.Intervention.STATUS_CLOSED)
-            }
+            },
+            onDeleteClick = { /* elimina non disponibile nella vista cliente */ }
         )
         binding.rvClientInterventions.adapter = interventionAdapter
         interventionViewModel.getInterventionsByClient(clientId).observe(viewLifecycleOwner) {

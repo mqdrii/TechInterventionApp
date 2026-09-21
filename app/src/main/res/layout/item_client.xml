@@ -122,7 +122,7 @@
                 android:layout_height="38dp"
                 android:background="@drawable/bg_kpi_circle"
                 android:src="@drawable/ic_map_tonal"
-                app:tint="@color/secondary"
+                app:tint="@color/primary"
                 android:contentDescription="Mappa cliente"
                 android:padding="8dp"
                 android:layout_marginEnd="4dp" />

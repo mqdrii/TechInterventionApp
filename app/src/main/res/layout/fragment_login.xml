@@ -19,10 +19,11 @@
         <!-- ─── Logo Xelta ─── -->
         <ImageView
             android:id="@+id/iv_logo"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
             android:src="@drawable/xelta_logo"
             android:scaleType="fitCenter"
+            android:background="@color/white"
             android:layout_marginTop="8dp" />
 
         <!-- App name -->

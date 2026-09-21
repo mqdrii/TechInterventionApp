@@ -11,29 +11,40 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Header -->
+        <!-- Header — Xelta style -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="16dp"
-            android:paddingTop="16dp"
+            android:paddingTop="20dp"
             android:paddingBottom="8dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rubrica Clienti Aziendali"
-                android:textSize="22sp"
+                android:text="RUBRICA"
+                android:textSize="11sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/primary"
+                android:letterSpacing="0.14" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cerca o seleziona un cliente per vedere la scheda e le attività"
+                android:text="Clienti"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:letterSpacing="-0.01"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cerca o seleziona una scheda cliente"
                 android:textSize="13sp"
-                android:textColor="@color/text_secondary"
+                android:textColor="@color/text_muted"
                 android:layout_marginTop="2dp" />
         </LinearLayout>
 

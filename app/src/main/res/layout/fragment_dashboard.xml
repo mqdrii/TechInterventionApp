@@ -16,31 +16,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="24dp">
 
-            <!-- Hero Executive Banner -->
+            <!-- ═══════════════════════════════════════════
+                 HERO BANNER — Xelta dark #1f1f1f
+                 Rounded 24dp card, full width, deep dark
+            ═══════════════════════════════════════════ -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 app:cardCornerRadius="24dp"
-                app:cardElevation="3dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="#334155">
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_gradient_executive"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:paddingHorizontal="20dp"
+                    android:paddingTop="18dp"
+                    android:paddingBottom="20dp">
 
-                    <!-- Top Bar: Cloud Sync Pill & Server Settings -->
+                    <!-- Top bar: cloud pill + settings + accounts + logout -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
 
+                        <!-- Cloud sync pill -->
                         <LinearLayout
                             android:id="@+id/btn_server_status"
                             android:layout_width="wrap_content"
@@ -48,15 +55,15 @@
                             android:orientation="horizontal"
                             android:gravity="center_vertical"
                             android:background="@drawable/bg_hero_pill"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="5dp"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="6dp"
                             android:clickable="true"
                             android:focusable="true">
 
                             <ImageView
                                 android:id="@+id/iv_sync_dot"
-                                android:layout_width="8dp"
-                                android:layout_height="8dp"
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
                                 android:src="@drawable/ic_status_dot"
                                 app:tint="#10B981" />
 
@@ -64,79 +71,79 @@
                                 android:id="@+id/tv_sync_label"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="6dp"
+                                android:layout_marginStart="7dp"
                                 android:text="Cloud Sincronizzato"
-                                android:textColor="#E2E8F0"
+                                android:textColor="#FFFFFFCC"
                                 android:textSize="11sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:letterSpacing="0.02" />
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1" />
+                        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" />
 
-                        <!-- Server Settings Button -->
+                        <!-- Settings icon -->
                         <ImageView
                             android:id="@+id/btn_server_config"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:src="@drawable/ic_settings_gear"
                             android:background="?attr/selectableItemBackgroundBorderless"
-                            android:padding="5dp"
+                            android:padding="6dp"
                             android:contentDescription="Configurazione Server"
-                            app:tint="#94A3B8" />
+                            app:tint="#FFFFFF80" />
 
-                        <!-- Manage Accounts Button -->
+                        <!-- Manage accounts icon -->
                         <ImageView
                             android:id="@+id/btn_manage_accounts"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
-                            android:layout_marginStart="6dp"
+                            android:layout_marginStart="4dp"
                             android:src="@drawable/ic_person_badge"
                             android:background="?attr/selectableItemBackgroundBorderless"
-                            android:padding="5dp"
+                            android:padding="6dp"
                             android:contentDescription="Gestione Account"
-                            app:tint="#94A3B8" />
+                            app:tint="#FFFFFF80" />
 
-                        <!-- Logout Button -->
+                        <!-- Logout button — outline pill -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_logout"
                             style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="wrap_content"
-                            android:layout_height="34dp"
-                            android:layout_marginStart="8dp"
+                            android:layout_height="32dp"
+                            android:layout_marginStart="6dp"
                             android:text="Esci"
-                            android:textColor="#E2E8F0"
+                            android:textColor="#FFFFFFB3"
                             android:textSize="12sp"
-                            android:paddingHorizontal="10dp"
+                            android:paddingHorizontal="12dp"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
-                            app:strokeColor="#475569"
+                            app:strokeColor="#FFFFFF33"
                             app:strokeWidth="1dp"
-                            app:cornerRadius="8dp" />
+                            app:cornerRadius="999dp" />
                     </LinearLayout>
 
-                    <!-- User Greeting & Name -->
+                    <!-- Greeting -->
                     <TextView
                         android:id="@+id/tv_welcome"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ciao!"
-                        android:textSize="24sp"
+                        android:textSize="26sp"
                         android:textStyle="bold"
                         android:textColor="@color/white"
-                        android:layout_marginTop="16dp" />
+                        android:letterSpacing="-0.01"
+                        android:layout_marginTop="18dp" />
 
+                    <!-- Date -->
                     <TextView
                         android:id="@+id/tv_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
-                        android:textColor="#94A3B8"
+                        android:textColor="#FFFFFF66"
                         android:layout_marginTop="2dp" />
 
-                    <!-- Role Badge with Native Vector Icon -->
+                    <!-- Role badge — white/15% pill -->
                     <LinearLayout
                         android:id="@+id/layout_role_pill"
                         android:layout_width="wrap_content"
@@ -144,306 +151,310 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:background="@drawable/bg_hero_pill"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="5dp"
-                        android:layout_marginTop="12dp">
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:layout_marginTop="14dp">
 
                         <ImageView
                             android:id="@+id/iv_role_icon"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
                             android:src="@drawable/ic_shield_admin" />
 
                         <TextView
                             android:id="@+id/tv_role_badge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
+                            android:layout_marginStart="7dp"
                             android:textColor="@color/white"
                             android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:letterSpacing="0.02" />
                     </LinearLayout>
 
+                    <!-- Subtitle -->
                     <TextView
                         android:id="@+id/tv_subtitle_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Pannello Interventi e Manutenzioni"
                         android:textSize="12sp"
-                        android:textColor="#94A3B8"
-                        android:layout_marginTop="12dp" />
+                        android:textColor="#FFFFFF4D"
+                        android:letterSpacing="0.01"
+                        android:layout_marginTop="10dp" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Titolo Sezione Statistiche -->
+            <!-- ═══════════════════════════════════════════
+                 SECTION LABEL — like xelta.it "CHI SIAMO"
+            ═══════════════════════════════════════════ -->
             <TextView
                 android:id="@+id/tv_overview_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Panoramica Giornaliera"
-                android:textSize="15sp"
+                android:text="PANORAMICA"
+                android:textSize="11sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp" />
+                android:textColor="@color/primary"
+                android:letterSpacing="0.14"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="12dp" />
 
-            <!-- 2x2 Stat Cards Grid -->
+            <!-- ═══════════════════════════════════════════
+                 KPI CARDS ROW 1
+                 White cards, radius 22dp, ultra-soft shadow
+            ═══════════════════════════════════════════ -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <!-- Card Appuntamenti -->
+                <!-- Appuntamenti card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_appointments"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:cardCornerRadius="18dp"
-                    app:cardElevation="1dp"
+                    android:layout_marginEnd="6dp"
+                    app:cardCornerRadius="22dp"
+                    app:cardElevation="0dp"
                     app:strokeColor="@color/border_subtle"
-                    app:strokeWidth="1dp"
-                    android:layout_marginEnd="6dp">
+                    app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp"
-                        android:background="@color/surface">
+                        android:background="@color/surface"
+                        android:padding="18dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-
+                        <!-- Xelta-style red numbered badge -->
+                        <FrameLayout
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/bg_kpi_circle">
                             <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
                                 android:src="@drawable/ic_calendar_badge"
-                                android:background="@drawable/bg_kpi_circle"
-                                android:padding="5dp"
-                                app:tint="@color/primary" />
+                                app:tint="@color/white" />
+                        </FrameLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text="OGGI"
-                                android:textSize="11sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/text_muted"
-                                android:letterSpacing="0.06" />
-                        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OGGI"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_muted"
+                            android:letterSpacing="0.14"
+                            android:layout_marginTop="12dp" />
 
                         <TextView
                             android:id="@+id/tv_appointment_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0"
-                            android:textSize="32sp"
+                            android:textSize="36sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary"
-                            android:layout_marginTop="6dp" />
+                            android:letterSpacing="-0.02"
+                            android:layout_marginTop="2dp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Appuntamenti"
                             android:textSize="12sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="@color/text_muted" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Card Interventi -->
+                <!-- Interventi card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_interventions"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:cardCornerRadius="18dp"
-                    app:cardElevation="1dp"
+                    android:layout_marginStart="6dp"
+                    app:cardCornerRadius="22dp"
+                    app:cardElevation="0dp"
                     app:strokeColor="@color/border_subtle"
-                    app:strokeWidth="1dp"
-                    android:layout_marginStart="6dp">
+                    app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp"
-                        android:background="@color/surface">
+                        android:background="@color/surface"
+                        android:padding="18dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
+                        <FrameLayout
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/bg_kpi_circle">
                             <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
                                 android:src="@drawable/ic_precision_tech"
-                                android:background="@drawable/bg_kpi_circle"
-                                android:padding="5dp"
-                                app:tint="@color/secondary" />
+                                app:tint="@color/white" />
+                        </FrameLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text="IN CORSO"
-                                android:textSize="11sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/text_muted"
-                                android:letterSpacing="0.06" />
-                        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="IN CORSO"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_muted"
+                            android:letterSpacing="0.14"
+                            android:layout_marginTop="12dp" />
 
                         <TextView
                             android:id="@+id/tv_intervention_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0"
-                            android:textSize="32sp"
+                            android:textSize="36sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary"
-                            android:layout_marginTop="6dp" />
+                            android:letterSpacing="-0.02"
+                            android:layout_marginTop="2dp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Interventi attivi"
                             android:textSize="12sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="@color/text_muted" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
-            <!-- Second Row of Stat Cards -->
+            <!-- KPI CARDS ROW 2 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp">
 
-                <!-- Card Rubrica Clienti -->
+                <!-- Clienti card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_clients"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:cardCornerRadius="18dp"
-                    app:cardElevation="1dp"
+                    android:layout_marginEnd="6dp"
+                    app:cardCornerRadius="22dp"
+                    app:cardElevation="0dp"
                     app:strokeColor="@color/border_subtle"
-                    app:strokeWidth="1dp"
-                    android:layout_marginEnd="6dp">
+                    app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp"
-                        android:background="@color/surface">
+                        android:background="@color/surface"
+                        android:padding="18dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
+                        <FrameLayout
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/bg_kpi_circle">
                             <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
                                 android:src="@drawable/ic_person_badge"
-                                android:background="@drawable/bg_kpi_circle"
-                                android:padding="5dp"
-                                app:tint="#0D9488" />
+                                app:tint="@color/white" />
+                        </FrameLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text="CLIENTI"
-                                android:textSize="11sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/text_muted"
-                                android:letterSpacing="0.06" />
-                        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="CLIENTI"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_muted"
+                            android:letterSpacing="0.14"
+                            android:layout_marginTop="12dp" />
 
                         <TextView
                             android:id="@+id/tv_client_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0"
-                            android:textSize="32sp"
+                            android:textSize="36sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary"
-                            android:layout_marginTop="6dp" />
+                            android:letterSpacing="-0.02"
+                            android:layout_marginTop="2dp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Anagrafiche attive"
+                            android:text="Anagrafiche"
                             android:textSize="12sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="@color/text_muted" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Card Azione Rapida / Stato Cloud -->
+                <!-- Quick action card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_quick_action"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:cardCornerRadius="18dp"
-                    app:cardElevation="1dp"
+                    android:layout_marginStart="6dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardCornerRadius="22dp"
+                    app:cardElevation="0dp"
                     app:strokeColor="@color/border_subtle"
-                    app:strokeWidth="1dp"
-                    android:layout_marginStart="6dp">
+                    app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp"
-                        android:background="@color/surface">
+                        android:background="@color/surface"
+                        android:padding="18dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
+                        <FrameLayout
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/bg_kpi_circle">
                             <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
                                 android:src="@drawable/ic_cloud_connected"
-                                android:background="@drawable/bg_kpi_circle"
-                                android:padding="5dp"
-                                app:tint="#2563EB" />
+                                app:tint="@color/white" />
+                        </FrameLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text="AZIONE"
-                                android:textSize="11sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/text_muted"
-                                android:letterSpacing="0.06" />
-                        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="AZIONE"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_muted"
+                            android:letterSpacing="0.14"
+                            android:layout_marginTop="12dp" />
 
                         <TextView
                             android:id="@+id/tv_action_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="+"
-                            android:textSize="32sp"
+                            android:textSize="36sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary"
-                            android:layout_marginTop="6dp" />
+                            android:textColor="@color/primary"
+                            android:letterSpacing="-0.02"
+                            android:layout_marginTop="2dp" />
 
                         <TextView
                             android:id="@+id/tv_action_subtitle"
@@ -451,40 +462,43 @@
                             android:layout_height="wrap_content"
                             android:text="Nuovo Lavoro"
                             android:textSize="12sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="@color/text_muted" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
-            <!-- Card Gestione Team & Account -->
+            <!-- ═══════════════════════════════════════════
+                 GESTIONE TEAM — dark section xelta.it style
+                 bg #1f1f1f, testo bianco, accento rosso
+            ═══════════════════════════════════════════ -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_manage_team"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="1dp"
-                app:strokeColor="@color/border_subtle"
-                app:strokeWidth="1dp"
+                android:layout_marginTop="10dp"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:padding="16dp"
-                    android:background="@color/surface">
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="18dp"
+                    android:background="@color/surface_dark">
 
+                    <!-- Icon circle: red/10% on dark -->
                     <FrameLayout
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
                         android:background="@drawable/bg_client_avatar">
-
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_person_badge"
                             app:tint="@color/primary" />
@@ -501,88 +515,95 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Gestione Account &amp; Team"
-                            android:textSize="14sp"
+                            android:textSize="15sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="@color/white"
+                            android:letterSpacing="-0.01" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Visualizza ed elimina account Admin o Tecnici"
                             android:textSize="12sp"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="#FFFFFF66"
                             android:layout_marginTop="2dp" />
                     </LinearLayout>
 
+                    <!-- Arrow — Xelta red -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Gestisci →"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
+                        android:text="→"
+                        android:textSize="20sp"
                         android:textColor="@color/primary" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Titolo Prossimi Lavori Assegnati -->
+            <!-- ═══════════════════════════════════════════
+                 PROSSIMI LAVORI — section header
+            ═══════════════════════════════════════════ -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="8dp">
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="12dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Prossimi Lavori in Programma"
-                    android:textSize="15sp"
+                    android:text="Prossimi Lavori"
+                    android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@color/text_primary" />
+                    android:textColor="@color/text_primary"
+                    android:letterSpacing="-0.01" />
 
                 <TextView
                     android:id="@+id/tv_see_all_tasks"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vedi tutti"
+                    android:text="Vedi tutti →"
                     android:textSize="13sp"
                     android:textStyle="bold"
                     android:textColor="@color/primary"
                     android:padding="4dp" />
             </LinearLayout>
 
-            <!-- Task Preview Container Card -->
+            <!-- ═══════════════════════════════════════════
+                 TASK PREVIEW CARD — white, radius 22dp
+            ═══════════════════════════════════════════ -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_task_preview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="1dp"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="0dp"
                 app:strokeColor="@color/border_subtle"
-                app:strokeWidth="1dp"
-                android:layout_marginBottom="16dp">
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:id="@+id/layout_tasks_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp"
-                    android:background="@color/surface">
+                    android:background="@color/surface"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="18dp">
 
                     <TextView
                         android:id="@+id/tv_preview_empty"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Nessun lavoro in sospeso per oggi. Sei in pari!"
-                        android:textSize="13sp"
-                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_muted"
                         android:gravity="center"
-                        android:paddingVertical="12dp" />
+                        android:paddingVertical="16dp" />
 
-                    <!-- Slot Anteprima 1 -->
+                    <!-- Preview slot 1 -->
                     <LinearLayout
                         android:id="@+id/preview_slot_1"
                         android:layout_width="match_parent"
@@ -603,7 +624,8 @@
                                 android:layout_weight="1"
                                 android:textSize="15sp"
                                 android:textStyle="bold"
-                                android:textColor="@color/text_primary" />
+                                android:textColor="@color/text_primary"
+                                android:letterSpacing="-0.01" />
 
                             <TextView
                                 android:id="@+id/tv_p1_status"
@@ -611,8 +633,8 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="11sp"
                                 android:textStyle="bold"
-                                android:paddingHorizontal="8dp"
-                                android:paddingVertical="3dp"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="4dp"
                                 android:background="@drawable/badge_status_scheduled"
                                 android:textColor="@color/badge_scheduled_text" />
                         </LinearLayout>
@@ -626,8 +648,8 @@
 
                             <ImageView
                                 android:id="@+id/iv_p1_dept_icon"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
                                 android:src="@drawable/ic_dept_network" />
 
                             <TextView
@@ -643,8 +665,8 @@
                                 android:textColor="@color/text_primary" />
 
                             <ImageView
-                                android:layout_width="14dp"
-                                android:layout_height="14dp"
+                                android:layout_width="13dp"
+                                android:layout_height="13dp"
                                 android:src="@drawable/ic_time_clock"
                                 android:layout_marginStart="10dp"
                                 app:tint="@color/text_muted" />
@@ -663,22 +685,23 @@
                             android:id="@+id/tv_p1_desc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="12sp"
-                            android:textColor="@color/text_secondary"
+                            android:textSize="13sp"
+                            android:textColor="@color/text_muted"
                             android:layout_marginTop="4dp"
                             android:maxLines="1"
                             android:ellipsize="end" />
                     </LinearLayout>
 
+                    <!-- Divider -->
                     <View
                         android:id="@+id/divider_preview"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/border_subtle"
-                        android:layout_marginVertical="12dp"
+                        android:layout_marginVertical="14dp"
                         android:visibility="gone" />
 
-                    <!-- Slot Anteprima 2 -->
+                    <!-- Preview slot 2 -->
                     <LinearLayout
                         android:id="@+id/preview_slot_2"
                         android:layout_width="match_parent"
@@ -699,7 +722,8 @@
                                 android:layout_weight="1"
                                 android:textSize="15sp"
                                 android:textStyle="bold"
-                                android:textColor="@color/text_primary" />
+                                android:textColor="@color/text_primary"
+                                android:letterSpacing="-0.01" />
 
                             <TextView
                                 android:id="@+id/tv_p2_status"
@@ -707,8 +731,8 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="11sp"
                                 android:textStyle="bold"
-                                android:paddingHorizontal="8dp"
-                                android:paddingVertical="3dp"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="4dp"
                                 android:background="@drawable/badge_status_open"
                                 android:textColor="@color/badge_open_text" />
                         </LinearLayout>
@@ -722,8 +746,8 @@
 
                             <ImageView
                                 android:id="@+id/iv_p2_dept_icon"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
                                 android:src="@drawable/ic_dept_computer" />
 
                             <TextView
@@ -739,8 +763,8 @@
                                 android:textColor="@color/text_primary" />
 
                             <ImageView
-                                android:layout_width="14dp"
-                                android:layout_height="14dp"
+                                android:layout_width="13dp"
+                                android:layout_height="13dp"
                                 android:src="@drawable/ic_time_clock"
                                 android:layout_marginStart="10dp"
                                 app:tint="@color/text_muted" />
@@ -751,7 +775,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
                                 android:textSize="12sp"
-                                android:textColor="@color/secondary"
+                                android:textColor="@color/primary"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
@@ -759,8 +783,8 @@
                             android:id="@+id/tv_p2_desc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="12sp"
-                            android:textColor="@color/text_secondary"
+                            android:textSize="13sp"
+                            android:textColor="@color/text_muted"
                             android:layout_marginTop="4dp"
                             android:maxLines="1"
                             android:ellipsize="end" />
@@ -771,4 +795,5 @@
 
         </LinearLayout>
     </ScrollView>
+
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

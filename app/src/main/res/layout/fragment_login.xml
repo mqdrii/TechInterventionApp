@@ -11,63 +11,71 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center"
-        android:padding="24dp">
+        android:gravity="center_horizontal"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="48dp"
+        android:paddingBottom="32dp">
 
-        <!-- Logo / Icon -->
+        <!-- ─── Logo Xelta ─── -->
         <ImageView
             android:id="@+id/iv_logo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
             android:src="@drawable/xelta_logo"
             android:scaleType="fitCenter"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="8dp" />
 
+        <!-- App name -->
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textSize="28sp"
+            android:textSize="30sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
-            android:layout_marginTop="14dp" />
+            android:letterSpacing="-0.02"
+            android:layout_marginTop="16dp" />
 
+        <!-- Subtitle — muted like xelta.it -->
         <TextView
             android:id="@+id/tv_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Gestione Interventi e Appuntamenti"
-            android:textSize="13sp"
-            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:textColor="@color/text_muted"
             android:layout_marginTop="4dp" />
 
-        <!-- Login Card -->
+        <!-- ─── Login Card ─── -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="2dp"
+            app:cardCornerRadius="22dp"
+            app:cardElevation="0dp"
             app:strokeColor="@color/border_subtle"
             app:strokeWidth="1dp"
-            android:layout_marginTop="24dp">
+            android:layout_marginTop="28dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@color/surface"
-                android:padding="22dp">
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="28dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Accedi al tuo account"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:layout_marginBottom="16dp" />
+                    android:letterSpacing="-0.01"
+                    android:layout_marginBottom="20dp" />
 
+                <!-- Email Field -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_email"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -75,10 +83,15 @@
                     android:layout_height="wrap_content"
                     android:hint="Email"
                     android:textColorHint="@color/text_muted"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp">
+                    app:boxStrokeColor="@color/primary"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:boxCornerRadiusTopStart="14dp"
+                    app:boxCornerRadiusTopEnd="14dp"
+                    app:boxCornerRadiusBottomStart="14dp"
+                    app:boxCornerRadiusBottomEnd="14dp"
+                    app:hintTextColor="@color/primary"
+                    app:boxBackgroundColor="@color/surface">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_email"
@@ -89,6 +102,7 @@
                         android:imeOptions="actionNext" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Password Field -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_password"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -97,10 +111,15 @@
                     android:hint="Password"
                     android:textColorHint="@color/text_muted"
                     app:passwordToggleEnabled="true"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeColor="@color/primary"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:boxCornerRadiusTopStart="14dp"
+                    app:boxCornerRadiusTopEnd="14dp"
+                    app:boxCornerRadiusBottomStart="14dp"
+                    app:boxCornerRadiusBottomEnd="14dp"
+                    app:hintTextColor="@color/primary"
+                    app:boxBackgroundColor="@color/surface"
                     android:layout_marginTop="14dp">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -112,22 +131,24 @@
                         android:imeOptions="actionDone" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- CTA Button — Xelta pill red -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_login"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
                     android:text="Accedi"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
+                    android:letterSpacing="0.02"
                     app:backgroundTint="@color/primary"
-                    app:cornerRadius="12dp"
-                    android:layout_marginTop="20dp" />
+                    app:cornerRadius="999dp"
+                    android:layout_marginTop="24dp" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Register Link -->
+        <!-- Register link — Xelta style: red semibold -->
         <TextView
             android:id="@+id/tv_register"
             android:layout_width="wrap_content"
@@ -136,10 +157,10 @@
             android:textColor="@color/primary"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:padding="8dp"
-            android:layout_marginTop="16dp" />
+            android:padding="10dp"
+            android:layout_marginTop="12dp" />
 
-        <!-- Server Config Button -->
+        <!-- Server Config — subtle muted -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_server_config"
             style="@style/Widget.MaterialComponents.Button.TextButton"
@@ -148,11 +169,13 @@
             android:text="Configura Connessione Server"
             android:textColor="@color/text_muted"
             android:textSize="12sp"
+            android:letterSpacing="0.03"
+            android:textAllCaps="true"
             app:icon="@drawable/ic_settings_gear"
             app:iconTint="@color/text_muted"
             app:iconSize="14dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp" />
 
     </LinearLayout>
 </ScrollView>

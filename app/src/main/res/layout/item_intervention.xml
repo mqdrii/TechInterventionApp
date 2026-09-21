@@ -4,10 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="12dp"
-    android:layout_marginVertical="6dp"
-    app:cardCornerRadius="18dp"
-    app:cardElevation="1dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="5dp"
+    app:cardCornerRadius="22dp"
+    app:cardElevation="0dp"
     app:strokeColor="@color/border_subtle"
     app:strokeWidth="1dp">
 
@@ -16,9 +16,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/surface"
-        android:padding="16dp">
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="16dp">
 
-        <!-- Top Row: Client Name and Status Chip -->
+        <!-- Top Row: Client name + Status badge + Delete -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,7 +33,8 @@
                 android:layout_weight="1"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary"
+                android:letterSpacing="-0.01" />
 
             <TextView
                 android:id="@+id/tv_status"
@@ -42,12 +44,12 @@
                 android:textStyle="bold"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="4dp"
-                android:background="@drawable/badge_status_open"
-                android:textColor="@color/badge_open_text" />
+                android:background="@drawable/badge_status_in_progress"
+                android:textColor="@color/badge_in_progress_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_delete"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="8dp"
@@ -56,40 +58,37 @@
                 android:insetBottom="0dp"
                 android:insetLeft="0dp"
                 android:insetRight="0dp"
-                app:cornerRadius="8dp"
+                app:cornerRadius="999dp"
                 app:icon="@drawable/ic_delete"
                 app:iconGravity="textStart"
                 app:iconPadding="0dp"
-                app:iconTint="#EF4444"
-                app:strokeColor="#FCA5A5"
-                app:strokeWidth="1dp"
-                android:backgroundTint="#FEF2F2"
+                app:iconTint="@color/primary"
+                android:backgroundTint="@color/primary_subtle"
                 android:contentDescription="Elimina Intervento" />
         </LinearLayout>
 
-        <!-- Middle Row: Department Badge & Assigned Technician -->
+        <!-- Tags row -->
         <LinearLayout
             android:id="@+id/layout_tags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="10dp">
 
-            <!-- Department Pill with Vector Icon -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:background="@drawable/bg_badge_department"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="3dp">
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp">
 
                 <ImageView
                     android:id="@+id/iv_dept_icon"
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
                     android:src="@drawable/ic_dept_tools" />
 
                 <TextView
@@ -99,10 +98,9 @@
                     android:layout_marginStart="4dp"
                     android:textSize="11sp"
                     android:textStyle="bold"
-                    android:textColor="@color/text_primary" />
+                    android:textColor="@color/text_secondary" />
             </LinearLayout>
 
-            <!-- Assigned Tech Pill with Vector Icon -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,8 +109,8 @@
                 android:layout_marginStart="8dp">
 
                 <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
                     android:src="@drawable/ic_person_badge"
                     app:tint="@color/text_muted" />
 
@@ -122,32 +120,40 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:textSize="12sp"
-                    android:textColor="@color/text_secondary" />
+                    android:textColor="@color/text_muted" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Date Row with Vector Clock -->
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/border_subtle"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Date row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginTop="8dp">
+            android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="14dp"
-                android:layout_height="14dp"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
                 android:src="@drawable/ic_time_clock"
-                app:tint="@color/secondary" />
+                app:tint="@color/primary" />
 
             <TextView
                 android:id="@+id/tv_date"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:textColor="@color/secondary" />
+                android:textColor="@color/primary" />
         </LinearLayout>
 
         <!-- Description -->
@@ -156,8 +162,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="13sp"
-            android:textColor="@color/text_secondary"
-            android:layout_marginTop="6dp"
+            android:textColor="@color/text_muted"
+            android:layout_marginTop="5dp"
             android:maxLines="2"
             android:ellipsize="end" />
 

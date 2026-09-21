@@ -2,12 +2,12 @@
 <resources>
 
     <style name="Theme.TechInterventionApp" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Brand colors -->
+        <!-- Xelta Brand -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_variant</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/secondary</item>
-        <item name="colorSecondaryVariant">@color/secondary_variant</item>
+        <item name="colorSecondary">@color/primary</item>
+        <item name="colorSecondaryVariant">@color/primary_variant</item>
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorError">@color/error</item>
 
@@ -16,36 +16,82 @@
         <item name="colorSurface">@color/surface</item>
         <item name="colorOnSurface">@color/text_primary</item>
 
-        <!-- Global Text Colors - ALWAYS Dark and High Contrast -->
+        <!-- Text -->
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
         <item name="android:textColorHint">@color/text_muted</item>
 
-        <!-- Status & Navigation bars -->
+        <!-- System bars -->
         <item name="android:statusBarColor">@color/background</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:navigationBarColor">@color/surface</item>
         <item name="android:windowLightNavigationBar">true</item>
 
-        <!-- Text input styling -->
+        <!-- Input styling -->
         <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+
+        <!-- Bottom nav styling -->
+        <item name="bottomNavigationStyle">@style/Widget.App.BottomNav</item>
+
+        <!-- Card shape -->
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumCard</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.App.LargeCard</item>
     </style>
 
+    <!-- Premium Text Input — Xelta style (underline on focus, clean) -->
     <style name="Widget.App.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/primary</item>
         <item name="boxStrokeWidth">1.5dp</item>
-        <item name="boxCornerRadiusTopStart">12dp</item>
-        <item name="boxCornerRadiusTopEnd">12dp</item>
-        <item name="boxCornerRadiusBottomStart">12dp</item>
-        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxCornerRadiusTopStart">14dp</item>
+        <item name="boxCornerRadiusTopEnd">14dp</item>
+        <item name="boxCornerRadiusBottomStart">14dp</item>
+        <item name="boxCornerRadiusBottomEnd">14dp</item>
         <item name="hintTextColor">@color/primary</item>
         <item name="android:textColorHint">@color/text_muted</item>
+        <item name="boxBackgroundColor">@color/surface</item>
+    </style>
+
+    <!-- Card shapes -->
+    <style name="ShapeAppearance.App.MediumCard" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSize">18dp</item>
+    </style>
+
+    <style name="ShapeAppearance.App.LargeCard" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerSize">22dp</item>
+    </style>
+
+    <!-- Bottom Navigation -->
+    <style name="Widget.App.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemIconTint">@color/bottom_nav_colors</item>
+        <item name="itemTextColor">@color/bottom_nav_colors</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="itemBackground">@null</item>
+        <item name="android:background">@color/surface</item>
+        <item name="elevation">8dp</item>
     </style>
 
     <!-- Splash theme -->
     <style name="Theme.TechInterventionApp.Splash" parent="Theme.TechInterventionApp">
-        <item name="android:windowBackground">@color/primary</item>
+        <item name="android:windowBackground">@color/background</item>
+    </style>
+
+    <!-- Premium Button — Xelta pill style -->
+    <style name="Widget.App.Button.Primary" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/primary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">999dp</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Outlined Button -->
+    <style name="Widget.App.Button.Outline" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/primary</item>
+        <item name="strokeWidth">1.5dp</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="cornerRadius">999dp</item>
     </style>
 
 </resources>

@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Brand / Primary (Modern Deep Royal Blue) -->
-    <color name="primary">#1E40AF</color>
-    <color name="primary_light">#3B82F6</color>
-    <color name="primary_variant">#172554</color>
-    <color name="primary_subtle">#EFF6FF</color>
+    <!-- ══════════════════════════════════════════
+         XELTA BRAND COLORS — Premium Edition
+         Primary: Xelta Red #E24C4A
+         Dark:    Xelta Near-Black #1F1F1F
+    ═══════════════════════════════════════════ -->
 
-    <!-- Secondary / Accent (Energetic Amber / Orange) -->
-    <color name="secondary">#D97706</color>
-    <color name="secondary_light">#F59E0B</color>
-    <color name="secondary_variant">#B45309</color>
-    <color name="secondary_subtle">#FEF3C7</color>
+    <!-- Primary — Xelta Red -->
+    <color name="primary">#E24C4A</color>
+    <color name="primary_light">#E87472</color>
+    <color name="primary_variant">#C93B39</color>
+    <color name="primary_subtle">#FCF0F0</color>
 
-    <!-- Backgrounds (Modern Clean Crisp Light Theme) -->
-    <color name="background">#F8FAFC</color>
+    <!-- Secondary — Near Black (Xelta dark) -->
+    <color name="secondary">#1F1F1F</color>
+    <color name="secondary_light">#333333</color>
+    <color name="secondary_variant">#111111</color>
+    <color name="secondary_subtle">#F4F5F7</color>
+
+    <!-- Backgrounds — Xelta Light System -->
+    <color name="background">#F4F5F7</color>      <!-- Xelta #f4f5f7 -->
     <color name="surface">#FFFFFF</color>
-    <color name="surface_variant">#F1F5F9</color>
+    <color name="surface_variant">#F4F5F7</color>
+    <color name="surface_dark">#1F1F1F</color>    <!-- Dark section bg -->
 
-    <!-- Borders & Dividers -->
-    <color name="border_subtle">#E2E8F0</color>
-    <color name="border_strong">#CBD5E1</color>
+    <!-- Borders & Dividers — ultra subtle like xelta.it -->
+    <color name="border_subtle">#1F1F1F0D</color> <!-- black/5% -->
+    <color name="border_strong">#1F1F1F1A</color> <!-- black/10% -->
 
-    <!-- Text Colors - Ultra High Contrast (NO white-on-white!) -->
-    <color name="text_primary">#0F172A</color>    <!-- Deep crisp dark slate (black) -->
-    <color name="text_secondary">#334155</color>  <!-- Clear readable charcoal gray -->
-    <color name="text_muted">#64748B</color>      <!-- Subtitle slate gray -->
-    <color name="text_inverse">#FFFFFF</color>    <!-- White for text ON dark buttons only -->
-    <color name="on_surface">#0F172A</color>
+    <!-- Text Colors — Xelta #1f1f1f system -->
+    <color name="text_primary">#1F1F1F</color>
+    <color name="text_secondary">#1F1F1F8C</color>  <!-- 55% opacity -->
+    <color name="text_muted">#1F1F1F59</color>      <!-- 35% opacity -->
+    <color name="text_inverse">#FFFFFF</color>
+    <color name="text_on_dark">#FFFFFF</color>
+    <color name="text_on_dark_muted">#FFFFFF99</color>  <!-- white/60% -->
+    <color name="on_surface">#1F1F1F</color>
 
-    <!-- Status Badges Colors (Background + Text) -->
+    <!-- Status Badge Colors — refined -->
     <color name="badge_scheduled_bg">#EFF6FF</color>
     <color name="badge_scheduled_text">#1D4ED8</color>
 
@@ -38,19 +47,23 @@
     <color name="badge_cancelled_bg">#FEF2F2</color>
     <color name="badge_cancelled_text">#B91C1C</color>
 
-    <color name="badge_open_bg">#FFFBEB</color>
-    <color name="badge_open_text">#B45309</color>
+    <color name="badge_open_bg">#FFF7ED</color>
+    <color name="badge_open_text">#C2410C</color>
 
-    <color name="badge_in_progress_bg">#F5F3FF</color>
-    <color name="badge_in_progress_text">#6D28D9</color>
+    <color name="badge_in_progress_bg">#FCF0F0</color>
+    <color name="badge_in_progress_text">#E24C4A</color>
 
-    <!-- Status compatibility -->
+    <!-- Status compat -->
     <color name="status_scheduled">#1D4ED8</color>
     <color name="status_completed">#047857</color>
     <color name="status_cancelled">#B91C1C</color>
 
+    <!-- Xelta Red accent variants -->
+    <color name="accent_red_10">#E24C4A1A</color>  <!-- #E24C4A/10% -->
+    <color name="accent_red_15">#E24C4A26</color>  <!-- 15% -->
+
     <!-- System -->
-    <color name="error">#DC2626</color>
+    <color name="error">#E24C4A</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 </resources>

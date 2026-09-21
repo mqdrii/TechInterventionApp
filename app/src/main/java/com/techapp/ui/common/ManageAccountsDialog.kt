@@ -240,7 +240,7 @@ object ManageAccountsDialog {
                         email = updatedDto.email,
                         role = updatedDto.role,
                         department = updatedDto.department,
-                        token = session.getToken()
+                        token = session.getAuthToken() ?: ""
                     )
                 }
 

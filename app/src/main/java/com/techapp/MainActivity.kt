@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.techapp.databinding.ActivityMainBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -66,7 +69,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startPeriodicSync() {
-        androidx.lifecycle.lifecycleScope.launchWhenStarted {
+        lifecycleScope.launch {
             val session = com.techapp.utils.SessionManager(this@MainActivity)
             while (true) {
                 if (session.isLoggedIn()) {
@@ -74,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                         com.techapp.data.api.SyncManager.sync(this@MainActivity)
                     } catch (_: Exception) {}
                 }
-                kotlinx.coroutines.delay(20000) // 20s
+                delay(20000) // 20s
             }
         }
     }

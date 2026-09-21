@@ -5,8 +5,7 @@
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    app:colorSchemeColors="#E24C4A">
+    android:background="@color/background">
 
     <ScrollView
         android:layout_width="match_parent"

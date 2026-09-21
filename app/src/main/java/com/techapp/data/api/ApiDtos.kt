@@ -24,8 +24,21 @@ data class RegisterRequest(
 )
 
 data class AuthResponse(
-    val user: UserDto,
-    val token: String
+    val user: UserDto?,
+    val token: String?,
+    // OTP flow
+    val requiresVerification: Boolean = false,
+    val userId: Long? = null,
+    val message: String? = null
+)
+
+data class VerifyEmailRequest(
+    val userId: Long,
+    val otp: String
+)
+
+data class ResendOtpRequest(
+    val userId: Long
 )
 
 data class UserDto(
@@ -89,4 +102,18 @@ data class SyncResponse(
     val appointments: List<AppointmentDto>,
     val interventions: List<InterventionDto>,
     val technicians: List<UserDto>
+)
+
+data class UpdateUserRequest(
+    val firstName: String,
+    val lastName: String,
+    val department: String,
+    val role: String,
+    val password: String? = null
+)
+
+data class UpdateUserResponse(
+    val success: Boolean,
+    val user: UserDto? = null,
+    val error: String? = null
 )

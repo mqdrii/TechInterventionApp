@@ -63,4 +63,7 @@ interface AppointmentDao {
 
     @Query("DELETE FROM appointments")
     suspend fun deleteAllAppointments()
+
+    @Query("SELECT id FROM appointments")
+    suspend fun getAllAppointmentIds(): List<Long>
 }

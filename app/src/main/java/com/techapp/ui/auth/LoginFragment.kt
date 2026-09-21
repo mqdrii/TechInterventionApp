@@ -56,6 +56,13 @@ class LoginFragment : Fragment() {
                 is AuthViewModel.LoginResult.Success -> {
                     findNavController().navigate(R.id.action_login_to_dashboard)
                 }
+                is AuthViewModel.LoginResult.RequiresVerification -> {
+                    val bundle = Bundle().apply {
+                        putLong("userId", result.userId)
+                        putString("message", "Il tuo account non è ancora verificato. Inserisci il codice inviato via email.")
+                    }
+                    findNavController().navigate(R.id.action_login_to_verifyEmail, bundle)
+                }
                 is AuthViewModel.LoginResult.Error -> {
                     Snackbar.make(binding.root, result.message, Snackbar.LENGTH_LONG).show()
                 }

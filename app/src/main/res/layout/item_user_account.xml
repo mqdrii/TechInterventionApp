@@ -78,6 +78,28 @@
                 tools:text="Amministratore • Direzione" />
         </LinearLayout>
 
+        <!-- Edit Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_edit_user"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="6dp"
+            android:padding="0dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            app:cornerRadius="10dp"
+            app:icon="@drawable/ic_edit"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@color/primary"
+            app:strokeColor="@color/primary_light"
+            app:strokeWidth="1dp"
+            android:backgroundTint="#FCF0F0"
+            android:contentDescription="Personalizza Account" />
+
         <!-- Delete Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_delete_user"

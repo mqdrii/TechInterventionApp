@@ -66,4 +66,7 @@ interface InterventionDao {
 
     @Query("DELETE FROM interventions")
     suspend fun deleteAllInterventions()
+
+    @Query("SELECT id FROM interventions")
+    suspend fun getAllInterventionIds(): List<Long>
 }

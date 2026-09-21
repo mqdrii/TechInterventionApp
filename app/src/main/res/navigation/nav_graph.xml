@@ -20,13 +20,32 @@
             app:destination="@id/dashboardFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_login_to_verifyEmail"
+            app:destination="@id/verifyEmailFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.techapp.ui.auth.RegisterFragment"
         android:label="Registrati"
-        tools:layout="@layout/fragment_register" />
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_register_to_verifyEmail"
+            app:destination="@id/verifyEmailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/verifyEmailFragment"
+        android:name="com.techapp.ui.auth.VerifyEmailFragment"
+        android:label="Verifica Email"
+        tools:layout="@layout/fragment_verify_email">
+        <action
+            android:id="@+id/action_verifyEmail_to_dashboard"
+            app:destination="@id/dashboardFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <!-- MAIN -->
     <fragment

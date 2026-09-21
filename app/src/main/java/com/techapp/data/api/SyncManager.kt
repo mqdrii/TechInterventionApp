@@ -75,8 +75,9 @@ object SyncManager {
                     )
                 }
 
-                // 3) Sincronizza Appuntamenti e riconcilia eliminazioni dal server
+                // 3) Sincronizza Appuntamenti e notifica nuovi assegnati
                 val appointmentDao = db.appointmentDao()
+                val existingAptIds = appointmentDao.getAllAppointmentIds().toSet()
                 val serverAptIds = data.appointments.map { it.id }
                 if (serverAptIds.isEmpty()) {
                     appointmentDao.deleteAllAppointments()
@@ -84,6 +85,16 @@ object SyncManager {
                     appointmentDao.deleteAppointmentsNotIn(serverAptIds)
                 }
                 data.appointments.forEach { a ->
+                    val isAssignedToMe = (a.assignedUserId == currentUserId) ||
+                            (a.assignedUserId == 0L && (session.getUserDepartment().equals(a.department, true) || session.isAdmin()))
+                    if (isAssignedToMe && existingAptIds.isNotEmpty() && a.id !in existingAptIds) {
+                        com.techapp.utils.NotificationHelper.showNotification(
+                            context = context,
+                            notificationId = (10000 + a.id).toInt(),
+                            title = "Nuovo Appuntamento!",
+                            body = "${a.clientName} alle ${a.time} • ${a.description}"
+                        )
+                    }
                     appointmentDao.insert(
                         Appointment(
                             id = a.id,
@@ -96,8 +107,9 @@ object SyncManager {
                     )
                 }
 
-                // 4) Sincronizza Interventi e riconcilia eliminazioni dal server
+                // 4) Sincronizza Interventi e notifica nuovi assegnati
                 val interventionDao = db.interventionDao()
+                val existingIntvIds = interventionDao.getAllInterventionIds().toSet()
                 val serverIntvIds = data.interventions.map { it.id }
                 if (serverIntvIds.isEmpty()) {
                     interventionDao.deleteAllInterventions()
@@ -105,6 +117,16 @@ object SyncManager {
                     interventionDao.deleteInterventionsNotIn(serverIntvIds)
                 }
                 data.interventions.forEach { i ->
+                    val isAssignedToMe = (i.technicianId == currentUserId) ||
+                            (i.technicianId == 0L && (session.getUserDepartment().equals(i.department, true) || session.isAdmin()))
+                    if (isAssignedToMe && existingIntvIds.isNotEmpty() && i.id !in existingIntvIds) {
+                        com.techapp.utils.NotificationHelper.showNotification(
+                            context = context,
+                            notificationId = (20000 + i.id).toInt(),
+                            title = "Nuovo Intervento Assegnato!",
+                            body = "${i.clientName} • ${i.description}"
+                        )
+                    }
                     interventionDao.insert(
                         Intervention(
                             id = i.id, userId = i.technicianId,

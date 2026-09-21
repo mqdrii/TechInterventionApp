@@ -8,14 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.techapp.R
 import com.techapp.data.api.ApiClient
+import com.techapp.data.api.UpdateUserRequest
 import com.techapp.data.api.UserDto
 import com.techapp.data.db.AppDatabase
+import com.techapp.data.model.User
+import com.techapp.databinding.DialogEditUserBinding
 import com.techapp.databinding.DialogManageAccountsBinding
 import com.techapp.databinding.ItemUserAccountBinding
 import com.techapp.utils.SessionManager
@@ -43,9 +45,26 @@ object ManageAccountsDialog {
         val currentUserId = sessionManager.getUserId()
         val usersList = mutableListOf<UserDto>()
 
-        val adapter = AccountsAdapter(
+        lateinit var adapter: AccountsAdapter
+        adapter = AccountsAdapter(
             users = usersList,
             currentUserId = currentUserId,
+            onEditClick = { userToEdit ->
+                showEditUserDialog(
+                    context = context,
+                    user = userToEdit,
+                    scope = scope,
+                    currentUserId = currentUserId,
+                    onUpdated = { updatedUser ->
+                        val index = usersList.indexOfFirst { it.id == updatedUser.id }
+                        if (index != -1) {
+                            usersList[index] = updatedUser
+                            adapter.notifyItemChanged(index)
+                        }
+                        onAccountsChanged()
+                    }
+                )
+            },
             onDeleteClick = { userToDelete ->
                 confirmDeleteUser(
                     context = context,
@@ -84,7 +103,6 @@ object ManageAccountsDialog {
         binding.pbLoading.visibility = View.VISIBLE
         scope.launch {
             try {
-                // 1) Prova prima dal server
                 val api = ApiClient.getService(context)
                 val response = api.getAllUsers()
                 if (response.isSuccessful && response.body() != null) {
@@ -101,7 +119,6 @@ object ManageAccountsDialog {
                 }
             } catch (_: Exception) {}
 
-            // 2) Fallback dal DB locale se il server non risponde
             val localUsers = AppDatabase.getInstance(context).userDao().getAllUsersList()
             withContext(Dispatchers.Main) {
                 usersList.clear()
@@ -126,6 +143,118 @@ object ManageAccountsDialog {
         dialog.show()
     }
 
+    private fun showEditUserDialog(
+        context: Context,
+        user: UserDto,
+        scope: CoroutineScope,
+        currentUserId: Long,
+        onUpdated: (UserDto) -> Unit
+    ) {
+        val editBinding = DialogEditUserBinding.inflate(LayoutInflater.from(context))
+        val editDialog = AlertDialog.Builder(context)
+            .setView(editBinding.root)
+            .create()
+
+        editDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        editBinding.tvEditUserEmail.text = user.email
+        editBinding.etFirstName.setText(user.firstName)
+        editBinding.etLastName.setText(user.lastName)
+        editBinding.etDepartment.setText(user.department)
+
+        val isAdmin = user.role.equals("admin", true)
+        if (isAdmin) {
+            editBinding.rbRoleAdmin.isChecked = true
+        } else {
+            editBinding.rbRoleTech.isChecked = true
+        }
+
+        editBinding.btnCancel.setOnClickListener { editDialog.dismiss() }
+
+        editBinding.btnSaveUser.setOnClickListener {
+            val newFirst = editBinding.etFirstName.text?.toString()?.trim() ?: ""
+            val newLast = editBinding.etLastName.text?.toString()?.trim() ?: ""
+            val newDept = editBinding.etDepartment.text?.toString()?.trim() ?: "Generale"
+            val newRole = if (editBinding.rbRoleAdmin.isChecked) "ADMIN" else "TECHNICIAN"
+            val newPass = editBinding.etNewPassword.text?.toString()?.trim()?.takeIf { it.isNotBlank() }
+
+            if (newFirst.isBlank() || newLast.isBlank()) {
+                Toast.makeText(context, "Nome e Cognome sono obbligatori", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            editBinding.btnSaveUser.isEnabled = false
+
+            scope.launch {
+                val updatedDto = try {
+                    val api = ApiClient.getService(context)
+                    val response = api.updateUser(
+                        id = user.id,
+                        req = UpdateUserRequest(
+                            firstName = newFirst,
+                            lastName = newLast,
+                            department = newDept,
+                            role = newRole,
+                            password = newPass
+                        )
+                    )
+                    if (response.isSuccessful && response.body()?.user != null) {
+                        response.body()!!.user!!
+                    } else {
+                        null
+                    }
+                } catch (_: Exception) {
+                    null
+                } ?: UserDto(
+                    id = user.id,
+                    email = user.email,
+                    firstName = newFirst,
+                    lastName = newLast,
+                    fullName = "$newFirst $newLast",
+                    role = newRole,
+                    department = newDept
+                )
+
+                // Salva nel DB locale Room
+                try {
+                    val db = AppDatabase.getInstance(context)
+                    db.userDao().upsert(
+                        User(
+                            id = updatedDto.id,
+                            email = updatedDto.email,
+                            firstName = updatedDto.firstName,
+                            lastName = updatedDto.lastName,
+                            role = updatedDto.role.lowercase(),
+                            department = updatedDto.department,
+                            passwordHash = ""
+                        )
+                    )
+                } catch (_: Exception) {}
+
+                // Se l'utente ha modificato se stesso, aggiorna la sessione
+                if (user.id == currentUserId) {
+                    val session = SessionManager(context)
+                    session.saveSession(
+                        userId = updatedDto.id,
+                        fullName = "${updatedDto.firstName} ${updatedDto.lastName}",
+                        email = updatedDto.email,
+                        role = updatedDto.role,
+                        department = updatedDto.department,
+                        token = session.getToken()
+                    )
+                }
+
+                withContext(Dispatchers.Main) {
+                    editDialog.dismiss()
+                    Toast.makeText(context, "Account di ${updatedDto.firstName} personalizzato con successo!", Toast.LENGTH_SHORT).show()
+                    onUpdated(updatedDto)
+                }
+            }
+        }
+
+        editDialog.show()
+    }
+
     private fun confirmDeleteUser(
         context: Context,
         user: UserDto,
@@ -148,13 +277,11 @@ object ManageAccountsDialog {
             .setNegativeButton("Annulla", null)
             .setPositiveButton("Elimina") { _, _ ->
                 scope.launch {
-                    // 1) Elimina dal server API
                     try {
                         val api = ApiClient.getService(context)
                         api.deleteUser(user.id)
                     } catch (_: Exception) {}
 
-                    // 2) Elimina dal DB locale sia per ID che per email
                     try {
                         val db = AppDatabase.getInstance(context)
                         db.userDao().deleteById(user.id)
@@ -173,6 +300,7 @@ object ManageAccountsDialog {
     private class AccountsAdapter(
         private val users: List<UserDto>,
         private val currentUserId: Long,
+        private val onEditClick: (UserDto) -> Unit,
         private val onDeleteClick: (UserDto) -> Unit
     ) : RecyclerView.Adapter<AccountsAdapter.ViewHolder>() {
 
@@ -193,17 +321,21 @@ object ManageAccountsDialog {
 
             if (isAdmin) {
                 holder.binding.ivUserIcon.setImageResource(R.drawable.ic_shield_admin)
-                holder.binding.ivUserIcon.setColorFilter(Color.parseColor("#D97706"))
+                holder.binding.ivUserIcon.setColorFilter(Color.parseColor("#E24C4A"))
                 holder.binding.tvUserRoleBadge.text = "AMMINISTRATORE"
-                holder.binding.tvUserRoleBadge.setTextColor(Color.parseColor("#B45309"))
-                holder.binding.tvUserRoleBadge.setBackgroundColor(Color.parseColor("#FEF3C7"))
+                holder.binding.tvUserRoleBadge.setTextColor(Color.parseColor("#E24C4A"))
+                holder.binding.tvUserRoleBadge.setBackgroundColor(Color.parseColor("#FCF0F0"))
             } else {
                 holder.binding.ivUserIcon.setImageResource(R.drawable.ic_precision_tech)
-                holder.binding.ivUserIcon.setColorFilter(Color.parseColor("#059669"))
+                holder.binding.ivUserIcon.setColorFilter(Color.parseColor("#1F1F1F"))
                 val dept = if (user.department.isNotBlank()) user.department else "Generale"
                 holder.binding.tvUserRoleBadge.text = "TECNICO • $dept"
-                holder.binding.tvUserRoleBadge.setTextColor(Color.parseColor("#047857"))
-                holder.binding.tvUserRoleBadge.setBackgroundColor(Color.parseColor("#D1FAE5"))
+                holder.binding.tvUserRoleBadge.setTextColor(Color.parseColor("#1F1F1F"))
+                holder.binding.tvUserRoleBadge.setBackgroundColor(Color.parseColor("#F4F5F7"))
+            }
+
+            holder.binding.btnEditUser.setOnClickListener {
+                onEditClick(user)
             }
 
             holder.binding.btnDeleteUser.setOnClickListener {

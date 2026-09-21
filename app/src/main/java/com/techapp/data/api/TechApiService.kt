@@ -55,4 +55,16 @@ interface TechApiService {
 
     @DELETE("api/interventions/{id}")
     suspend fun deleteIntervention(@Path("id") id: Long): Response<GenericResponse>
+
+    @POST("api/auth/verify-email")
+    suspend fun verifyEmail(@Body req: VerifyEmailRequest): Response<AuthResponse>
+
+    @POST("api/auth/resend-otp")
+    suspend fun resendOtp(@Body req: ResendOtpRequest): Response<GenericResponse>
+
+    @PUT("api/auth/users/{id}")
+    suspend fun updateUser(
+        @Path("id") id: Long,
+        @Body req: UpdateUserRequest
+    ): Response<UpdateUserResponse>
 }

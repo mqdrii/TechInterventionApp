@@ -17,7 +17,8 @@ class MainActivity : AppCompatActivity() {
     // Destinazioni che nascondono la bottom nav (schermate auth)
     private val authDestinations = setOf(
         R.id.loginFragment,
-        R.id.registerFragment
+        R.id.registerFragment,
+        R.id.verifyEmailFragment
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +26,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Inizializza canale notifiche
+        com.techapp.utils.NotificationHelper.initChannel(this)
+
+        // Richiedi permesso notifiche su Android 13+ (API 33)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (androidx.core.content.ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.POST_NOTIFICATIONS
+                ) != android.content.pm.PackageManager.PERMISSION_GRANTED
+            ) {
+                androidx.core.app.ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                    1001
+                )
+            }
+        }
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -39,6 +58,23 @@ class MainActivity : AppCompatActivity() {
                 binding.bottomNavigation.visibility = View.GONE
             } else {
                 binding.bottomNavigation.visibility = View.VISIBLE
+            }
+        }
+
+        // Avvia sincronizzazione periodica in background (ogni 20 secondi) per ricevere notifiche di nuovi lavori
+        startPeriodicSync()
+    }
+
+    private fun startPeriodicSync() {
+        androidx.lifecycle.lifecycleScope.launchWhenStarted {
+            val session = com.techapp.utils.SessionManager(this@MainActivity)
+            while (true) {
+                if (session.isLoggedIn()) {
+                    try {
+                        com.techapp.data.api.SyncManager.sync(this@MainActivity)
+                    } catch (_: Exception) {}
+                }
+                kotlinx.coroutines.delay(20000) // 20s
             }
         }
     }

@@ -70,6 +70,13 @@ class RegisterFragment : Fragment() {
                     Snackbar.make(binding.root, "Account creato! Accedi ora.", Snackbar.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 }
+                is AuthViewModel.RegisterResult.RequiresVerification -> {
+                    val bundle = Bundle().apply {
+                        putLong("userId", result.userId)
+                        putString("message", result.message)
+                    }
+                    findNavController().navigate(R.id.action_register_to_verifyEmail, bundle)
+                }
                 is AuthViewModel.RegisterResult.Error -> {
                     Snackbar.make(binding.root, result.message, Snackbar.LENGTH_LONG).show()
                 }

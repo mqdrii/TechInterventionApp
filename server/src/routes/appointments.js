@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const { sendAssignmentEmail } = require('../mailer');
 
 // Get appointments
 router.get('/', (req, res) => {
@@ -48,7 +49,8 @@ router.post('/', (req, res) => {
     [clientId, clientName.trim(), date.trim(), time.trim(), description.trim(), department.trim(), assignedUserId, assignedUserName.trim()],
     function(err) {
       if (err) return res.status(500).json({ error: err.message });
-      res.status(201).json({
+
+      const result = {
         id: this.lastID,
         clientId,
         clientName: clientName.trim(),
@@ -59,7 +61,22 @@ router.post('/', (req, res) => {
         assignedUserId,
         assignedUserName: assignedUserName.trim(),
         status: 'Programmato'
-      });
+      };
+
+      // Invia email notifica al tecnico assegnato (se presente)
+      if (assignedUserId && assignedUserId > 0) {
+        db.get(`SELECT email, first_name FROM users WHERE id = ?`, [assignedUserId], (uErr, user) => {
+          if (!uErr && user) {
+            sendAssignmentEmail(
+              user.email, user.first_name,
+              'Appuntamento', clientName.trim(),
+              `${date.trim()} ${time.trim()}`, description.trim()
+            ).catch(() => {});
+          }
+        });
+      }
+
+      res.status(201).json(result);
     }
   );
 });

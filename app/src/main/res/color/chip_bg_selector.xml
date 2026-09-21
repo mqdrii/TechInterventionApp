@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Selezionato: sfondo rosso Xelta -->
+    <item android:color="#E24C4A" android:state_checked="true" />
+    <!-- Non selezionato: bianco -->
+    <item android:color="#FFFFFF" />
+</selector>

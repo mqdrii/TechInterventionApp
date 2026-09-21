@@ -47,8 +47,9 @@
     <color name="badge_cancelled_bg">#FEF2F2</color>
     <color name="badge_cancelled_text">#B91C1C</color>
 
-    <color name="badge_open_bg">#FFF7ED</color>
-    <color name="badge_open_text">#C2410C</color>
+    <!-- Aperto — rosso Xelta invece di ambra -->
+    <color name="badge_open_bg">#FCF0F0</color>
+    <color name="badge_open_text">#E24C4A</color>
 
     <color name="badge_in_progress_bg">#FCF0F0</color>
     <color name="badge_in_progress_text">#E24C4A</color>

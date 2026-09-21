@@ -48,31 +48,52 @@
                 android:layout_marginTop="2dp" />
         </LinearLayout>
 
-        <!-- Filter chips -->
-        <com.google.android.material.chip.ChipGroup
+        <!-- Filter chips — Xelta red style -->
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="16dp"
             android:paddingVertical="6dp"
-            app:singleSelection="true">
+            android:scrollbars="none">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_all"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
+            <com.google.android.material.chip.ChipGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tutti gli interventi"
-                android:textColor="@color/text_primary"
-                android:checked="true" />
+                app:singleSelection="true"
+                app:chipSpacingHorizontal="8dp">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_open"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Solo Aperti / In corso"
-                android:textColor="@color/text_primary" />
-        </com.google.android.material.chip.ChipGroup>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_all"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="Tutti gli interventi"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:chipBackgroundColor="@color/surface"
+                    app:chipStrokeColor="@color/border_strong"
+                    app:chipStrokeWidth="1dp"
+                    app:checkedIconVisible="false"
+                    app:chipCornerRadius="999dp"
+                    android:checked="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_open"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="Aperti / In corso"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:chipBackgroundColor="@color/surface"
+                    app:chipStrokeColor="@color/border_strong"
+                    app:chipStrokeWidth="1dp"
+                    app:checkedIconVisible="false"
+                    app:chipCornerRadius="999dp" />
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
 
         <!-- SwipeRefreshLayout -->
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

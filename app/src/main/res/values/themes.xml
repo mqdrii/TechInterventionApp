@@ -94,4 +94,15 @@
         <item name="cornerRadius">999dp</item>
     </style>
 
+    <!-- Chip selezionato: rosso Xelta; non selezionato: bianco con bordo -->
+    <style name="Widget.App.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/chip_bg_selector</item>
+        <item name="android:textColor">@color/chip_text_selector</item>
+        <item name="chipStrokeColor">@color/primary</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="chipCornerRadius">999dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

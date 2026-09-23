@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const https = require('https');
 
 let lastMailStatus = {
   lastAttempt: null,
@@ -10,29 +11,58 @@ let lastMailStatus = {
 };
 
 /**
+ * Helper: HTTP POST con https nativo (funziona su tutti i Node.js)
+ */
+function httpsPost(hostname, path, headers, body) {
+  return new Promise((resolve, reject) => {
+    const data = JSON.stringify(body);
+    const options = {
+      hostname,
+      port: 443,
+      path,
+      method: 'POST',
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(data)
+      }
+    };
+    const req = https.request(options, (res) => {
+      let raw = '';
+      res.on('data', (chunk) => raw += chunk);
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(raw);
+          if (res.statusCode >= 200 && res.statusCode < 300) {
+            resolve(parsed);
+          } else {
+            reject(new Error(parsed.message || parsed.name || raw));
+          }
+        } catch (e) {
+          reject(new Error(raw));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.setTimeout(10000, () => { req.destroy(); reject(new Error('HTTPS request timeout')); });
+    req.write(data);
+    req.end();
+  });
+}
+
+/**
  * Invia email tramite Resend API (porta 443 HTTPS - MAI bloccata da Render Free)
  */
 async function sendViaResend(apiKey, toEmail, subject, htmlContent) {
   const fromAddress = process.env.EMAIL_FROM || 'Xelta App <onboarding@resend.dev>';
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey.trim()}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      from: fromAddress,
-      to: [toEmail],
-      subject: subject,
-      html: htmlContent
-    })
+  return await httpsPost('api.resend.com', '/emails', {
+    'Authorization': `Bearer ${apiKey.trim()}`
+  }, {
+    from: fromAddress,
+    to: [toEmail],
+    subject: subject,
+    html: htmlContent
   });
-
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || JSON.stringify(data));
-  }
-  return data;
 }
 
 /**
@@ -40,26 +70,16 @@ async function sendViaResend(apiKey, toEmail, subject, htmlContent) {
  */
 async function sendViaBrevo(apiKey, toEmail, subject, htmlContent) {
   const senderEmail = (process.env.EMAIL_USER || 'noreply@xelta.it').trim();
-  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'POST',
-    headers: {
-      'api-key': apiKey.trim(),
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      sender: { name: 'Xelta', email: senderEmail },
-      to: [{ email: toEmail }],
-      subject: subject,
-      htmlContent: htmlContent
-    })
+  return await httpsPost('api.brevo.com', '/v3/smtp/email', {
+    'api-key': apiKey.trim()
+  }, {
+    sender: { name: 'Xelta', email: senderEmail },
+    to: [{ email: toEmail }],
+    subject: subject,
+    htmlContent: htmlContent
   });
-
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || JSON.stringify(data));
-  }
-  return data;
 }
+
 
 /**
  * Invia email tramite SMTP Gmail classico (funziona solo se Render non blocca le porte SMTP)

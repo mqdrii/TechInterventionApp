@@ -69,11 +69,11 @@ async function sendViaResend(apiKey, toEmail, subject, htmlContent) {
  * Invia email tramite Brevo API (porta 443 HTTPS - MAI bloccata da Render Free)
  */
 async function sendViaBrevo(apiKey, toEmail, subject, htmlContent) {
-  const senderEmail = (process.env.EMAIL_USER || 'noreply@xelta.it').trim();
+  const senderEmail = (process.env.EMAIL_USER || 'danielemurruni20@gmail.com').trim();
   return await httpsPost('api.brevo.com', '/v3/smtp/email', {
     'api-key': apiKey.trim()
   }, {
-    sender: { name: 'Xelta', email: senderEmail },
+    sender: { name: 'Xelta App', email: senderEmail },
     to: [{ email: toEmail }],
     subject: subject,
     htmlContent: htmlContent

@@ -62,10 +62,16 @@ router.post('/register', async (req, res) => {
             console.error('[AUTH] Errore invio email verifica:', e)
           );
 
+          const emailConfigured = Boolean(process.env.EMAIL_USER && process.env.EMAIL_PASS);
+          const msg = emailConfigured
+            ? `Controlla la tua email ${emailLower} — hai ricevuto un codice di verifica a 6 cifre.`
+            : `Servizio email non ancora configurato su Render. Il tuo codice di verifica è: ${otp}`;
+
           res.status(201).json({
             requiresVerification: true,
             userId,
-            message: `Controlla la tua email ${emailLower} — hai ricevuto un codice di verifica a 6 cifre.`
+            devOtp: emailConfigured ? undefined : otp,
+            message: msg
           });
         }
       );
@@ -141,7 +147,11 @@ router.post('/resend-otp', (req, res) => {
       [userId, otp, expiresAt],
       async () => {
         await sendVerificationEmail(user.email, otp, user.first_name);
-        res.json({ message: 'Nuovo codice inviato. Controlla la tua email.' });
+        const emailConfigured = Boolean(process.env.EMAIL_USER && process.env.EMAIL_PASS);
+        const msg = emailConfigured
+          ? 'Nuovo codice inviato. Controlla la tua email.'
+          : `Servizio email non configurato su Render. Codice di verifica: ${otp}`;
+        res.json({ message: msg, devOtp: emailConfigured ? undefined : otp });
       }
     );
   });
@@ -167,11 +177,16 @@ router.post('/login', (req, res) => {
 
       // Controlla se verificato
       if (user.is_verified === 0) {
-        return res.status(403).json({
-          error: 'Account non verificato. Controlla la tua email per il codice di attivazione.',
-          requiresVerification: true,
-          userId: user.id
+        db.get(`SELECT otp FROM email_verifications WHERE user_id = ?`, [user.id], (vErr, vRow) => {
+          const emailConfigured = Boolean(process.env.EMAIL_USER && process.env.EMAIL_PASS);
+          const devHint = (!emailConfigured && vRow) ? ` (Codice test: ${vRow.otp})` : '';
+          return res.status(403).json({
+            error: `Account non verificato. Controlla la tua email${devHint}.`,
+            requiresVerification: true,
+            userId: user.id
+          });
         });
+        return;
       }
 
       const userData = {

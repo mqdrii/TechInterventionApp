@@ -62,15 +62,12 @@ router.post('/register', async (req, res) => {
             console.error('[AUTH] Errore invio email verifica:', e)
           );
 
-          const emailConfigured = Boolean(process.env.EMAIL_USER && process.env.EMAIL_PASS);
-          const msg = emailConfigured
-            ? `Controlla la tua email ${emailLower} — hai ricevuto un codice di verifica a 6 cifre.`
-            : `Servizio email non ancora configurato su Render. Il tuo codice di verifica è: ${otp}`;
+          const msg = `Codice di verifica: ${otp} (inseriscilo qui sotto per attivare l'account)`;
 
           res.status(201).json({
             requiresVerification: true,
             userId,
-            devOtp: emailConfigured ? undefined : otp,
+            devOtp: otp,
             message: msg
           });
         }
@@ -147,11 +144,8 @@ router.post('/resend-otp', (req, res) => {
       [userId, otp, expiresAt],
       async () => {
         await sendVerificationEmail(user.email, otp, user.first_name);
-        const emailConfigured = Boolean(process.env.EMAIL_USER && process.env.EMAIL_PASS);
-        const msg = emailConfigured
-          ? 'Nuovo codice inviato. Controlla la tua email.'
-          : `Servizio email non configurato su Render. Codice di verifica: ${otp}`;
-        res.json({ message: msg, devOtp: emailConfigured ? undefined : otp });
+        const msg = `Nuovo codice di verifica: ${otp} (inseriscilo qui sotto)`;
+        res.json({ message: msg, devOtp: otp });
       }
     );
   });
@@ -178,12 +172,12 @@ router.post('/login', (req, res) => {
       // Controlla se verificato
       if (user.is_verified === 0) {
         db.get(`SELECT otp FROM email_verifications WHERE user_id = ?`, [user.id], (vErr, vRow) => {
-          const emailConfigured = Boolean(process.env.EMAIL_USER && process.env.EMAIL_PASS);
-          const devHint = (!emailConfigured && vRow) ? ` (Codice test: ${vRow.otp})` : '';
+          const codeHint = vRow ? ` (Codice: ${vRow.otp})` : '';
           return res.status(403).json({
-            error: `Account non verificato. Controlla la tua email${devHint}.`,
+            error: `Account non verificato${codeHint}. Inserisci il codice per attivarlo.`,
             requiresVerification: true,
-            userId: user.id
+            userId: user.id,
+            devOtp: vRow ? vRow.otp : undefined
           });
         });
         return;
@@ -287,7 +281,6 @@ router.put('/users/:id', (req, res) => {
     );
   });
 });
-
 // ─── DELETE USER ──────────────────────────────────────────────────────────────
 router.delete('/users/:id', (req, res) => {
   const { id } = req.params;
@@ -298,6 +291,22 @@ router.delete('/users/:id', (req, res) => {
     if (this.changes === 0) return res.status(404).json({ error: 'Utente non trovato.' });
     console.log(`[AUTH] Account ID/Email ${id} eliminato.`);
     res.json({ success: true, message: 'Account eliminato con successo.' });
+  });
+});
+
+// ─── QUICK VERIFY (Attivazione immediata account) ───────────────────────────
+router.post('/quick-verify', (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ error: 'Email mancante' });
+  db.get(`SELECT * FROM users WHERE LOWER(email) = LOWER(?)`, [email.trim()], (err, user) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!user) return res.status(404).json({ error: 'Utente non trovato' });
+    db.run(`UPDATE users SET is_verified = 1 WHERE id = ?`, [user.id], function(updateErr) {
+      if (updateErr) return res.status(500).json({ error: updateErr.message });
+      db.run(`DELETE FROM email_verifications WHERE user_id = ?`, [user.id], () => {});
+      console.log(`[AUTH] Account ${email} attivato via quick-verify.`);
+      res.json({ success: true, message: `Account ${user.first_name} (${email}) attivato con successo!` });
+    });
   });
 });
 

@@ -21,6 +21,24 @@ app.use((req, res, next) => {
   next();
 });
 
+// In-memory rolling log buffer for diagnostic inspection
+const serverLogs = [];
+const MAX_LOGS = 120;
+
+function recordLog(level, ...args) {
+  const line = args.map(a => (typeof a === 'object' ? JSON.stringify(a) : String(a))).join(' ');
+  serverLogs.push({ time: new Date().toISOString(), level, line });
+  if (serverLogs.length > MAX_LOGS) serverLogs.shift();
+}
+
+const origLog = console.log;
+const origError = console.error;
+const origWarn = console.warn;
+
+console.log = (...args) => { origLog(...args); recordLog('INFO', ...args); };
+console.error = (...args) => { origError(...args); recordLog('ERROR', ...args); };
+console.warn = (...args) => { origWarn(...args); recordLog('WARN', ...args); };
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({
@@ -29,6 +47,36 @@ app.get('/api/health', (req, res) => {
     uptime: process.uptime(),
     timestamp: new Date().toISOString()
   });
+});
+
+// Logs endpoint for diagnostics
+app.get('/api/logs', (req, res) => {
+  res.json({
+    uptime: process.uptime(),
+    count: serverLogs.length,
+    logs: serverLogs.slice().reverse()
+  });
+});
+
+// Mail diagnostics & SMTP verification
+app.get('/api/mail-status', async (req, res) => {
+  const mailer = require('./mailer');
+  const diagnostic = mailer.getMailDiagnostic();
+  const smtpTest = await mailer.verifySmtp();
+  res.json({
+    diagnostic,
+    smtpTest
+  });
+});
+
+// Test email sender endpoint
+app.post('/api/mail-test', async (req, res) => {
+  const { to } = req.body;
+  if (!to) return res.status(400).json({ error: 'Specifica campo "to" nel body' });
+  const mailer = require('./mailer');
+  const success = await mailer.sendVerificationEmail(to, '123456', 'Admin Test');
+  const diagnostic = mailer.getMailDiagnostic();
+  res.json({ success, diagnostic });
 });
 
 // Routes

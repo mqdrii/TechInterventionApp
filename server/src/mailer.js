@@ -1,32 +1,93 @@
 const nodemailer = require('nodemailer');
 
-// Transporter Gmail — credenziali da variabili ambiente Render
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER || '',
-    pass: process.env.EMAIL_PASS || ''
+let lastMailStatus = {
+  lastAttempt: null,
+  success: null,
+  to: null,
+  error: null,
+  code: null,
+  response: null
+};
+
+function getTransporter() {
+  const user = (process.env.EMAIL_USER || '').trim();
+  const pass = (process.env.EMAIL_PASS || '').trim().replace(/\s+/g, '');
+  return nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user, pass }
+  });
+}
+
+function getMailDiagnostic() {
+  const rawUser = process.env.EMAIL_USER || '';
+  const rawPass = process.env.EMAIL_PASS || '';
+  const cleanUser = rawUser.trim();
+  const cleanPass = rawPass.trim().replace(/\s+/g, '');
+
+  return {
+    emailUserConfigured: Boolean(cleanUser),
+    emailUserMasked: cleanUser
+      ? cleanUser.replace(/^(.{2})(.*)(@.*)$/, (_, a, b, c) => a + '*'.repeat(Math.max(1, Math.min(b.length, 6))) + c)
+      : null,
+    emailPassConfigured: Boolean(cleanPass),
+    emailPassLength: cleanPass.length,
+    rawPassLength: rawPass.length,
+    hadSpacesRemoved: rawPass.length !== cleanPass.length,
+    lastMailStatus
+  };
+}
+
+async function verifySmtp() {
+  const cleanUser = (process.env.EMAIL_USER || '').trim();
+  const cleanPass = (process.env.EMAIL_PASS || '').trim().replace(/\s+/g, '');
+
+  if (!cleanUser || !cleanPass) {
+    return {
+      ok: false,
+      error: 'EMAIL_USER o EMAIL_PASS non configurati su Render (Environment Variables).'
+    };
   }
-});
+
+  try {
+    const transporter = getTransporter();
+    await transporter.verify();
+    return { ok: true, message: 'Autenticazione SMTP con Gmail avvenuta con SUCCESSO!' };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err.message,
+      code: err.code || 'UNKNOWN',
+      response: err.response || null,
+      responseCode: err.responseCode || null
+    };
+  }
+}
 
 /**
  * Invia OTP di verifica email
- * @param {string} toEmail - indirizzo destinatario
- * @param {string} otp - codice 6 cifre
- * @param {string} firstName - nome utente
  */
 async function sendVerificationEmail(toEmail, otp, firstName) {
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    console.warn('[MAILER] EMAIL_USER/EMAIL_PASS non configurati — email non inviata');
+  const cleanUser = (process.env.EMAIL_USER || '').trim();
+  const cleanPass = (process.env.EMAIL_PASS || '').trim().replace(/\s+/g, '');
+
+  lastMailStatus.lastAttempt = new Date().toISOString();
+  lastMailStatus.to = toEmail;
+
+  if (!cleanUser || !cleanPass) {
+    console.warn('[MAILER] EMAIL_USER o EMAIL_PASS non configurati — email NON inviata');
+    lastMailStatus.success = false;
+    lastMailStatus.error = 'EMAIL_USER/EMAIL_PASS mancanti su Render';
     return false;
   }
 
+  const transporter = getTransporter();
+
   const mailOptions = {
-    from: `"Xelta App" <${process.env.EMAIL_USER}>`,
+    from: `"Xelta" <${cleanUser}>`,
     to: toEmail,
     subject: 'Xelta — Codice di verifica account',
     html: `
-      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; background: #f4f5f7; padding: 32px 16px;">
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; background: #f4f5f7; padding: 32px 16px;">
         <div style="background: #1f1f1f; border-radius: 16px; padding: 28px 32px; text-align: center; margin-bottom: 24px;">
           <h1 style="color: #ffffff; font-size: 24px; margin: 0; letter-spacing: -0.5px;">Xelta</h1>
           <p style="color: #ffffff80; font-size: 13px; margin: 4px 0 0;">Gestione Interventi e Appuntamenti</p>
@@ -44,36 +105,42 @@ async function sendVerificationEmail(toEmail, otp, firstName) {
   };
 
   try {
-    await transporter.sendMail(mailOptions);
-    console.log(`[MAILER] OTP inviato a ${toEmail}`);
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`[MAILER] OTP inviato con successo a ${toEmail} (MessageId: ${info.messageId})`);
+    lastMailStatus.success = true;
+    lastMailStatus.error = null;
+    lastMailStatus.response = info.response;
     return true;
   } catch (err) {
-    console.error('[MAILER] Errore invio email:', err.message);
+    console.error(`[MAILER] Errore invio email a ${toEmail}:`, err.message);
+    lastMailStatus.success = false;
+    lastMailStatus.error = err.message;
+    lastMailStatus.code = err.code;
+    lastMailStatus.response = err.response;
     return false;
   }
 }
 
 /**
  * Invia notifica di nuovo lavoro assegnato
- * @param {string} toEmail - tecnico destinatario
- * @param {string} firstName - nome tecnico
- * @param {string} tipo - 'Appuntamento' o 'Intervento'
- * @param {string} clientName - nome cliente
- * @param {string} date - data/ora
- * @param {string} description - descrizione
  */
 async function sendAssignmentEmail(toEmail, firstName, tipo, clientName, date, description) {
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+  const cleanUser = (process.env.EMAIL_USER || '').trim();
+  const cleanPass = (process.env.EMAIL_PASS || '').trim().replace(/\s+/g, '');
+
+  if (!cleanUser || !cleanPass) {
     console.warn('[MAILER] EMAIL_USER/EMAIL_PASS non configurati — notifica email non inviata');
     return false;
   }
 
+  const transporter = getTransporter();
+
   const mailOptions = {
-    from: `"Xelta App" <${process.env.EMAIL_USER}>`,
+    from: `"Xelta" <${cleanUser}>`,
     to: toEmail,
     subject: `Xelta — Nuovo ${tipo} assegnato: ${clientName}`,
     html: `
-      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; background: #f4f5f7; padding: 32px 16px;">
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; background: #f4f5f7; padding: 32px 16px;">
         <div style="background: #1f1f1f; border-radius: 16px; padding: 28px 32px; text-align: center; margin-bottom: 24px;">
           <h1 style="color: #ffffff; font-size: 24px; margin: 0;">Xelta</h1>
         </div>
@@ -92,13 +159,18 @@ async function sendAssignmentEmail(toEmail, firstName, tipo, clientName, date, d
   };
 
   try {
-    await transporter.sendMail(mailOptions);
-    console.log(`[MAILER] Notifica ${tipo} inviata a ${toEmail}`);
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`[MAILER] Notifica ${tipo} inviata a ${toEmail} (MessageId: ${info.messageId})`);
     return true;
   } catch (err) {
-    console.error('[MAILER] Errore invio notifica:', err.message);
+    console.error(`[MAILER] Errore invio notifica ${tipo} a ${toEmail}:`, err.message);
     return false;
   }
 }
 
-module.exports = { sendVerificationEmail, sendAssignmentEmail };
+module.exports = {
+  sendVerificationEmail,
+  sendAssignmentEmail,
+  verifySmtp,
+  getMailDiagnostic
+};

@@ -66,6 +66,9 @@ class MainActivity : AppCompatActivity() {
 
         // Avvia sincronizzazione periodica in background (ogni 20 secondi) per ricevere notifiche di nuovi lavori
         startPeriodicSync()
+
+        // Schedula WorkManager per eseguire la sincronizzazione e svegliare le notifiche anche ad app chiusa/in sleep
+        com.techapp.data.worker.SyncWorker.schedule(applicationContext)
     }
 
     private fun startPeriodicSync() {

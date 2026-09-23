@@ -82,6 +82,9 @@ dependencies {
     // SwipeRefreshLayout
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
+    // WorkManager per sincronizzazione e notifiche in background
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+
     // BCrypt per hashing password
     implementation("org.mindrot:jbcrypt:0.4")
 

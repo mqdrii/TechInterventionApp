@@ -166,10 +166,12 @@
                         android:id="@+id/tv_subtitle_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pannello Interventi e Manutenzioni"
-                        android:textSize="12sp"
-                        android:textColor="@color/white"
-                        android:layout_marginTop="10dp" />
+                        android:text="Piattaforma Operativa"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="#FFFFFF80"
+                        android:letterSpacing="0.04"
+                        android:layout_marginTop="12dp" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -492,7 +494,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Visualizza ed elimina account Admin o Tecnici"
+                            android:text="Team, tecnici e ruoli aziendali"
                             android:textSize="12sp"
                             android:textColor="#E0E0E0"
                             android:layout_marginTop="2dp" />

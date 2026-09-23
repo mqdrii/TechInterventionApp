@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- Soft background glow -->
+    <path
+        android:fillColor="#15E24C4A"
+        android:pathData="M60,60m-46,0a46,46 0 1,0 92,0a46,46 0 1,0 -92,0" />
+    <path
+        android:fillColor="#25E24C4A"
+        android:pathData="M60,60m-32,0a32,32 0 1,0 64,0a32,32 0 1,0 -64,0" />
+    <!-- Calendar Body -->
+    <path
+        android:fillColor="#E24C4A"
+        android:pathData="M38,36h44c3.3,0 6,2.7 6,6v42c0,3.3 -2.7,6 -6,6H38c-3.3,0 -6,-2.7 -6,-6V42c0,-3.3 2.7,-6 6,-6z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M38,48h44v36c0,2.2 -1.8,4 -4,4H42c-2.2,0 -4,-1.8 -4,-4V48z" />
+    <!-- Top Pins -->
+    <path
+        android:fillColor="#1F1F1F"
+        android:pathData="M44,30h4v10h-4z M72,30h4v10h-4z" />
+    <!-- Calendar Checkmark (done / all clear) -->
+    <path
+        android:fillColor="#E24C4A"
+        android:pathData="M54,68.2l-6.2,-6.2l-2.8,2.8l9,9l18,-18l-2.8,-2.8z" />
+</vector>

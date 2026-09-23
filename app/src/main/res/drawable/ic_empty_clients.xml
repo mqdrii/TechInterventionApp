@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- Soft background glow -->
+    <path
+        android:fillColor="#15E24C4A"
+        android:pathData="M60,60m-46,0a46,46 0 1,0 92,0a46,46 0 1,0 -92,0" />
+    <path
+        android:fillColor="#25E24C4A"
+        android:pathData="M60,60m-32,0a32,32 0 1,0 64,0a32,32 0 1,0 -64,0" />
+    <!-- User Silhouette in Xelta Style -->
+    <path
+        android:fillColor="#1F1F1F"
+        android:pathData="M60,38c6.6,0 12,5.4 12,12s-5.4,12 -12,12s-12,-5.4 -12,-12s5.4,-12 12,-12z" />
+    <path
+        android:fillColor="#E24C4A"
+        android:pathData="M60,66c11,0 24,5.5 24,16.5v3.5H36v-3.5c0,-11 13,-16.5 24,-16.5z" />
+</vector>

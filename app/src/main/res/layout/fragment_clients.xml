@@ -86,35 +86,33 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="40dp"
+                    android:paddingHorizontal="32dp"
+                    android:paddingVertical="48dp"
                     android:layout_gravity="center"
                     android:visibility="gone">
 
                     <ImageView
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:src="@drawable/ic_person_badge"
-                        android:background="@drawable/bg_kpi_circle"
-                        android:padding="12dp"
-                        app:tint="@color/text_muted" />
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
+                        android:src="@drawable/ic_empty_clients" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Nessun cliente registrato"
-                        android:textSize="16sp"
+                        android:textSize="17sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
-                        android:layout_marginTop="16dp" />
+                        android:layout_marginTop="18dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Trascina verso il basso per sincronizzare dal cloud o premi il tasto in basso per aggiungere un cliente."
+                        android:text="La rubrica è vuota. Tocca Nuovo Cliente per registrare un'anagrafica."
                         android:textSize="13sp"
                         android:textColor="@color/text_secondary"
                         android:gravity="center"
-                        android:layout_marginTop="4dp" />
+                        android:layout_marginTop="6dp" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

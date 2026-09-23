@@ -129,6 +129,15 @@ class NewAppointmentFragment : Fragment() {
 
         appointmentViewModel.insertResult.observe(viewLifecycleOwner) { success ->
             if (success) {
+                val client = binding.spinnerClient.selectedItem?.toString() ?: "Cliente"
+                val desc = binding.etDescription.text.toString().trim()
+                val info = if (desc.isNotBlank()) " • $desc" else ""
+                com.techapp.utils.NotificationHelper.showNotification(
+                    context = requireContext().applicationContext,
+                    notificationId = (System.currentTimeMillis() % 100000).toInt(),
+                    title = "📅 Appuntamento Creato!",
+                    body = "$client • $selectedDate alle $selectedTime$info"
+                )
                 findNavController().navigateUp()
             } else {
                 Snackbar.make(binding.root, "Compila tutti i campi obbligatori", Snackbar.LENGTH_SHORT).show()

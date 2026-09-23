@@ -69,7 +69,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="7dp"
                                 android:text="Cloud Sincronizzato"
-                                android:textColor="#FFFFFFCC"
+                                android:textColor="@color/white"
                                 android:textSize="11sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -84,7 +84,7 @@
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:padding="6dp"
                             android:contentDescription="Configurazione Server"
-                            app:tint="#FFFFFF80" />
+                            app:tint="@color/white" />
 
                         <ImageView
                             android:id="@+id/btn_manage_accounts"
@@ -95,22 +95,23 @@
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:padding="6dp"
                             android:contentDescription="Gestione Account"
-                            app:tint="#FFFFFF80" />
+                            app:tint="@color/white" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_logout"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="32dp"
                             android:layout_marginStart="6dp"
                             android:text="Esci"
-                            android:textColor="#FFFFFFB3"
+                            android:textColor="@color/white"
                             android:textSize="12sp"
-                            android:paddingHorizontal="12dp"
+                            android:textStyle="bold"
+                            android:paddingHorizontal="14dp"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
-                            app:strokeColor="#FFFFFF33"
-                            app:strokeWidth="1dp"
+                            app:strokeColor="@color/primary"
+                            app:strokeWidth="1.5dp"
                             app:cornerRadius="999dp" />
                     </LinearLayout>
 
@@ -130,7 +131,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
-                        android:textColor="#FFFFFF66"
+                        android:textColor="@color/white"
                         android:layout_marginTop="2dp" />
 
                     <LinearLayout
@@ -139,8 +140,8 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:background="@drawable/bg_hero_pill"
-                        android:paddingHorizontal="12dp"
+                        android:background="@drawable/bg_role_pill_admin"
+                        android:paddingHorizontal="14dp"
                         android:paddingVertical="6dp"
                         android:layout_marginTop="14dp">
 
@@ -148,7 +149,8 @@
                             android:id="@+id/iv_role_icon"
                             android:layout_width="14dp"
                             android:layout_height="14dp"
-                            android:src="@drawable/ic_shield_admin" />
+                            android:src="@drawable/ic_shield_admin"
+                            app:tint="@color/white" />
 
                         <TextView
                             android:id="@+id/tv_role_badge"
@@ -166,7 +168,7 @@
                         android:layout_height="wrap_content"
                         android:text="Pannello Interventi e Manutenzioni"
                         android:textSize="12sp"
-                        android:textColor="#FFFFFF4D"
+                        android:textColor="@color/white"
                         android:layout_marginTop="10dp" />
 
                 </LinearLayout>
@@ -492,7 +494,7 @@
                             android:layout_height="wrap_content"
                             android:text="Visualizza ed elimina account Admin o Tecnici"
                             android:textSize="12sp"
-                            android:textColor="#FFFFFF66"
+                            android:textColor="#E0E0E0"
                             android:layout_marginTop="2dp" />
                     </LinearLayout>
 

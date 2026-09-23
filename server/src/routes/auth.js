@@ -310,4 +310,27 @@ router.post('/quick-verify', (req, res) => {
   });
 });
 
+// ─── UPDATE FCM TOKEN ───────────────────────────────────────────────────────
+router.post('/fcm-token', (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ error: 'Token di autorizzazione mancante' });
+
+  const token = authHeader.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const userId = decoded.id;
+    const { token: fcmToken } = req.body;
+
+    if (!fcmToken) return res.status(400).json({ error: 'FCM token mancante' });
+
+    db.run('UPDATE users SET fcm_token = ? WHERE id = ?', [fcmToken, userId], function(err) {
+      if (err) return res.status(500).json({ error: err.message });
+      console.log(`[AUTH] Token FCM salvato per utente ID ${userId}`);
+      res.json({ success: true, message: 'FCM token registrato con successo' });
+    });
+  } catch (err) {
+    return res.status(401).json({ error: 'Token non valido' });
+  }
+});
+
 module.exports = router;

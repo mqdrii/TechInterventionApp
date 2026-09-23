@@ -67,4 +67,7 @@ interface TechApiService {
         @Path("id") id: Long,
         @Body req: UpdateUserRequest
     ): Response<UpdateUserResponse>
+
+    @POST("api/auth/fcm-token")
+    suspend fun updateFcmToken(@Body req: FcmTokenRequest): Response<SimpleResponse>
 }

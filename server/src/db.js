@@ -19,12 +19,14 @@ db.serialize(() => {
       role TEXT NOT NULL DEFAULT 'TECHNICIAN',
       department TEXT NOT NULL DEFAULT 'Generale',
       is_verified INTEGER NOT NULL DEFAULT 1,
+      fcm_token TEXT DEFAULT NULL,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
 
-  // Migrazione sicura: aggiunge is_verified se manca su DB esistente
+  // Migrazione sicura: aggiunge is_verified e fcm_token se mancano su DB esistente
   db.run(`ALTER TABLE users ADD COLUMN is_verified INTEGER NOT NULL DEFAULT 1`, () => {});
+  db.run(`ALTER TABLE users ADD COLUMN fcm_token TEXT DEFAULT NULL`, () => {});
 
   // Email Verifications Table (OTP 6 cifre)
   db.run(`

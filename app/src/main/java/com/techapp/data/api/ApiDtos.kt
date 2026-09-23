@@ -117,3 +117,12 @@ data class UpdateUserResponse(
     val user: UserDto? = null,
     val error: String? = null
 )
+
+data class FcmTokenRequest(
+    val token: String
+)
+
+data class SimpleResponse(
+    val success: Boolean,
+    val message: String? = null
+)

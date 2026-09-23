@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -84,6 +85,10 @@ dependencies {
 
     // WorkManager per sincronizzazione e notifiche in background
     implementation("androidx.work:work-runtime-ktx:2.9.0")
+
+    // Firebase Cloud Messaging (FCM Push Reale)
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-messaging")
 
     // BCrypt per hashing password
     implementation("org.mindrot:jbcrypt:0.4")

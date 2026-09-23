@@ -69,6 +69,27 @@ class MainActivity : AppCompatActivity() {
 
         // Schedula WorkManager per eseguire la sincronizzazione e svegliare le notifiche anche ad app chiusa/in sleep
         com.techapp.data.worker.SyncWorker.schedule(applicationContext)
+
+        // Registra token FCM per notifiche push istantanee
+        registerFcmToken()
+    }
+
+    private fun registerFcmToken() {
+        val session = com.techapp.utils.SessionManager(this)
+        if (session.isLoggedIn()) {
+            com.google.firebase.messaging.FirebaseMessaging.getInstance().token
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val token = task.result
+                        lifecycleScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+                            try {
+                                val api = com.techapp.data.api.ApiClient.getApiService(this@MainActivity)
+                                api.updateFcmToken(com.techapp.data.api.FcmTokenRequest(token))
+                            } catch (_: Exception) {}
+                        }
+                    }
+                }
+        }
     }
 
     private fun startPeriodicSync() {

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1082646157265",
+    "project_id": "xelta-app-81e4e",
+    "storage_bucket": "xelta-app-81e4e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1082646157265:android:9b44f3bc31816e5780f2f0",
+        "android_client_info": {
+          "package_name": "com.techapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSksVyrlqdW-HzaVWreLYGW4CQ9JrBnVs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

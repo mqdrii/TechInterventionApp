@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const { sendAssignmentEmail } = require('../mailer');
+const { sendPushNotification } = require('../fcm');
 
 // Get interventions
 router.get('/', (req, res) => {
@@ -63,7 +64,7 @@ router.post('/', (req, res) => {
         status: 'In corso'
       };
 
-      // Invia email notifica al tecnico assegnato (se presente)
+      // Invia email e push notification al tecnico assegnato (se presente)
       if (technicianId && technicianId > 0) {
         db.get(`SELECT email, first_name FROM users WHERE id = ?`, [technicianId], (uErr, user) => {
           if (!uErr && user) {
@@ -74,6 +75,20 @@ router.post('/', (req, res) => {
             ).catch(() => {});
           }
         });
+        // Push FCM istantaneo anche ad app chiusa
+        sendPushNotification({
+          userId: technicianId,
+          title: `🔧 Nuovo Intervento — ${clientName.trim()}`,
+          body: `${date.trim()} • ${description.trim().substring(0, 80)}`,
+          data: { type: 'intervention', id: String(this.lastID) }
+        }).catch(() => {});
+      } else if (department && department.trim()) {
+        sendPushNotification({
+          department: department.trim(),
+          title: `🔧 Nuovo Intervento — ${clientName.trim()}`,
+          body: `${date.trim()} • ${description.trim().substring(0, 80)}`,
+          data: { type: 'intervention', id: String(this.lastID) }
+        }).catch(() => {});
       }
 
       res.status(201).json(result);

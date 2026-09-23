@@ -10,3 +10,8 @@
 local.properties
 *.apk
 
+
+# Firebase Service Account Keys
+*firebase-adminsdk*.json
+server/data.db
+

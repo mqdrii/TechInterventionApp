@@ -115,7 +115,23 @@ async function sendEmailUnified(toEmail, subject, htmlContent) {
   lastMailStatus.lastAttempt = new Date().toISOString();
   lastMailStatus.to = toEmail;
 
-  // 1) Prova Resend HTTP API (porta 443, garantito su Render Free)
+  // 1) Prova Brevo HTTP API (porta 443, supporta invio a qualsiasi email senza dominio)
+  const brevoKey = (process.env.BREVO_API_KEY || '').trim();
+  if (brevoKey) {
+    try {
+      const res = await sendViaBrevo(brevoKey, toEmail, subject, htmlContent);
+      console.log(`[MAILER] Email inviata via Brevo a ${toEmail}:`, res.messageId || 'OK');
+      lastMailStatus.success = true;
+      lastMailStatus.provider = 'Brevo (HTTPS 443)';
+      lastMailStatus.error = null;
+      return true;
+    } catch (err) {
+      console.error('[MAILER] Errore Brevo:', err.message);
+      lastMailStatus.error = err.message;
+    }
+  }
+
+  // 2) Prova Resend HTTP API (porta 443, fallback)
   const resendKey = (process.env.RESEND_API_KEY || '').trim();
   if (resendKey) {
     try {
@@ -127,21 +143,6 @@ async function sendEmailUnified(toEmail, subject, htmlContent) {
       return true;
     } catch (err) {
       console.error('[MAILER] Errore Resend:', err.message);
-      lastMailStatus.error = err.message;
-    }
-  }
-
-  // 2) Prova Brevo HTTP API (porta 443)
-  if (process.env.BREVO_API_KEY) {
-    try {
-      const res = await sendViaBrevo(process.env.BREVO_API_KEY, toEmail, subject, htmlContent);
-      console.log(`[MAILER] Email inviata via Brevo a ${toEmail}`);
-      lastMailStatus.success = true;
-      lastMailStatus.provider = 'Brevo (HTTPS 443)';
-      lastMailStatus.error = null;
-      return true;
-    } catch (err) {
-      console.error('[MAILER] Errore Brevo:', err.message);
       lastMailStatus.error = err.message;
     }
   }
@@ -229,11 +230,11 @@ function getMailDiagnostic() {
 }
 
 async function verifySmtp() {
+  if (process.env.BREVO_API_KEY) {
+    return { ok: true, provider: 'Brevo API (HTTPS porta 443 - attivo, invia a qualsiasi email!)' };
+  }
   if (process.env.RESEND_API_KEY) {
     return { ok: true, provider: 'Resend API (HTTPS porta 443 - attivo e non bloccato da Render)' };
-  }
-  if (process.env.BREVO_API_KEY) {
-    return { ok: true, provider: 'Brevo API (HTTPS porta 443 - attivo e non bloccato da Render)' };
   }
   const cleanUser = (process.env.EMAIL_USER || '').trim();
   const cleanPass = (process.env.EMAIL_PASS || '').trim().replace(/\s+/g, '');

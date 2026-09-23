@@ -96,9 +96,10 @@ async function sendEmailUnified(toEmail, subject, htmlContent) {
   lastMailStatus.to = toEmail;
 
   // 1) Prova Resend HTTP API (porta 443, garantito su Render Free)
-  if (process.env.RESEND_API_KEY) {
+  const resendKey = (process.env.RESEND_API_KEY || '').trim();
+  if (resendKey) {
     try {
-      const res = await sendViaResend(process.env.RESEND_API_KEY, toEmail, subject, htmlContent);
+      const res = await sendViaResend(resendKey, toEmail, subject, htmlContent);
       console.log(`[MAILER] Email inviata via Resend a ${toEmail}:`, res.id || 'OK');
       lastMailStatus.success = true;
       lastMailStatus.provider = 'Resend (HTTPS 443)';

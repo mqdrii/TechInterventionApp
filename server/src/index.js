@@ -60,13 +60,17 @@ app.get('/api/logs', (req, res) => {
 
 // Mail diagnostics & SMTP verification
 app.get('/api/mail-status', async (req, res) => {
-  const mailer = require('./mailer');
-  const diagnostic = mailer.getMailDiagnostic();
-  const smtpTest = await mailer.verifySmtp();
-  res.json({
-    diagnostic,
-    smtpTest
-  });
+  try {
+    const mailer = require('./mailer');
+    const diagnostic = mailer.getMailDiagnostic ? mailer.getMailDiagnostic() : {};
+    const smtpTest = (typeof mailer.verifySmtp === 'function') ? await mailer.verifySmtp() : null;
+    res.json({
+      diagnostic,
+      smtpTest
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Test email sender endpoint

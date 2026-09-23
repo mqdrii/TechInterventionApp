@@ -207,8 +207,27 @@ function getMailDiagnostic() {
   };
 }
 
+async function verifySmtp() {
+  if (process.env.RESEND_API_KEY) {
+    return { ok: true, provider: 'Resend API (HTTPS porta 443 - attivo e non bloccato da Render)' };
+  }
+  if (process.env.BREVO_API_KEY) {
+    return { ok: true, provider: 'Brevo API (HTTPS porta 443 - attivo e non bloccato da Render)' };
+  }
+  const cleanUser = (process.env.EMAIL_USER || '').trim();
+  const cleanPass = (process.env.EMAIL_PASS || '').trim().replace(/\s+/g, '');
+  if (!cleanUser || !cleanPass) {
+    return { ok: false, error: 'Nessun provider email configurato su Render.' };
+  }
+  return {
+    ok: false,
+    error: 'Render Free blocca le porte SMTP in uscita (465/587). Configura RESEND_API_KEY per inviare via HTTPS senza blocchi.'
+  };
+}
+
 module.exports = {
   sendVerificationEmail,
   sendAssignmentEmail,
-  getMailDiagnostic
+  getMailDiagnostic,
+  verifySmtp
 };

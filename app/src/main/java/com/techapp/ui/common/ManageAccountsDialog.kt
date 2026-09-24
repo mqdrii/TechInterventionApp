@@ -341,6 +341,34 @@ object ManageAccountsDialog {
             holder.binding.btnDeleteUser.setOnClickListener {
                 onDeleteClick(user)
             }
+
+            // Assegna Lavoro
+            holder.binding.btnAssignTask.setOnClickListener {
+                Toast.makeText(holder.itemView.context, "Assegna lavoro a ${user.firstName}: apri Nuovo Intervento", Toast.LENGTH_SHORT).show()
+            }
+
+            // Chiama
+            holder.binding.btnCallUser.setOnClickListener {
+                try {
+                    val intent = android.content.Intent(android.content.Intent.ACTION_DIAL)
+                    holder.itemView.context.startActivity(intent)
+                } catch (_: Exception) {
+                    Toast.makeText(holder.itemView.context, "Funzione chiamata per ${user.firstName}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            // Messaggio
+            holder.binding.btnMessageUser.setOnClickListener {
+                try {
+                    val emailIntent = android.content.Intent(android.content.Intent.ACTION_SENDTO).apply {
+                        data = android.net.Uri.parse("mailto:${user.email}")
+                        putExtra(android.content.Intent.EXTRA_SUBJECT, "Comunicazione operativa Xelta")
+                    }
+                    holder.itemView.context.startActivity(emailIntent)
+                } catch (_: Exception) {
+                    Toast.makeText(holder.itemView.context, "Invia messaggio a ${user.email}", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         override fun getItemCount(): Int = users.size

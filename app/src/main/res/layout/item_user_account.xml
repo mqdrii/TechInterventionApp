@@ -78,48 +78,123 @@
                 tools:text="Amministratore • Direzione" />
         </LinearLayout>
 
-        <!-- Edit Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_edit_user"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="6dp"
-            android:padding="0dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:insetLeft="0dp"
-            android:insetRight="0dp"
-            app:cornerRadius="10dp"
-            app:icon="@drawable/ic_edit"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:iconTint="@color/primary"
-            app:strokeColor="@color/primary_light"
-            app:strokeWidth="1dp"
-            android:backgroundTint="#FCF0F0"
-            android:contentDescription="Personalizza Account" />
+        <!-- Actions Row for Team Operations -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <!-- Delete Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_delete_user"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="0dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:insetLeft="0dp"
-            android:insetRight="0dp"
-            app:cornerRadius="10dp"
-            app:icon="@drawable/ic_delete"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:iconTint="#EF4444"
-            app:strokeColor="#FCA5A5"
-            app:strokeWidth="1dp"
-            android:backgroundTint="#FEF2F2"
-            android:contentDescription="Elimina Account" />
+            <!-- Assign Work Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_assign_task"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="4dp"
+                android:padding="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_assign_task"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="@color/primary"
+                app:strokeColor="@color/primary_light"
+                app:strokeWidth="1dp"
+                android:backgroundTint="#FCF0F0"
+                android:contentDescription="Assegna Lavoro" />
+
+            <!-- Call Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_call_user"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="4dp"
+                android:padding="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_call_tonal"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="@color/primary"
+                app:strokeColor="@color/primary_light"
+                app:strokeWidth="1dp"
+                android:backgroundTint="#FCF0F0"
+                android:contentDescription="Chiama" />
+
+            <!-- Message Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_message_user"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="4dp"
+                android:padding="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_message"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="@color/primary"
+                app:strokeColor="@color/primary_light"
+                app:strokeWidth="1dp"
+                android:backgroundTint="#FCF0F0"
+                android:contentDescription="Messaggio" />
+
+            <!-- Edit Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_edit_user"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="4dp"
+                android:padding="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_edit"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="#64748B"
+                app:strokeColor="#CBD5E1"
+                app:strokeWidth="1dp"
+                android:backgroundTint="#F8FAFC"
+                android:contentDescription="Personalizza Account" />
+
+            <!-- Delete Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_delete_user"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_delete"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="#EF4444"
+                app:strokeColor="#FCA5A5"
+                app:strokeWidth="1dp"
+                android:backgroundTint="#FEF2F2"
+                android:contentDescription="Elimina Account" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

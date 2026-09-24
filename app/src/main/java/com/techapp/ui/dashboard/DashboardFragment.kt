@@ -39,8 +39,27 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.tvWelcome.text = "Ciao, ${viewModel.getUserName()}!"
+        val userName = viewModel.getUserName()
+        binding.tvWelcome.text = "Ciao, $userName!"
         binding.tvDate.text = viewModel.todayDate
+
+        // Set user avatar initials
+        val initials = userName.split(" ")
+            .filter { it.isNotBlank() }
+            .take(2)
+            .map { it.first().uppercaseChar() }
+            .joinToString("")
+            .ifBlank { "X" }
+        binding.tvAvatarInitials.text = initials
+        binding.layoutUserAvatar.setOnClickListener {
+            // Shortcut to open personal profile/settings
+            ManageAccountsDialog.show(
+                context = requireContext(),
+                scope = viewLifecycleOwner.lifecycleScope,
+                onAccountsChanged = { viewModel.syncData() },
+                onSelfDeleted = { findNavController().navigate(R.id.action_dashboard_to_login) }
+            )
+        }
 
         // Cloud Server Configuration & Status
         binding.btnServerConfig.setOnClickListener {

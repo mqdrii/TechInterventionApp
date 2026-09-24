@@ -59,6 +59,18 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                         department = u.department,
                         token      = body.token ?: ""
                     )
+                    // Invia subito il token FCM al server al momento del login
+                    try {
+                        com.google.firebase.messaging.FirebaseMessaging.getInstance().token
+                            .addOnSuccessListener { fcmTok ->
+                                viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+                                    try {
+                                        api.updateFcmToken(com.techapp.data.api.FcmTokenRequest(fcmTok))
+                                    } catch (_: Exception) {}
+                                }
+                            }
+                    } catch (_: Exception) {}
+
                     repository.upsertUserFromServer(u.id, u.email, u.firstName, u.lastName, u.role, u.department)
                     loginResult.value = LoginResult.Success(
                         User(id = u.id, email = u.email, firstName = u.firstName,

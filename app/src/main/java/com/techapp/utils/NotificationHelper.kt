@@ -26,7 +26,13 @@ object NotificationHelper {
                 enableLights(true)
                 lightColor = Color.parseColor("#E24C4A")
                 enableVibration(true)
-                vibrationPattern = longArrayOf(0, 250, 150, 250)
+                vibrationPattern = longArrayOf(0, 300, 200, 300)
+                lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC
+                val audioAttributes = android.media.AudioAttributes.Builder()
+                    .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION_COMMUNICATION_INSTANT)
+                    .build()
+                setSound(android.provider.Settings.System.DEFAULT_NOTIFICATION_URI, audioAttributes)
             }
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)

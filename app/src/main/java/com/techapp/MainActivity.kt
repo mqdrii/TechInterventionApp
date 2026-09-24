@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                         val token = task.result
                         lifecycleScope.launch(kotlinx.coroutines.Dispatchers.IO) {
                             try {
-                                val api = com.techapp.data.api.ApiClient.getApiService(this@MainActivity)
+                                val api = com.techapp.data.api.ApiClient.getService(this@MainActivity)
                                 api.updateFcmToken(com.techapp.data.api.FcmTokenRequest(token))
                             } catch (_: Exception) {}
                         }

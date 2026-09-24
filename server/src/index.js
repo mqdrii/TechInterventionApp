@@ -83,6 +83,21 @@ app.post('/api/mail-test', async (req, res) => {
   res.json({ success, diagnostic });
 });
 
+// FCM diagnostics endpoint
+app.get('/api/fcm-status', (req, res) => {
+  const fcm = require('./fcm');
+  const initialized = fcm.initFirebase();
+  const db = require('./db');
+  db.all('SELECT id, email, first_name, role, department, (fcm_token IS NOT NULL) AS has_fcm FROM users', [], (err, rows) => {
+    res.json({
+      firebaseInitialized: initialized,
+      hasEnvVar: Boolean(process.env.FIREBASE_SERVICE_ACCOUNT),
+      users: rows || [],
+      error: err ? err.message : null
+    });
+  });
+});
+
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/clients', require('./routes/clients'));

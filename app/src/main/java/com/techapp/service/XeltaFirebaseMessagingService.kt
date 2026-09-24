@@ -47,7 +47,7 @@ class XeltaFirebaseMessagingService : FirebaseMessagingService() {
         if (session.isLoggedIn()) {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    val api = ApiClient.getApiService(applicationContext)
+                    val api = ApiClient.getService(applicationContext)
                     api.updateFcmToken(FcmTokenRequest(token))
                     Log.d("FCM", "Token FCM inviato con successo al server")
                 } catch (e: Exception) {

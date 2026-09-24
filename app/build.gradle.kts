@@ -14,8 +14,13 @@ android {
         applicationId = "com.techapp"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        
+        // versionCode incrementale automatico per aggiornamenti diretti senza cancellare i dati
+        val runNum = project.findProperty("buildNumber")?.toString()?.toIntOrNull()
+            ?: System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull()
+            ?: 48
+        versionCode = runNum
+        versionName = "1.0.$runNum"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
